@@ -1,0 +1,43 @@
+#footer {
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    opacity: 0.45;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    color: white;
+}
+
+#lefttext img{
+    width: 16px;
+    height: 16px;
+}
+#lefttext {
+    padding: 5px;
+    float:left;
+    display: inline;
+    display: inline-block;
+}
+#righttext a{
+    color: white;
+}
+#righttext {
+    display: inline;
+    display: inline-block;
+    text-align: right;
+    margin-bottom: 10em;
+    padding: 5px;
+    float: right;
+
+}
+#centertext {
+    padding: 10px;
+    font-family: Impact, Charcoal, sans-serif;
+    font-size: 1.5em;
+}
+#centertext {
+    display: inline;
+    display: inline-block;
+    margin-left: 30%;
+}

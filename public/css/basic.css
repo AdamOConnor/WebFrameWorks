@@ -1,0 +1,43 @@
+body {
+	background: #CCFFCC;
+}
+
+header {
+    text-align: center;
+}
+
+/* ------- DVD table contents --------- */
+table, th, td, tr {
+    border: solid black 0.1rem
+}
+
+td {
+    width: 7rem;
+    text-align: center;
+}
+
+header {
+    display: flex;
+}
+
+.icon {
+    flex: 1;
+    font-family: Impact, Charcoal, sans-serif;
+    font-size: 3em;
+    text-align: left;
+}
+
+.signin {
+    width:400px;
+    display: inline;
+    margin: 20px;
+
+}
+
+button {
+    line-height: 2em;
+}
+
+input {
+    line-height: 2em;
+}
