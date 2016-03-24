@@ -15,21 +15,24 @@ header {
     text-align: left;
 }
 /* signin css */
-.signin {
+.form-control {
     width:400px;
     display: inline;
-    margin: 20px;
 }
 /* button height */
 button {
     line-height: 2em;
+    margin-right: 2em;
+    width: 100px;
 }
 /*   input height  */
 input {
     line-height: 2em;
+
 }
 
 /* main text area's on pages */
 #mainSection {
+    margin-top: 2em;
     text-align: center;
 }

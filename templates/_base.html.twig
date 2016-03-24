@@ -4,9 +4,11 @@
     <title>{% block pageTitle %}{% endblock %}</title>
     <meta charset="utf-8">
     <style>
+        @import "css/testReg.css";
         @import "css/basic.css";
         @import "css/nav.css";
         @import "css/footer.css";
+
     </style>
 </head>
 <body>
@@ -15,7 +17,7 @@
     <div class="icon">
         GraduateJobsDublin.itb
     </div>
-    <div class="signin">
+    <div id="signin">
         <form class = "form-signin" role = "form"
               action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);
               ?>" method = "post">
@@ -25,7 +27,7 @@
                    required autofocus>
             <input type = "password" class = "form-control"
                    name = "password" placeholder = "password" required>
-            <button class = "btn btn-lg btn-primary btn-block" type = "submit"
+            <button class = "submitButton" type = "submit"
                     name = "login">Login</button>
         </form>
     </div>
@@ -56,7 +58,7 @@
 
 <div id="footer">
     <div id="lefttext">
-        Adam O'Connor <a href="mailto:adam-o-connor@hotmail.com"><img src="images/e_mail.png" height="50" width="50"></a>
+        Adam O'Connor <a href="mailto:adam-o-connor@hotmail.com"><img src="images/email.png" height="50" width="50"></a>
         <br>
         B00066540
     </div>

@@ -9,20 +9,41 @@
 {# ------------------------------------------------- #}
 {% block main %}
 <div id="mainSection">
-    <h1>
-        About us
-    </h1>
-    <p>
-        We are SmithIT.com.
-    </p>
-    <p>
-        We are based in Dublin.
-    </p>
-    <p>
-        We were established in 2007.
-    </p>
-    <p>
-        We sell computers and computer services - and host this great DVD voting site!.
-    </p>
+
+    <div class="testbox">
+        <h1>Registration</h1>
+
+        <form action="/">
+            <hr>
+            <div class="accounttype">
+                <input type="radio" value="None" id="radioOne" name="account" checked/>
+                <label for="radioOne" class="radio">Student</label>
+                <input type="radio" value="None" id="radioTwo" name="account" />
+                <label for="radioTwo" class="radio">Lecturer</label>
+                <input type="radio" value="None" id="radioThree" name="account" />
+                <label for="radioThree" class="radio">Employer</label>
+            </div>
+            <hr>
+            <label id="icon" for="name"><i><img src="images/interface.png" class="images"></i></label>
+            <input type="text" name="name" id="name" placeholder="Email" required/>
+
+            <label id="icon" for="name"><i class="icon-user"><img src="images/profile.png" class="images"></i></label>
+            <input type="text" name="name" id="name" placeholder="Name" required/>
+
+            <label id="icon" for="name"><i><img src="images/security.png"></i></label>
+            <input type="password" name="name" id="name" placeholder="Password" required/>
+
+            <div class="gender">
+                <input type="radio" value="None" id="male" name="gender" checked/>
+                <label for="male" class="radio">Male</label>
+                <input type="radio" value="None" id="female" name="gender" />
+                <label for="female" class="radio">Female</label>
+            </div>
+
+            <p>By clicking Register, you agree on our <a href="#">terms and condition</a>.</p>
+            <a href="#" class="button">Register</a>
+        </form>
+    </div>
+
 </div>
 {% endblock %}
