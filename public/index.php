@@ -1,21 +1,25 @@
 <?php
-require_once __DIR__ . '/../app/setup.php';
-
 use Itb\MainController;
 
-$mainController = new MainController();
-// get action GET parameter (if it exists)
-$action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
+require_once __DIR__ . '/../app/setup.php';
 
-if ('register' == $action) {
-    $mainController->registerAction($twig);
-} else if ('contact' == $action) {
-    $mainController->contactAction($twig);
-} else if ('list' == $action) {
-    $mainController->listAction($twig);
-} else if ('sitemap' == $action) {
-    $mainController->sitemapAction($twig);
-} else {
-    // default is home page ('index' action)
-    $mainController->indexAction($twig);
-}
+$app->get('/', \Itb\Utility::controller('Itb', 'main/index'));
+$app->get('/register', \Itb\Utility::controller('Itb', 'main/register'));
+$app->get('/contact', \Itb\Utility::controller('Itb', 'main/contact'));
+$app->get('/sitemap', \Itb\Utility::controller('Itb', 'main/sitemap'));
+
+// error page - 404
+$app->error(function (\Exception $e, $code) use ($app) {
+    switch($code) {
+        case 404:
+            $message = 'The requested page could not be found.';
+            return \Itb\MainController::error404($app, $message);
+        default:
+            $message = 'We are sorry, but something went wrong.';
+            return \Itb\MainController::error404($app, $message);
+    }
+});
+
+//run the silex front controller
+//------------------------------
+$app->run();

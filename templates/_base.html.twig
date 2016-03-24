@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>EVOTE DVD - {% block pageTitle %}{% endblock %}</title>
+    <title>{% block pageTitle %}{% endblock %}</title>
     <meta charset="utf-8">
     <style>
         @import "css/basic.css";
@@ -38,15 +38,15 @@
         </li>
 
         <li>
-            <a href="/?action=register" class="{% block aboutLinkStyle %}{% endblock %}">Register</a>
+            <a href="/register" class="{% block aboutLinkStyle %}{% endblock %}">Register</a>
         </li>
 
         <li>
-            <a href="/?action=contact" class="{% block contactLinkStyle %}{% endblock %}">Contact Us</a>
+            <a href="/contact" class="{% block contactLinkStyle %}{% endblock %}">Contact Us</a>
         </li>
 
         <li>
-            <a href="/?action=sitemap" class="{% block sitemapLinkStyle %}{% endblock %}">Site Map</a>
+            <a href="/sitemap" class="{% block sitemapLinkStyle %}{% endblock %}">Site Map</a>
         </li>
     </ul>
 </nav>

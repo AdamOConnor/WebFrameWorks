@@ -1,43 +1,35 @@
 body {
-	background: #CCFFCC;
+	background: #F5F5F5;
 }
 
-header {
-    text-align: center;
-}
-
-/* ------- DVD table contents --------- */
-table, th, td, tr {
-    border: solid black 0.1rem
-}
-
-td {
-    width: 7rem;
-    text-align: center;
-}
-
+/* header flex have two things beside eachother */
 header {
     display: flex;
+    text-align: center;
 }
-
+/* text in the header bar */
 .icon {
     flex: 1;
     font-family: Impact, Charcoal, sans-serif;
     font-size: 3em;
     text-align: left;
 }
-
+/* signin css */
 .signin {
     width:400px;
     display: inline;
     margin: 20px;
-
 }
-
+/* button height */
 button {
     line-height: 2em;
 }
-
+/*   input height  */
 input {
     line-height: 2em;
+}
+
+/* main text area's on pages */
+#mainSection {
+    text-align: center;
 }

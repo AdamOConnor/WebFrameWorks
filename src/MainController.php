@@ -1,50 +1,72 @@
 <?php
 namespace Itb;
+/**
+ * Class MainController
+ * @package Itb
+ */
+
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 class MainController
 {
-
     /**
      * @param \Twig_Environment   $twig
      */
-    public function registerAction(\Twig_Environment $twig)
+    public function registerAction(Request $request, Application $app)
     {
-        $argsArray = [];
+        $argsArray = [
+            'title' => 'Register',
+        ];
         $template = 'register';
-        $htmlOutput = $twig->render($template . '.html.twig', $argsArray);
-        print $htmlOutput;
+        return $app['twig']->render($template . '.html.twig', $argsArray);
     }
 
     /**
      * @param \Twig_Environment   $twig
      */
-    public function contactAction(\Twig_Environment $twig)
+    public function contactAction(Request $request, Application $app)
     {
-        $argsArray = [];
+        $argsArray = [
+            'title' => 'Contact',
+        ];
         $template = 'contact';
-        $htmlOutput = $twig->render($template . '.html.twig', $argsArray);
-        print $htmlOutput;
+        return $app['twig']->render($template . '.html.twig', $argsArray);
     }
 
     /**
      * @param \Twig_Environment   $twig
      */
-    public function indexAction(\Twig_Environment $twig)
+    public function indexAction(Request $request, Application $app)
     {
-        $argsArray = [];
+        $argsArray = [
+            'title' => 'Home',
+        ];
         $template = 'index';
-        $htmlOutput = $twig->render($template . '.html.twig', $argsArray);
-        print $htmlOutput;
+        return $app['twig']->render($template . '.html.twig', $argsArray);
     }
     
     /**
      * @param \Twig_Environment   $twig
      */
-    public function sitemapAction(\Twig_Environment $twig)
+    public function sitemapAction(Request $request, Application $app)
+    {
+        $argsArray = [
+            'title' => 'Site map',
+        ];
+        $template = 'sitemap';
+        return $app['twig']->render($template . '.html.twig', $argsArray);
+    }
+
+    /**
+     * @param Application $app
+     * @param $message
+     * @return mixed
+     */
+    public function error404(Application $app, $message)
     {
         $argsArray = [];
-        $template = 'sitemap';
-        $htmlOutput = $twig->render($template . '.html.twig', $argsArray);
-        print $htmlOutput;
+        $templateName = '404';
+        return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 }
