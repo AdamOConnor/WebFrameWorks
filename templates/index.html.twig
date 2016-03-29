@@ -9,6 +9,14 @@
 {# ------------------------------------------------- #}
 {% block main %}
 <div id="mainSection">
+
+    {% if errorMessage %}
+        <p class="error">
+            {{ errorMessage }}
+        </p>
+        <hr>
+    {% endif %}
+
     <h1>
         Welcome to the Graduate Jobs homepage.
     </h1>

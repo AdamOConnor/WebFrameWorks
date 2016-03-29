@@ -16,5 +16,7 @@ return array(
     'Symfony\\Bridge\\Twig\\' => array($vendorDir . '/symfony/twig-bridge'),
     'Silex\\' => array($vendorDir . '/silex/silex/src/Silex'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
-    'Itb\\' => array($baseDir . '/src'),
+    'Mattsmithdev\\PdoCrud\\' => array($vendorDir . '/mattsmithdev/pdo-crud-for-free/src'),
+    'Adamoconnorframeworks\\Model\\' => array($baseDir . '/src/model'),
+    'Adamoconnorframeworks\\Controller\\' => array($baseDir . '/src/controllers'),
 );

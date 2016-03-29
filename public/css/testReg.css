@@ -194,10 +194,16 @@ a.button {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+    background-color: #36b0b6;
+    -webkit-box-shadow: 0 3px rgba(42, 138, 143, 1);
+    -moz-box-shadow: 0 3px rgba(42, 138, 143, 1);
+    box-shadow: 0 3px rgba(42, 138, 143, 1);
+    /*
     background-color: #3a57af;
     -webkit-box-shadow: 0 3px rgba(58,87,175,.75);
     -moz-box-shadow: 0 3px rgba(58,87,175,.75);
     box-shadow: 0 3px rgba(58,87,175,.75);
+    */
     transition: all 0.1s linear 0s;
     top: 0px;
     position: relative;

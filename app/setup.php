@@ -1,20 +1,31 @@
 <?php
 //----- autoload any classes we are using ------
-require_once __DIR__ . '/../vendor/autoload.php';
+//require_once __DIR__ . '/../vendor/autoload.php';
 
 //----- autoload any classes we are using ------
-require_once __DIR__ . '/config_db.php';
+//require_once __DIR__ . '/config_db.php';
 
 //------- load in main controller functions -------
-require_once __DIR__ . '/../src/mainController.php';
+//require_once __DIR__ . '/../src/controllers/MainController.php';
+//require_once __DIR__ . '/../src/utility/Utility.php';
 
 //----- Twig setup --------------
 $templatesPath = __DIR__ . '/../templates';
+
+define('DB_HOST','localhost');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+define('DB_NAME', 'itb');
+
 $loader = new Twig_Loader_Filesystem($templatesPath);
 $twig = new Twig_Environment($loader);
 
 // set up silex
 $app = new Silex\Application();
+
+// register session provider with Silex
+//-------------------------------------
+$app->register(new Silex\Provider\SessionServiceProvider());
 
 // register Twig with Silex
 //-------------------------
@@ -28,5 +39,5 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 // create a log channel
-$log = new Logger('matt');
-$log->pushHandler(new StreamHandler('/Users/matt/Desktop/evote-dvd/zz_in_development_should_be_in_a_branch/eVote_dvd_version14_database/logs/log.txt', Logger::DEBUG));
+$log = new Logger('adam');
+$log->pushHandler(new StreamHandler('C:\laragon\www\Assignment01\WebFrameWorks\logs\log.txt', Logger::DEBUG));

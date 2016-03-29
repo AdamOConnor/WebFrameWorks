@@ -1,24 +1,51 @@
 <?php
-use Itb\MainController;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../src/utility/Utility.php';
 
 require_once __DIR__ . '/../app/setup.php';
 
-$app->get('/', \Itb\Utility::controller('Itb', 'main/index'));
-$app->get('/register', \Itb\Utility::controller('Itb', 'main/register'));
-$app->get('/contact', \Itb\Utility::controller('Itb', 'main/contact'));
-$app->get('/sitemap', \Itb\Utility::controller('Itb', 'main/sitemap'));
+//----------------------------------------
+// login actions for users
+//----------------------------------------
+$app->get('/login',  controller('Adamoconnorframeworks\Controller', 'user/login'));
+$app->get('/logout',  controller('Adamoconnorframeworks\Controller', 'user/logout'));
+//----------------------------------------
+// default map routes for ordinary user
+//----------------------------------------
+$app->get('/', controller('Adamoconnorframeworks\Controller', 'main/index'));
+$app->get('/register', controller('Adamoconnorframeworks\Controller', 'main/register'));
+$app->get('/contact', controller('Adamoconnorframeworks\Controller', 'main/contact'));
+$app->get('/sitemap', controller('Adamoconnorframeworks\Controller', 'main/sitemap'));
 
-// error page - 404
-$app->error(function (\Exception $e, $code) use ($app) {
-    switch($code) {
-        case 404:
-            $message = 'The requested page could not be found.';
-            return \Itb\MainController::error404($app, $message);
-        default:
-            $message = 'We are sorry, but something went wrong.';
-            return \Itb\MainController::error404($app, $message);
-    }
-});
+//----------------------------------------
+// secure admin pages
+//----------------------------------------
+$app->get('/admin',  controller('Adamoconnorframeworks\Controller', 'admin/index'));
+$app->get('/adminCodes',  controller('Adamoconnorframeworks\Controller', 'admin/codes'));
+
+$app->post('/login',  controller('Adamoconnorframeworks\Controller', 'user/processLogin'));
+//-----------------------------------------
+// secure student page
+//-----------------------------------------
+
+//-----------------------------------------
+// secure employer page
+//-----------------------------------------
+
+//-----------------------------------------
+// error pages if users enter url
+//-----------------------------------------
+//$app->error(function (\Exception $e, $code) use ($app) {
+ //   switch($code) {
+//        case 404:
+   //         $message = 'The requested page could not be found.';
+       //     return error404($app, $message);
+     //   default:
+       //     $message = 'We are sorry, but something went wrong.';
+       //     return error404($app, $message);
+  //  }
+//});
 
 //run the silex front controller
 //------------------------------
