@@ -1,7 +1,7 @@
 <?php
 /**
  * @Author Adam O'Connor
- * admin controller for lecturer
+ * Employer controller for links etc.
  */
 namespace Adamoconnorframeworks\Controller;
 
@@ -9,14 +9,15 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class AdminController
+ * simple authentication using silex and twig template's
+ * Class EmployerController
  * @package Adamoconnorframeworks\Controller
  */
-class AdminController
+class EmployerController
 {
+    
     /**
-     * allow access to admin/index
-     * allows lecturer
+     * index action used for the employer index
      * @param Request $request
      * @param Application $app
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -34,24 +35,23 @@ class AdminController
         }
 
         // store username into args array
-        // and rolename
         $argsArray = array(
             'username' => $username,
-            'roleName' => 'Lecturer'
+            'roleName' => 'Employer'
         );
 
-        // template for admin index
-        $templateName = 'admin/index';
+        // get the correct template.
+        $templateName = 'employer/index';
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 
     /**
-     * allow access to the codesAction
+     * for the records action used for employer
      * @param Request $request
      * @param Application $app
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function codesAction(Request $request, Application $app)
+    public function recordsAction(Request $request, Application $app)
     {
         // test if 'username' stored in session ...
         $username = getAuthenticatedUserName($app);
@@ -64,14 +64,13 @@ class AdminController
         }
 
         // store username into args array
-        // and rolename
         $argsArray = array(
             'username' => $username,
-            'roleName' => 'Lecturer'
+            'roleName' => 'Employer'
         );
 
-        // template for admin codes.
-        $templateName = 'admin/codes';
+        // template for the employer records
+        $templateName = 'employer/codes';
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 }

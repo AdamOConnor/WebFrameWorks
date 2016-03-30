@@ -8,7 +8,7 @@
 
 use Silex\Application;
 
-    /**
+/**
      * add namespace to the string, after exploding controller name from action
      *
      * examples:
@@ -64,5 +64,3 @@ use Silex\Application;
         $templateName = '404';
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
-
-

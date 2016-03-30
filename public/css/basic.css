@@ -57,7 +57,14 @@ a.logoutButton {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    background-color: #3a57af;
+    background-color: #36b0b6;
+    background: -moz-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #36b0b6), color-stop(100%, #2a8a8f));
+    background: -webkit-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: -o-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: -ms-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@top-color', endColorstr='@bottom-color', GradientType=0);
     -webkit-box-shadow: 0 3px rgba(58,87,175,.75);
     -moz-box-shadow: 0 3px rgba(58,87,175,.75);
     box-shadow: 0 3px rgba(58,87,175,.75);
@@ -72,5 +79,4 @@ a.logoutButton:hover {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-
 }

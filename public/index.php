@@ -28,25 +28,28 @@ $app->post('/login',  controller('Adamoconnorframeworks\Controller', 'user/proce
 //-----------------------------------------
 // secure student page
 //-----------------------------------------
-
+$app->get('/student',  controller('Adamoconnorframeworks\Controller', 'student/index'));
+$app->get('/studentRecords',  controller('Adamoconnorframeworks\Controller', 'student/records'));
 //-----------------------------------------
 // secure employer page
 //-----------------------------------------
-
+$app->get('/employer',  controller('Adamoconnorframeworks\Controller', 'employer/index'));
+$app->get('/employerRecords',  controller('Adamoconnorframeworks\Controller', 'employer/codes'));
 //-----------------------------------------
 // error pages if users enter url
 //-----------------------------------------
-//$app->error(function (\Exception $e, $code) use ($app) {
- //   switch($code) {
-//        case 404:
-   //         $message = 'The requested page could not be found.';
-       //     return error404($app, $message);
-     //   default:
-       //     $message = 'We are sorry, but something went wrong.';
-       //     return error404($app, $message);
-  //  }
-//});
+$app->error(function (\Exception $e, $code) use ($app) {
+    switch($code) {
+      case 404:
+        $message = 'The requested page could not be found.';
+        return error404($app, $message);
+        default:
+        $message = 'We are sorry, but something went wrong.';
+          return error404($app, $message);
+    }
+});
 
 //run the silex front controller
 //------------------------------
 $app->run();
+  

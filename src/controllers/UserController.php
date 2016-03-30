@@ -27,11 +27,31 @@ class UserController
         $username = $request->get('username');
         $password = $request->get('password');
 
-        $isLoggedIn = User::canFindMatchingUsernameAndPassword($username , $password);
+        $isLoggedIn = User::canFindMatchingUsernameAndPassword($username, $password);
+        $roleNumber = User::canFindSpecificRoleOfUser($username);
 
-        if($isLoggedIn) {
-            $app['session']->set('user', array('username' => $username) );
-            return $app->redirect('/admin');
+        if ($isLoggedIn) {
+            switch ($roleNumber) {
+                case 1:
+                    $app['session']->set('user', array('username' => $username));
+                    return $app->redirect('/student');
+                case 2:
+                    $app['session']->set('user', array('username' => $username));
+                    return $app->redirect('/admin');
+                case 3:
+                    $app['session']->set('user', array('username' => $username));
+                    return $app->redirect('/employer');
+                default:
+                    $message = 'We are sorry, but something went wrong.';
+                    return error404($app, $message);
+            }
+            /*if($roleNumber == 1) {
+                
+            }
+            if($roleNumber == 2) {
+                $app['session']->set('user', array('username' => $username) );
+                return $app->redirect('/admin');
+            }*/
         }
 
         // authenticate!
@@ -59,7 +79,7 @@ class UserController
     public function loginAction(Request $request, Application $app)
     {
         // logout any existing user
-        $app['session']->set('user', null );
+        $app['session']->set('user', null);
 
         // build args array
         // ------------
@@ -75,7 +95,7 @@ class UserController
     public function logoutAction(Request $request, Application $app)
     {
         // logout any existing user
-        $app['session']->set('user', null );
+        $app['session']->set('user', null);
 
         // redirect to home page
 //        return $app->redirect('/');
@@ -84,8 +104,5 @@ class UserController
         // ------------
         $templateName = 'index';
         return $app['twig']->render($templateName . '.html.twig', []);
-
     }
-
-
 }

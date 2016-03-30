@@ -8,6 +8,7 @@ class User extends DatabaseTable
 {
     const ROLE_USER = 1;
     const ROLE_ADMIN = 2;
+    const ROLE_EMPLOYER = 3;
 
     private $id;
     private $username;
@@ -93,7 +94,7 @@ class User extends DatabaseTable
         $user = User::getOneByUsername($username);
 
         // if no record has this username, return FALSE
-        if(null == $user){
+        if (null == $user) {
             return false;
         }
 
@@ -102,6 +103,25 @@ class User extends DatabaseTable
 
         // return whether or not hash of input password matches stored hash
         return password_verify($password, $hashedStoredPassword);
+    }
+
+    /**
+     * return the role of each user
+     * @param $username
+     * @return null
+     */
+    
+    public static function canFindSpecificRoleOfUser($username)
+    {
+        $user = User::getOneByUsername($username);
+        
+        // if no record has no username return null.
+        if ($user == null) {
+            return null;
+        }
+        
+        $storedRoleNumber = $user->getRole();
+        return $storedRoleNumber;
     }
 
     /**
@@ -129,8 +149,4 @@ class User extends DatabaseTable
             return null;
         }
     }
-
-
-
-
 }

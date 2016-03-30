@@ -20,7 +20,7 @@
     <section>
         {% if username %}
             <div class ="showUser">
-                you are logged in as : <i>{{ username }}</i>
+                you are logged in as <b><i>{{ roleName }}</i></b> : <i>{{ username }}</i>
                 <a href="/logout" class="logoutButton">logout</a>
             </div>
             {% else %}
