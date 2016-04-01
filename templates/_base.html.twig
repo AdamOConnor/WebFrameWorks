@@ -41,8 +41,12 @@
 </header>
 
 <nav>
-    {% if username %}
+    {% if roleName is sameas('Lecturer') %}
         {% include 'admin/_adminLinks.html.twig' %}
+    {% elseif roleName is sameas('Student')%}
+        {% include 'student/_adminLinks.html.twig' %}
+    {% elseif roleName is sameas('Employer') %}
+        {% include 'employer/_adminLinks.html.twig' %}
     {% else %}
     <ul>
         <li>

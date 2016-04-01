@@ -10,12 +10,33 @@ class User extends DatabaseTable
     const ROLE_ADMIN = 2;
     const ROLE_EMPLOYER = 3;
 
+    /**
+     * id for each user email address.
+     * @var
+     */
     private $id;
-    private $username;
-    private $password;
-    private $role;
 
     /**
+     * username for login
+     * @var
+     */
+    private $username;
+
+    /**
+     * password for login
+     * @var
+     */
+    private $password;
+
+    /**
+     * role of user 1 = student, 2 = admin/lecture, 3 = employer
+     * @var
+     */
+    private $role;
+    private $employment;
+
+    /**
+     * get the id of the user
      * @return mixed
      */
     public function getId()
@@ -24,6 +45,7 @@ class User extends DatabaseTable
     }
 
     /**
+     * set the id of the user
      * @param mixed $id
      */
     public function setId($id)
@@ -32,6 +54,7 @@ class User extends DatabaseTable
     }
 
     /**
+     * get the username of the user.
      * @return mixed
      */
     public function getUsername()
@@ -40,6 +63,7 @@ class User extends DatabaseTable
     }
 
     /**
+     * set the username of user.
      * @param mixed $username
      */
     public function setUsername($username)
@@ -48,6 +72,7 @@ class User extends DatabaseTable
     }
 
     /**
+     * get the password of user.
      * @return mixed
      */
     public function getPassword()
@@ -56,6 +81,18 @@ class User extends DatabaseTable
     }
 
     /**
+    * hash the password before storing ...
+    * @param mixed $password
+    */
+    public function setPassword($password)
+    {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        $this->password = $hashedPassword;
+    }
+
+    /**
+     * get the role of the user.
      * @return mixed
      */
     public function getRole()
@@ -64,6 +101,7 @@ class User extends DatabaseTable
     }
 
     /**
+     * set users role lecture/employer/student
      * @param mixed $role
      */
     public function setRole($role)
@@ -72,14 +110,21 @@ class User extends DatabaseTable
     }
 
     /**
-     * hash the password before storing ...
-     * @param mixed $password
+     * get the employment status
+     * @return mixed
      */
-    public function setPassword($password)
+    public function getEmployment()
     {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        return $this->employment;
+    }
 
-        $this->password = $hashedPassword;
+    /**
+     * set the employment status
+     * @param $employment
+     */
+    public function setEmployment($employment)
+    {
+        $this->employment = $employment;
     }
 
     /**
@@ -110,7 +155,6 @@ class User extends DatabaseTable
      * @param $username
      * @return null
      */
-    
     public static function canFindSpecificRoleOfUser($username)
     {
         $user = User::getOneByUsername($username);
@@ -145,6 +189,40 @@ class User extends DatabaseTable
 
         if ($object = $statement->fetch()) {
             return $object;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * insert new user used for registration.
+     * @param User $user
+     * @return int|string
+    */
+    public static function insert(User $user)
+    {
+        $id = $user->getId();
+        $username = $user->getUsername();
+        $password = $user->getPassword();
+        $role = $user->getRole();
+        $employment = $user->getEmployment();
+
+        $db = new DatabaseManager();
+        $connection = $db->getDbh();
+
+        // INSERT INTO users (id, username, password, role, employment)
+        // VALUES (:id, :username, :password, :role, :employment)
+        $statement = $connection->prepare('INSERT into users (id, username, password, role, employment)VALUES (:id, :username, :password, :role, :employment)');
+        $statement->bindParam(':id', $id, \PDO::PARAM_STR);
+        $statement->bindParam(':username', $username, \PDO::PARAM_STR);
+        $statement->bindParam(':password', $password, \PDO::PARAM_STR); // there isn't a PARAM_FLOAT ...
+        $statement->bindParam(':role', $role, \PDO::PARAM_INT);
+        $statement->bindParam(':employment', $employment, \PDO::PARAM_STR);
+        $statement->execute();
+
+        $queryWasSuccessful = ($statement->rowCount() > 0);
+        if($queryWasSuccessful) {
+            return $connection->lastInsertId();
         } else {
             return null;
         }

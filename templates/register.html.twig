@@ -10,38 +10,46 @@
 {% block main %}
 <div id="mainSection">
 
+
+
     <div class="testbox">
+        {% if errorMessage %}
+            <p class="error">
+                {{ errorMessage }}
+            </p>
+            <hr>
+        {% endif %}
         <h1>Registration</h1>
 
-        <form action="/">
+        <form action="/redirect" method="post">
             <hr>
             <div class="accounttype">
-                <input type="radio" value="None" id="radioOne" name="account" checked/>
+                <input type="radio" value="1" id="radioOne" name="account" checked/>
                 <label for="radioOne" class="radio">Student</label>
-                <input type="radio" value="None" id="radioTwo" name="account" />
+                <input type="radio" value="2" id="radioTwo" name="account" />
                 <label for="radioTwo" class="radio">Lecturer</label>
-                <input type="radio" value="None" id="radioThree" name="account" />
+                <input type="radio" value="3" id="radioThree" name="account" />
                 <label for="radioThree" class="radio">Employer</label>
             </div>
             <hr>
             <label id="icon" for="name"><i><img src="images/interface.png" class="images"></i></label>
-            <input type="text" name="name" id="name" placeholder="Email" required/>
+            <input type="text" name="email" placeholder="Email" />
 
             <label id="icon" for="name"><i class="icon-user"><img src="images/profile.png" class="images"></i></label>
-            <input type="text" name="name" id="name" placeholder="Name" required/>
+            <input type="text" name="username" placeholder="Name" />
 
             <label id="icon" for="name"><i><img src="images/security.png"></i></label>
-            <input type="password" name="name" id="name" placeholder="Password" required/>
+            <input type="password" name="password" placeholder="Password" />
 
-            <div class="gender">
-                <input type="radio" value="None" id="male" name="gender" checked/>
-                <label for="male" class="radio">Male</label>
-                <input type="radio" value="None" id="female" name="gender" />
-                <label for="female" class="radio">Female</label>
+            <div class="employed">
+                <input type="radio" value="employed" id="employed" name="status" checked/>
+                <label for="employed" class="radio">Employed</label>
+                <input type="radio" value="unemployed" id="unemployed" name="status" />
+                <label for="unemployed" class="radio">unEmployed</label>
             </div>
 
             <p>By clicking Register, you agree on our <a href="#">terms and condition</a>.</p>
-            <a href="#" class="button">Register</a>
+            <button class="button" type="submit">Register</button>
         </form>
     </div>
 

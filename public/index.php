@@ -2,14 +2,14 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../src/utility/Utility.php';
-
 require_once __DIR__ . '/../app/setup.php';
 
 //----------------------------------------
 // login actions for users
 //----------------------------------------
-$app->get('/login',  controller('Adamoconnorframeworks\Controller', 'user/login'));
-$app->get('/logout',  controller('Adamoconnorframeworks\Controller', 'user/logout'));
+$app->get('/login', controller('Adamoconnorframeworks\Controller', 'user/login'));
+$app->get('/logout', controller('Adamoconnorframeworks\Controller', 'user/logout'));
+$app->get('/redirect', controller('Adamoconnorframeworks\Controller', 'user/redirect'));
 //----------------------------------------
 // default map routes for ordinary user
 //----------------------------------------
@@ -25,6 +25,7 @@ $app->get('/admin',  controller('Adamoconnorframeworks\Controller', 'admin/index
 $app->get('/adminCodes',  controller('Adamoconnorframeworks\Controller', 'admin/codes'));
 
 $app->post('/login',  controller('Adamoconnorframeworks\Controller', 'user/processLogin'));
+$app->post('/redirect',  controller('Adamoconnorframeworks\Controller', 'user/processRegistrationForm'));
 //-----------------------------------------
 // secure student page
 //-----------------------------------------
@@ -38,7 +39,7 @@ $app->get('/employerRecords',  controller('Adamoconnorframeworks\Controller', 'e
 //-----------------------------------------
 // error pages if users enter url
 //-----------------------------------------
-$app->error(function (\Exception $e, $code) use ($app) {
+/*$app->error(function (\Exception $e, $code) use ($app) {
     switch($code) {
       case 404:
         $message = 'The requested page could not be found.';
@@ -47,7 +48,7 @@ $app->error(function (\Exception $e, $code) use ($app) {
         $message = 'We are sorry, but something went wrong.';
           return error404($app, $message);
     }
-});
+});*/
 
 //run the silex front controller
 //------------------------------

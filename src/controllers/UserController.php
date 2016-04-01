@@ -1,26 +1,26 @@
 <?php
-
+/**
+ * @Author Adam O'Connor 
+ * Webframeworks project.
+ */
 namespace Adamoconnorframeworks\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-//use Hdip\Model\DvdRepository;
-
 /**
  * Class UserController
- *
- * simple authentication using Silex session object
- * $app['session']->set('isAuthenticated', false);
- *
- * but the propert way to do it:
- * https://gist.github.com/brtriver/1740012
- *
- * @package Hdip\Controller
+ * @package Adamoconnorframeworks\Controller
  */
 class UserController
 {
-    // action for POST route:    /processLogin
+    
+    /**
+     * action used for the Post route of /processLogin
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function processLoginAction(Request $request, Application $app)
     {
         // retrieve 'name' from GET params in Request object
@@ -29,8 +29,11 @@ class UserController
 
         $isLoggedIn = User::canFindMatchingUsernameAndPassword($username, $password);
         $roleNumber = User::canFindSpecificRoleOfUser($username);
-
+        
+        // if the user is logged in do this.
         if ($isLoggedIn) {
+            
+            // get the role number of the user that has logged in.
             switch ($roleNumber) {
                 case 1:
                     $app['session']->set('user', array('username' => $username));
@@ -45,26 +48,9 @@ class UserController
                     $message = 'We are sorry, but something went wrong.';
                     return error404($app, $message);
             }
-            /*if($roleNumber == 1) {
-                
-            }
-            if($roleNumber == 2) {
-                $app['session']->set('user', array('username' => $username) );
-                return $app->redirect('/admin');
-            }*/
         }
-
-        // authenticate!
-        //if ('user' === $username && 'user' === $password) {
-            // store username in 'user' in 'session'
-          //  $app['session']->set('user', array('username' => $username) );
-
-            // success - redirect to the secure admin home page
-         //   return $app->redirect('/admin');
-        //}
-
-        // login page with error message
-        // ------------
+        
+        // used if the login is wrong.
         else {
             $templateName = 'index';
             $argsArray = array(
@@ -75,7 +61,79 @@ class UserController
         }
     }
 
-    // action for route:    /login
+    /**
+     * Action used to process registration form
+     * @param Request $request
+     * @param Application $app
+     * @return mixed
+     */
+    public function processRegistrationFormAction(Request $request, Application $app)
+    {
+        // get text from each field on the registration form
+        $accountType = $request->get('account');
+        $emailId = $request->get('email');
+        $username = $request->get('username');
+        $password = $request->get('password');
+        $employmentStatus = $request->get('status');
+
+        // instantiate the class needed 
+        $newUser = new User();
+        
+        // set each of the fields with the registration form data.
+        $newUser->setId($emailId);
+        $newUser->setRole($accountType);
+        $newUser->setUsername($username);
+        $newUser->setPassword($password);
+        $newUser->setEmployment($employmentStatus);
+
+        // insert the data into the database.
+        $success = User::insert($newUser);
+        
+        // if the insert is successful then message will be shown
+        if($success != null) {
+            $templateName = 'redirect';
+            $argsArray = array(
+                'errorMessage' => 'Thank you for registering you can now sign in.'
+            );
+            return $app['twig']->render($templateName . '.html.twig', $argsArray);
+        }
+        // otherwise show this message
+        else {
+            $templateName = 'register';
+            $argsArray = array(
+                'errorMessage' => 'Sorry something went wrong!! please try again.'
+            );
+            return $app['twig']->render($templateName . '.html.twig', $argsArray);
+        }
+    }
+
+    /**
+     * redirect the user if the form has
+     * succeeded to process and is saved 
+     * in the database.
+     * @param Request $request
+     * @param Application $app
+     * @return mixed
+     */
+    public function redirectAction(Request $request, Application $app)
+    {
+        // args array title
+        $argsArray = [
+            'title' => 'Registration succeeded'
+        ];
+
+        // template for register
+        $template = 'redirect';
+        return $app['twig']->render($template . '.html.twig', $argsArray);
+    }
+
+ 
+    /**
+     * login action for the route /login
+     * @param Request $request
+     * @param Application $app
+     * @return mixed
+     */
     public function loginAction(Request $request, Application $app)
     {
         // logout any existing user
@@ -90,15 +148,20 @@ class UserController
         $templateName = 'login';
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
-
-    // action for route:    /logout
+    
+    /**
+     * logout action used for the root /logout
+     * @param Request $request
+     * @param Application $app
+     * @return mixed
+     */
     public function logoutAction(Request $request, Application $app)
     {
         // logout any existing user
         $app['session']->set('user', null);
 
         // redirect to home page
-//        return $app->redirect('/');
+        //return $app->redirect('/');
 
         // render (draw) template
         // ------------
