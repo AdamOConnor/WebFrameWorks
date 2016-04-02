@@ -178,7 +178,7 @@ form li div label
 	clear:both;
 	color:#444;
 	display:block;
-	font-size:15px;
+	font-size:12px;
 	line-height:9px;
 	margin:0;
 	padding-top:3px;
@@ -189,7 +189,7 @@ form li span label
 	clear:both;
 	color:#444;
 	display:block;
-	font-size:15px;
+	font-size:12px;
 	line-height:9px;
 	margin:0;
 	padding-top:3px;
@@ -280,7 +280,7 @@ label.description
 	border:none;
 	color:#222;
 	display:block;
-	font-size:95%;
+	font-size:110%;
 	font-weight:700;
 	line-height:150%;
 	padding:0 0 1px;

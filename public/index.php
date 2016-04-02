@@ -30,7 +30,7 @@ $app->post('/redirect',  controller('Adamoconnorframeworks\Controller', 'user/pr
 // secure student page
 //-----------------------------------------
 $app->get('/student',  controller('Adamoconnorframeworks\Controller', 'student/index'));
-$app->get('/studentRecords',  controller('Adamoconnorframeworks\Controller', 'student/records'));
+$app->get('/studentCv',  controller('Adamoconnorframeworks\Controller', 'student/cv'));
 //-----------------------------------------
 // secure employer page
 //-----------------------------------------

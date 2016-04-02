@@ -1,57 +1,56 @@
 {% extends '_base.html.twig' %}
 
 {# ------------------------------------------------- #}
-{% block pageTitle %}About page{% endblock %}
+{% block pageTitle %}Registration{% endblock %}
 
 {# ------------------------------------------------- #}
 {% block aboutLinkStyle %}current_page{% endblock %}
 
 {# ------------------------------------------------- #}
 {% block main %}
-<div id="mainSection">
-
-
-
-    <div class="testbox">
+    <div id="mainSection">
         {% if errorMessage %}
             <p class="error">
                 {{ errorMessage }}
             </p>
             <hr>
         {% endif %}
-        <h1>Registration</h1>
 
-        <form action="/redirect" method="post">
-            <hr>
-            <div class="accounttype">
-                <input type="radio" value="1" id="radioOne" name="account" checked/>
-                <label for="radioOne" class="radio">Student</label>
-                <input type="radio" value="2" id="radioTwo" name="account" />
-                <label for="radioTwo" class="radio">Lecturer</label>
-                <input type="radio" value="3" id="radioThree" name="account" />
-                <label for="radioThree" class="radio">Employer</label>
+            <div class="testbox">
+
+                <h1>Registration</h1>
+
+                <form action="/redirect" method="post">
+                    <hr>
+                    <div class="accounttype">
+                        <input type="radio" value="1" id="radioOne" name="account" checked/>
+                        <label for="radioOne" class="radio">Student</label>
+                        <input type="radio" value="2" id="radioTwo" name="account" />
+                        <label for="radioTwo" class="radio">Lecturer</label>
+                        <input type="radio" value="3" id="radioThree" name="account" />
+                        <label for="radioThree" class="radio">Employer</label>
+                    </div>
+                    <hr>
+                    <label id="icon" for="name"><i><img src="images/interface.png" class="images"></i></label>
+                    <input type="text" name="email" placeholder="Email" required/>
+
+                    <label id="icon" for="name"><i class="icon-user"><img src="images/profile.png" class="images"></i></label>
+                    <input type="text" name="username" placeholder="Name" required/>
+
+                    <label id="icon" for="name"><i><img src="images/security.png"></i></label>
+                    <input type="password" name="password" placeholder="Password" required/>
+
+                    <div class="employed">
+                        <input type="radio" value="employed" id="employed" name="status" checked/>
+                        <label for="employed" class="radio">Employed</label>
+                        <input type="radio" value="unemployed" id="unemployed" name="status" />
+                        <label for="unemployed" class="radio">unEmployed</label>
+                    </div>
+
+                    <p>By clicking Register, you agree on our <a href="#">terms and condition</a>.</p>
+                    <button class="button" type="submit">Register</button>
+                </form>
             </div>
-            <hr>
-            <label id="icon" for="name"><i><img src="images/interface.png" class="images"></i></label>
-            <input type="text" name="email" placeholder="Email" />
 
-            <label id="icon" for="name"><i class="icon-user"><img src="images/profile.png" class="images"></i></label>
-            <input type="text" name="username" placeholder="Name" />
-
-            <label id="icon" for="name"><i><img src="images/security.png"></i></label>
-            <input type="password" name="password" placeholder="Password" />
-
-            <div class="employed">
-                <input type="radio" value="employed" id="employed" name="status" checked/>
-                <label for="employed" class="radio">Employed</label>
-                <input type="radio" value="unemployed" id="unemployed" name="status" />
-                <label for="unemployed" class="radio">unEmployed</label>
-            </div>
-
-            <p>By clicking Register, you agree on our <a href="#">terms and condition</a>.</p>
-            <button class="button" type="submit">Register</button>
-        </form>
     </div>
-
-</div>
 {% endblock %}

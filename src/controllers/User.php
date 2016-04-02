@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * @Author Adam O'Connor
+ * class that gets user's details
+ * for logging into the website aswell as
+ * registering, for an account.
+ */
 namespace Adamoconnorframeworks\Controller;
 
 use Mattsmithdev\PdoCrud\DatabaseTable;
@@ -6,8 +13,19 @@ use Mattsmithdev\PdoCrud\DatabaseManager;
 
 class User extends DatabaseTable
 {
+    /**
+     * normal user is 1.
+     */
     const ROLE_USER = 1;
+
+    /**
+     * admin or lecturer is 2.
+     */
     const ROLE_ADMIN = 2;
+
+    /**
+     * employer is 3.
+     */
     const ROLE_EMPLOYER = 3;
 
     /**
@@ -33,6 +51,11 @@ class User extends DatabaseTable
      * @var
      */
     private $role;
+
+    /**
+     * if the user is employed or not.
+     * @var
+     */
     private $employment;
 
     /**
@@ -151,6 +174,27 @@ class User extends DatabaseTable
     }
 
     /**
+     * check the registration table
+     * to see if any details are the same.
+     * @param $id
+     * @param $username
+     * @return bool
+     */
+    public static function checkRegistration($id, $username) {
+
+        //use details that the user has enter'd.
+        $checkUsersDetails = User::getUsersIdAndName($id, $username);
+        if($checkUsersDetails == null) {
+            // no such user in database
+            return false;
+        } 
+        else {
+            // user in database
+            return true;
+        }
+    }
+
+    /**
      * return the role of each user
      * @param $username
      * @return null
@@ -171,9 +215,7 @@ class User extends DatabaseTable
     /**
      * if record exists with $username, return User object for that record
      * otherwise return 'null'
-     *
      * @param $username
-     *
      * @return mixed|null
      */
     public static function getOneByUsername($username)
@@ -183,6 +225,32 @@ class User extends DatabaseTable
 
         $sql = 'SELECT * FROM users WHERE username=:username';
         $statement = $connection->prepare($sql);
+        $statement->bindParam(':username', $username, \PDO::PARAM_STR);
+        $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
+        $statement->execute();
+
+        if ($object = $statement->fetch()) {
+            return $object;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * find user specific username 
+     * and id.
+     * @param $identity
+     * @param $username
+     * @return mixed|null
+     */
+    public static function getUsersIdAndName($identity, $username)
+    {
+        $db = new DatabaseManager();
+        $connection = $db->getDbh();
+
+        $sql = 'SELECT * FROM users WHERE id = :id AND username=:username';
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(':id', $identity, \PDO::PARAM_STR);
         $statement->bindParam(':username', $username, \PDO::PARAM_STR);
         $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
         $statement->execute();

@@ -76,34 +76,45 @@ class UserController
         $password = $request->get('password');
         $employmentStatus = $request->get('status');
 
-        // instantiate the class needed 
-        $newUser = new User();
-        
-        // set each of the fields with the registration form data.
-        $newUser->setId($emailId);
-        $newUser->setRole($accountType);
-        $newUser->setUsername($username);
-        $newUser->setPassword($password);
-        $newUser->setEmployment($employmentStatus);
+        $checkDetails = User::checkRegistration($emailId, $username);
 
-        // insert the data into the database.
-        $success = User::insert($newUser);
-        
-        // if the insert is successful then message will be shown
-        if($success != null) {
-            $templateName = 'redirect';
-            $argsArray = array(
-                'errorMessage' => 'Thank you for registering you can now sign in.'
-            );
-            return $app['twig']->render($templateName . '.html.twig', $argsArray);
-        }
-        // otherwise show this message
+        if(!$checkDetails) {
+            // instantiate the class needed
+            $newUser = new User();
+
+            // set each of the fields with the registration form data.
+            $newUser->setId($emailId);
+            $newUser->setRole($accountType);
+            $newUser->setUsername($username);
+            $newUser->setPassword($password);
+            $newUser->setEmployment($employmentStatus);
+
+            // insert the data into the database.
+            $success = User::insert($newUser);
+
+            // if the insert is successful then message will be shown
+            if ($success != null) {
+                $templateName = 'redirect';
+                $argsArray = array(
+                    'errorMessage' => 'Thank you for registering you can now sign in.'
+                );
+                return $app['twig']->render($templateName . '.html.twig', $argsArray);
+            } // otherwise show this message
+            else {
+                $templateName = 'register';
+                $argsArray = array(
+                    'errorMessage' => 'Sorry something went wrong!! please try again.'
+                );
+                return $app['twig']->render($templateName . '.html.twig', $argsArray);
+            }
+       }
         else {
-            $templateName = 'register';
-            $argsArray = array(
-                'errorMessage' => 'Sorry something went wrong!! please try again.'
-            );
-            return $app['twig']->render($templateName . '.html.twig', $argsArray);
+             $templateName = 'register';
+             $argsArray = array(
+                 'errorMessage' => 'Sorry the details you have enterd match another users 
+                 please choose a different email address and username. Thanks !!!'
+             );
+             return $app['twig']->render($templateName . '.html.twig', $argsArray);
         }
     }
 
