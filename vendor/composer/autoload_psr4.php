@@ -19,4 +19,5 @@ return array(
     'Mattsmithdev\\PdoCrud\\' => array($vendorDir . '/mattsmithdev/pdo-crud-for-free/src'),
     'Adamoconnorframeworks\\Model\\' => array($baseDir . '/src/model'),
     'Adamoconnorframeworks\\Controller\\' => array($baseDir . '/src/controllers'),
+    'Adamoconnorframeworks\\' => array($baseDir . '/src'),
 );

@@ -7,6 +7,8 @@ namespace Adamoconnorframeworks\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Adamoconnorframeworks\Model\User;
+use Adamoconnorframeworks\Model\Resume;
 
 /**
  * Class UserController
@@ -76,9 +78,9 @@ class UserController
         $password = $request->get('password');
         $employmentStatus = $request->get('status');
 
-        $checkDetails = User::checkRegistration($emailId, $username);
+        $checkDetails = User::checkRegistration($emailId);
 
-        if(!$checkDetails) {
+        if (!$checkDetails) {
             // instantiate the class needed
             $newUser = new User();
 
@@ -88,34 +90,39 @@ class UserController
             $newUser->setUsername($username);
             $newUser->setPassword($password);
             $newUser->setEmployment($employmentStatus);
+            
+            $insertResumeSampleData = new Resume();
 
+            $insertResumeSampleData->setId($emailId);
+            $insertResumeSampleData->setEmploymentStatus($employmentStatus);
+            
             // insert the data into the database.
             $success = User::insert($newUser);
 
             // if the insert is successful then message will be shown
             if ($success != null) {
+                $templateCV = Resume::insert($insertResumeSampleData);
                 $templateName = 'redirect';
                 $argsArray = array(
-                    'errorMessage' => 'Thank you for registering you can now sign in.'
+                    'headingMessage' => 'Welcome you are now registered.',
+                    'otherMessage' => 'you can now login and create your curriculum vitae to look',
+                    'otherMessage02' => 'for jobs in your area.'
                 );
-                return $app['twig']->render($templateName . '.html.twig', $argsArray);
             } // otherwise show this message
             else {
                 $templateName = 'register';
                 $argsArray = array(
                     'errorMessage' => 'Sorry something went wrong!! please try again.'
                 );
-                return $app['twig']->render($templateName . '.html.twig', $argsArray);
             }
-       }
-        else {
-             $templateName = 'register';
-             $argsArray = array(
-                 'errorMessage' => 'Sorry the details you have enterd match another users 
-                 please choose a different email address and username. Thanks !!!'
+        } else {
+            $templateName = 'register';
+            $argsArray = array(
+                 'errorMessage' => 'Sorry the details you have enterd match another users please use 
+                 a different email address!!'
              );
-             return $app['twig']->render($templateName . '.html.twig', $argsArray);
         }
+        return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 
     /**

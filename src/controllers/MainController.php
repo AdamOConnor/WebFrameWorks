@@ -20,6 +20,7 @@ class MainController
      */
     public function registerAction(Request $request, Application $app)
     {
+        
         // args array title
         $argsArray = [
             'title' => 'Register'

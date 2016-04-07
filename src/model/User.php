@@ -6,7 +6,7 @@
  * for logging into the website aswell as
  * registering, for an account.
  */
-namespace Adamoconnorframeworks\Controller;
+namespace Adamoconnorframeworks\Model;
 
 use Mattsmithdev\PdoCrud\DatabaseTable;
 use Mattsmithdev\PdoCrud\DatabaseManager;
@@ -180,15 +180,15 @@ class User extends DatabaseTable
      * @param $username
      * @return bool
      */
-    public static function checkRegistration($id, $username) {
+    public static function checkRegistration($id)
+    {
 
         //use details that the user has enter'd.
-        $checkUsersDetails = User::getUsersIdAndName($id, $username);
-        if($checkUsersDetails == null) {
+        $checkUsersDetails = User::getUsersIdAndName($id);
+        if ($checkUsersDetails == null) {
             // no such user in database
             return false;
-        } 
-        else {
+        } else {
             // user in database
             return true;
         }
@@ -243,15 +243,14 @@ class User extends DatabaseTable
      * @param $username
      * @return mixed|null
      */
-    public static function getUsersIdAndName($identity, $username)
+    public static function getUsersIdAndName($identity)
     {
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'SELECT * FROM users WHERE id = :id AND username=:username';
+        $sql = 'SELECT * FROM users WHERE id = :id';
         $statement = $connection->prepare($sql);
         $statement->bindParam(':id', $identity, \PDO::PARAM_STR);
-        $statement->bindParam(':username', $username, \PDO::PARAM_STR);
         $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
         $statement->execute();
 
@@ -265,7 +264,7 @@ class User extends DatabaseTable
     /**
      * insert new user used for registration.
      * @param User $user
-     * @return int|string
+     * @return null|string
     */
     public static function insert(User $user)
     {
@@ -280,7 +279,8 @@ class User extends DatabaseTable
 
         // INSERT INTO users (id, username, password, role, employment)
         // VALUES (:id, :username, :password, :role, :employment)
-        $statement = $connection->prepare('INSERT into users (id, username, password, role, employment)VALUES (:id, :username, :password, :role, :employment)');
+        $statement = $connection->prepare('INSERT into users (id, username, password, role, employment)
+        VALUES (:id, :username, :password, :role, :employment)');
         $statement->bindParam(':id', $id, \PDO::PARAM_STR);
         $statement->bindParam(':username', $username, \PDO::PARAM_STR);
         $statement->bindParam(':password', $password, \PDO::PARAM_STR); // there isn't a PARAM_FLOAT ...
@@ -289,7 +289,7 @@ class User extends DatabaseTable
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
-        if($queryWasSuccessful) {
+        if ($queryWasSuccessful) {
             return $connection->lastInsertId();
         } else {
             return null;

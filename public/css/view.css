@@ -30,7 +30,7 @@ form.cv
 }
 
 /**** Logo Section  *****/
-h1
+.formH1
 {
 	background-color:#dedede;
 	margin:0;
@@ -41,7 +41,7 @@ h1
 	
 }
 
-h1 a
+.formH1 a
 {
 	
 	display:block;

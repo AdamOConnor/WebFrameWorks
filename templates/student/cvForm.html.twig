@@ -7,22 +7,20 @@
 {% block title %}Student CV{% endblock %}
 
 {% block main %}
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Untitled Form</title>
-        <link rel="stylesheet" type="text/css" href="css/view.css" media="all">
-        <script type="text/javascript" src="view.js"></script>
 
-    </head>
-    <body id="main_body" >
-
+    <div id="main_body" >
             <img id="top" src="images/top.png" alt="">
             <div id="form_container">
 
-                <h1><a></a></h1>
-                <form class="cv" method="post" action="">
+                <h1 class ="formH1"><a></a></h1>
+                <form action="/processForm" class="cv" method="post" >
                     <div class="form_description">
+                        <h3>
+                            {{ headingMessage }}
+                        </h3>
+                        <p>
+                            {{ otherMessage }}
+                        </p>
                         <h2>Curriculum vitae</h2>
                         <p>This is your form description. Click here to edit.</p>
                     </div>
@@ -30,64 +28,64 @@
                         <li id="li_1" >
                             <label class="description" for="element_1">Name </label>
                         <span>
-                            <input type="text" class="text" maxlength="255" size="8" value=""/>
+                            <input type="text" class="text" maxlength="255" size="14" name="firstname" value="{{ name }}"/>
                             <label>First</label>
                         </span>
                         <span>
-                            <input type="text" class="text" maxlength="255" size="14" value=""/>
+                            <input type="text" class="text" maxlength="255" size="14" name="surname" value="{{ surname }}"/>
                             <label>Last</label>
                         </span>
                             </li>
                             <li id="li_2" >
                                 <label class="description">Number </label>
                                 <div class="details">
-                                    <input class="element text medium" type="text" maxlength="255" value=""/>
+                                    <input class="element text medium" type="text" maxlength="255" name="number" value="{{ myNumber }}"/>
                                 </div>
                         </li>
                         <li id="li_3" >
                             <label class="description">Email </label>
                             <div class="details">
-                                <input class="element text medium" type="text" maxlength="255" value=""/>
+                                <input class="element text medium" type="text" maxlength="255" name="emailAddress" value="{{ currentEmail }}" readonly/>
                             </div>
                         </li>
                         <li id="li_7" >
                             <label class="description" >Upload Image </label>
                             <div>
-                                <input class="file" type="file"/>
+                                <input class="file" name="image" type="file" value=""/>
                             </div>
                         </li>
                         <li>
                             <label class="description">Employment Status</label>
-                            <input type="radio" value="employed" id="employed" name="status" checked/>
+                            <input type="radio" value="employed" id="employed" name="status" {% if status is sameas('employed') %} checked {% endif %}/>
                             <label for="employed" class="radio">Employed</label>
-                            <input type="radio" value="unemployed" id="unemployed" name="status" />
+                            <input type="radio" value="unemployed" id="unemployed" name="status" {% if status is sameas('unemployed') %} checked {% endif %} />
                             <label for="unemployed" class="radio">unEmployed</label>
                         </li>
                         <li id="li_8" >
                         <label class="description">Address </label>
 
                         <div>
-                            <input class="element text large" value="" type="text">
+                            <input class="element text large" value="{{ address }}" name="addressLine01" type="text" >
                             <label>Street Address</label>
                         </div>
 
                         <div>
-                            <input class="element text large" value="" type="text">
+                            <input class="element text large" value="{{ town }}" name="addressLine02" type="text">
                             <label>Address Line 2</label>
                         </div>
 
                         <div class="left">
-                            <input class="element text medium" value="" type="text">
+                            <input class="element text medium" value="{{ city }}" name="city" type="text">
                             <label>City</label>
                         </div>
 
                         <div class="left">
-                            <input class="element text medium" maxlength="15" value="" type="text">
+                            <input class="element text medium" maxlength="15" value="{{ eircode }}" name="eircode" type="text">
                             <label>Postal / Eircode</label>
                         </div>
 
                         <div class="left">
-                            <select class="element select medium">
+                            <select class="element select medium" name="country">
                                 <option value="" selected="selected"></option>
                                 <option value="Afghanistan" >Afghanistan</option>
                                 <option value="Albania" >Albania</option>
@@ -291,30 +289,26 @@
                     </li>		<li id="li_4" >
                         <label class="description">Employment </label>
                         <div>
-                            <textarea class="element textarea medium"></textarea>
+                            <textarea class="element textarea medium" name="employment">{{ employment }}</textarea>
                         </div>
                     </li>		<li id="li_5" >
                         <label class="description">Qualifications </label>
                         <div>
-                            <textarea class="element textarea medium"></textarea>
+                            <textarea class="element textarea medium" name="qualifications">{{ qualifications }}</textarea>
                         </div>
                     </li>		<li id="li_6" >
                         <label class="description">Skills </label>
                         <div>
-                            <textarea class="element textarea medium"> hdjdsjdkjdkjkcnnncksadhsdjsabdbbsadjnsjdn</textarea>
+                            <textarea class="element textarea medium" name="skills">{{ skills }}</textarea>
                         </div>
                     </li>
 
                     <li class="buttons">
-                        <input type="hidden" name="form_id" value="1118883" />
-
-                        <input id="saveForm" class="button_text" type="submit" name="submit" value="Submit" />
+                        <button class="button_text" type="submit">Submit</button>
                     </li>
                 </ul>
             </form>
         </div>
         <img id="bottom" src="images/bottom.png" alt="">
-    </body>
-    </html>
 
 {% endblock %}
