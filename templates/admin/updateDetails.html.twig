@@ -1,0 +1,69 @@
+{% extends '_base.html.twig' %}
+
+{# ------------------------------------------------- #}
+{% block pageTitle %}Resume for {{ userDetails.username }} {% endblock %}
+
+{% block main %}
+
+    <div id="main_body" >
+            <img id="top" src="images/top.png" alt="">
+            <div id="form_container">
+
+                <h1 class ="formH1"><a></a></h1>
+                <form action="/processForm" class="cv" method="post" >
+                    <div class="form_description">
+                        <h3>
+                            {{ headingMessage }}
+                        </h3>
+                        <p>
+                            {{ otherMessage }}
+                        </p>
+                        <h2>Login Details for user : {{ userDetails.username }}</h2>
+                        <p>These are the login details. click to edit.</p>
+                    </div>
+                    <ul>
+                        <li>
+                            <label class="description" for="element_1"> Email ID</label>
+                            <input type="text" class="text" maxlength="255" size="14" name="emailId" value="{{ userDetails.email }}"/>
+                        </li>
+                        <li>
+                            <label class="description" for="element_1">Username</label>
+                            <input type="text" class="text" maxlength="255" size="14" name="username" value="{{ userDetails.username }}"/>
+                        </li>
+                        <li>
+                            <label class="description">Password </label>
+                            <div class="details">
+                                <input class="element text medium" type="text" maxlength="255" name="password" value="{{ userDetails.password }}"/>
+                            </div>
+                        </li>
+                        <li>
+                            <label class="description">Re-Enter Password </label>
+                            <div class="details">
+                                <input class="element text medium" type="text" maxlength="255" name="repassword" value="{{ userDetails.password }}" readonly/>
+                            </div>
+                        </li>
+                        <li>
+                            <label class="description">Employment Status</label>
+                            <input type="radio" value="employed" id="employed" name="status" {% if userDetails.status is sameas('employed') %} checked {% endif %}/>
+                            <label for="employed" class="radio">Employed</label>
+                            <input type="radio" value="unemployed" id="unemployed" name="status" {% if userDetails.status is sameas('unemployed') %} checked {% endif %} />
+                            <label for="unemployed" class="radio">unEmployed</label>
+                        </li>
+                        <li>
+                            <label class="description">Role</label>
+                            <input type="radio" value="Student" id="student" name="role" {% if userDetails.role is sameas('Student') %} checked {% endif %}/>
+                            <label for="employed" class="radio">Student</label>
+                            <input type="radio" value="Lecturer" id="lecturer" name="role" {% if userDetails.role is sameas('Lecturer') %} checked {% endif %} />
+                            <label for="unemployed" class="radio">Lecturer</label>
+                            <input type="radio" value="Employer" id="employer" name="role" {% if userDetails.role is sameas('Employer') %} checked {% endif %} />
+                            <label for="unemployed" class="radio">Employer</label>
+                        </li>
+                    <li class="buttons">
+                        <button class="button_text" type="submit">Submit</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <img id="bottom" src="images/bottom.png" alt="">
+
+{% endblock %}

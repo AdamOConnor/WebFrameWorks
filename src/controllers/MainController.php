@@ -93,4 +93,14 @@ class MainController
         $template = 'sitemap';
         return $app['twig']->render($template . '.html.twig', $argsArray);
     }
+
+    public static function error404(Application $app, $message, $heading)
+    {
+        $argsArray = [
+            'errorMessage' => $message,
+            'errorHeading' => $heading
+        ];
+        $templateName = '404';
+        return $app['twig']->render($templateName . '.html.twig', $argsArray);
+    }
 }

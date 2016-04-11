@@ -10,8 +10,23 @@
 
     <h1>Welcome to the Student home page !</h1>
 
-    <p>
-        visit the <a href="/studentredirect">codes page</a> to learn how to rendezvous with visiting spies
-    </p>
+    <fieldset>
+        <legend>Send us a message to say hi!</legend>
+
+        <form method="post" action="/processMessage">
+
+            <p>
+                Your message:
+                <br>
+                <textarea name="text" cols="40" rows="5" required></textarea>
+            </p>
+
+            <p>
+                <input type="hidden" name="usernameId" value="{{ username }}">
+                <input type="submit"value="Send Message">
+            </p>
+
+        </form>
+    </fieldset>
 
 {% endblock %}

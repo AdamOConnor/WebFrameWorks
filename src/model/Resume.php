@@ -14,6 +14,8 @@ use Mattsmithdev\PdoCrud\DatabaseManager;
 class Resume extends DatabaseTable
 {
     private $id;
+    
+    private $email;
 
     private $name;
 
@@ -63,6 +65,22 @@ class Resume extends DatabaseTable
     public function setId($id)
     {
         $this->id = $id;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 
     /**
@@ -307,9 +325,9 @@ class Resume extends DatabaseTable
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'SELECT * FROM resume WHERE id=:id';
+        $sql = 'SELECT * FROM resume WHERE email=:email';
         $statement = $connection->prepare($sql);
-        $statement->bindParam(':id', $emailAddress, \PDO::PARAM_STR);
+        $statement->bindParam(':email', $emailAddress, \PDO::PARAM_STR);
         $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
         $statement->execute();
 
@@ -329,9 +347,31 @@ class Resume extends DatabaseTable
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'SELECT * FROM resume WHERE id=:username';
+        $sql = 'SELECT * FROM resume WHERE email=:email';
         $statement = $connection->prepare($sql);
-        $statement->bindParam(':username', $username, \PDO::PARAM_STR);
+        $statement->bindParam(':email', $username, \PDO::PARAM_STR);
+        $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
+        $statement->execute();
+
+        if ($object = $statement->fetch()) {
+            return $object;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param $username
+     * @return mixed|null
+     */
+    public static function getOneById($id)
+    {
+        $db = new DatabaseManager();
+        $connection = $db->getDbh();
+
+        $sql = 'SELECT * FROM resume WHERE id=:id';
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(':id', $id, \PDO::PARAM_STR);
         $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
         $statement->execute();
 
@@ -345,10 +385,11 @@ class Resume extends DatabaseTable
     /**
      * @param Resume $resume
      * @return null|string
- 
+    */
     public static function update(Resume $resume)
     {
         $id = $resume->getId();
+        $email = $resume->getEmail();
         $name = $resume->getName();
         $surname = $resume->getSurname();
         $number = $resume->getNumber();
@@ -366,12 +407,12 @@ class Resume extends DatabaseTable
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'UPDATE resume SET name=:firstname, surname=:surname, number=:mynumber, image=:image, status=:status, address=:address,town =:town,
+        $sql = 'UPDATE resume SET email=:email, name=:firstname, surname=:surname, number=:mynumber, image=:image, status=:status, address=:address,town =:town,
         city=:city, eircode=:eircode, country=:country, employment=:employment, qualifications=:qualifications, skills=:skills WHERE id=:id';
 
         $statement = $connection->prepare($sql);
-
-        $statement->bindParam(':id', $id, \PDO::PARAM_STR);
+        $statement->bindParam(':id', $id, \PDO::PARAM_INT);
+        $statement->bindParam(':email', $email, \PDO::PARAM_STR);
         $statement->bindParam(':firstname', $name, \PDO::PARAM_STR);
         $statement->bindParam(':surname', $surname, \PDO::PARAM_STR);
         $statement->bindParam(':mynumber', $number, \PDO::PARAM_INT);
@@ -395,25 +436,26 @@ class Resume extends DatabaseTable
             return null;
         }
     }
-*/
+
     /**
      * @param Resume $resume
      * @return null|string
      */
     public static function insert(Resume $resume)
     {
-        $email = $resume->getId();
+        $id = $resume->getId();
+        $email = $resume->getEmail();
         $name = 'Joe';
         $surname = 'Bloggs';
-        $number = '0851234567';
+        $number = '00851234567';
         $image = 'noImage.jpg';
-        $employmentStatus = $resume->getStatus();
-        $addressLine01 = '123 Fake Street';
-        $addressLine02 = 'Springfield';
+        $status = $resume->getStatus();
+        $address = '123 Fake Street';
+        $town = 'Springfield';
         $city = 'Dublin';
         $eircode = 'F4K£STR33T';
         $country = 'Ireland';
-        $previousEmployment = 'sajsajsahsdss';
+        $employment = 'sajsajsahsdss';
         $qualifications = 'sakjskjska';
         $skills = 'jaksjajsajsk';
 
@@ -422,22 +464,22 @@ class Resume extends DatabaseTable
 
         // INSERT INTO users (firstname, surname, id, mynumber, image, addressline01, addressline02, city, eircode, country, previousemployment, qualifications, skills)
         //VALUES (:firstname, :surname, :id, :mynumber, :image, addressline01, addressline02, :city, :eircode, :country, :previousemployment, :qualifications, :skills)
-        $statement = $connection->prepare('INSERT into resume (name, surname, id, mynumber, image, status, address, town, city, eircode, country, employment, qualifications, skills)
-        VALUES (:name, :surname, :id, :mynumber, :image, :status, :address, :town, :city, :eircode, :country, :employment, :qualifications, :skills)');
+        $statement = $connection->prepare('INSERT into resume (id ,email, name, surname, number, image, status, address, town, city, eircode, country, employment, qualifications, skills)
+        VALUES (:id, :email, :firstname, :surname, :mynumber, :image, :status, :address, :town, :city, :eircode, :country, :employment, :qualifications, :skills)');
         //$statement = $connection->prepare('INSERT into resume (firstname) VALUES (:firstname)');
-
-        $statement->bindParam(':id', $email, \PDO::PARAM_STR);
-        $statement->bindParam(':name', $name, \PDO::PARAM_STR);
+        $statement->bindParam(':id', $id, \PDO::PARAM_INT);
+        $statement->bindParam(':email', $email, \PDO::PARAM_STR);
+        $statement->bindParam(':firstname', $name, \PDO::PARAM_STR);
         $statement->bindParam(':surname', $surname, \PDO::PARAM_STR);
         $statement->bindParam(':mynumber', $number, \PDO::PARAM_INT);
         $statement->bindParam(':image', $image, \PDO::PARAM_STR);
-        $statement->bindParam(':employmentstatus', $employmentStatus, \PDO::PARAM_STR);
-        $statement->bindParam(':addressline01', $addressLine01, \PDO::PARAM_STR);
-        $statement->bindParam(':addressline02', $addressLine02, \PDO::PARAM_STR);
+        $statement->bindParam(':status', $status, \PDO::PARAM_STR);
+        $statement->bindParam(':address', $address, \PDO::PARAM_STR);
+        $statement->bindParam(':town', $town, \PDO::PARAM_STR);
         $statement->bindParam(':city', $city, \PDO::PARAM_STR);
         $statement->bindParam(':eircode', $eircode, \PDO::PARAM_STR);
         $statement->bindParam(':country', $country, \PDO::PARAM_STR);
-        $statement->bindParam(':employment', $previousEmployment, \PDO::PARAM_STR);
+        $statement->bindParam(':employment', $employment, \PDO::PARAM_STR);
         $statement->bindParam(':qualifications', $qualifications, \PDO::PARAM_STR);
         $statement->bindParam(':skills', $skills, \PDO::PARAM_STR);
         $statement->execute();

@@ -1,7 +1,10 @@
 <?php
-namespace Itb;
+namespace Adamoconnorframeworks\Model;
 
-class Message
+use Mattsmithdev\PdoCrud\DatabaseTable;
+use Mattsmithdev\PdoCrud\DatabaseManager;
+
+class Message extends DatabaseTable
 {
     /**
      * the object's unique ID
@@ -46,9 +49,9 @@ class Message
     }
 
     public function setEmail($email)
-    {
+   {
         $this->email = $email;
-    }
+   }
 
     public function setText($text)
     {
@@ -85,6 +88,20 @@ class Message
         $dateTimeObject->setTimestamp($this->timestamp);
 
         return $dateTimeObject;
+    }
+
+    public static function getAll()
+    {
+        $db = new DatabaseManager();
+        $connection = $db->getDbh();
+
+        $sql = 'SELECT * FROM messages';
+        $statement = $connection->prepare($sql);
+        $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
+        $statement->execute();
+
+        $objects = $statement->fetchAll();
+        return $objects;
     }
 
 }

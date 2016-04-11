@@ -8,10 +8,87 @@
 
 {% block main %}
 
-    <h1>Welcome to the Admin home page !</h1>
 
-    <p>
-        visit the <a href="/adminCodes">codes page</a> to learn how to rendezvous with visiting spies
-    </p>
+        <h1>Welcome to the Admin home page !</h1>
+    <div class="adminIndex">
+        <h3> Employed Students </h3>
+        <table>
+            <tr>
+                <th> Name </th>
+                <th> Email </th>
+                <th> Employment Status </th>
+                <th> View More </th>
+                <th> Contact </th>
+                <th> Delete </th>
+            </tr>
+            {% for user in users %}
+                {% if user.role is sameas('Student') and user.status is sameas('employed')%}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.status }}</td>
+                        <td>
+                           <form action="/details/{{ user.id }}" method="post">
+                                <input type="submit" value="View More" class="tableButtonAction">
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/sendMessage/{{ user.id }}" method="post">
+                                <input type="submit" value="Contact" class="tableButtonAction">
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/deleteUser/{{ user.id }}" method="post">
+                                <input type="submit" value="Delete" class="tableButtonAction">
+                            </form>
+                        </td>
+                    </tr>
+                {% endif %}
+
+            {% endfor %}
+        </table>
+    </div>
+
+        <hr>
+    <div class="adminIndex">
+        <h3>UnEmployed Students</h3>
+
+        <table>
+            <tr>
+                <th> Name </th>
+                <th> Email </th>
+                <th> Employment Status </th>
+                <th> View More </th>
+                <th> Contact </th>
+                <th> Delete </th>
+            </tr>
+            {% for user in users %}
+                <!-- and user.status is sameas('employed') -->
+                {% if user.role is sameas('Student') and user.status is sameas('unemployed')%}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.status }}</td>
+                        <td>
+                            <form action="/details/{{ user.id }}" method="post">
+                                <input type="submit" value="View More" class="tableButtonAction">
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/sendMessage/{{ user.id }}" method="post">
+                                <input type="submit" value="Contact" class="tableButtonAction">
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/deleteUser/{{ user.id }}" method="post">
+                                <input type="submit" value="Delete" class="tableButtonAction">
+                            </form>
+                        </td>
+                    </tr>
+                {% endif %}
+
+            {% endfor %}
+        </table>
+    </div>
 
 {% endblock %}

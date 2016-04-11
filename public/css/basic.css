@@ -72,7 +72,7 @@ a.logoutButton {
     position: relative;
     margin-left: 15px;
 }
-
+/* used for the logout hover */
 a.logoutButton:hover {
     top: 3px;
     background-color:#2e458b;
@@ -80,3 +80,97 @@ a.logoutButton:hover {
     -moz-box-shadow: none;
     box-shadow: none;
 }
+
+
+.tableButtonAction {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    padding: 6px 25px 25px 30px;
+    display: inline-block;
+    align-content: center;
+    text-decoration: none;
+    width: 130px; height: 27px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #36b0b6;
+    background: -moz-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #36b0b6), color-stop(100%, #2a8a8f));
+    background: -webkit-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: -o-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: -ms-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@top-color', endColorstr='@bottom-color', GradientType=0);
+    -webkit-box-shadow: 0 3px rgba(58,87,175,.75);
+    -moz-box-shadow: 0 3px rgba(58,87,175,.75);
+    box-shadow: 0 3px rgba(58,87,175,.75);
+    transition: all 0.1s linear 0s;
+    position: relative;
+}
+
+.tableButtonAction:hover {
+    top: 3px;
+    background-color: #36b0b6;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+}
+
+
+
+
+/* used for tables */
+
+table {
+    margin: 1em 0;
+    background: #FFF;
+    color: #024457;
+    border-radius: 10px;
+    border: 1px solid #167F92;
+    width: 90%;
+
+}
+
+table tr {
+    border: 1px solid #D9E4E6;
+}
+
+table th {
+    border: 1px solid #FFF;
+    background-color: #36b0b6;
+    background: -moz-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #36b0b6), color-stop(100%, #2a8a8f));
+    background: -webkit-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: -o-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: -ms-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@top-color', endColorstr='@bottom-color', GradientType=0);
+    color: #FFF;
+    padding: 0.5em;
+}
+
+table td {
+    display: block;
+    padding: 1em;
+}
+
+table td {
+    display: table-cell;
+    text-align: center;
+    border-right: 1px solid #D9E4E6;
+    border-bottom: 1px solid #D9E4E6;
+}
+
+table th, table td {
+    text-align: left;
+    margin: .25em 0.5em;
+}
+
+/* admin Index */
+
+.adminIndex {
+    margin-left: 1.5em;
+}
+

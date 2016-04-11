@@ -52,15 +52,3 @@ use Silex\Application;
             return null;
         }
     }
-
-    /**
-     * @param Application $app
-     * @param $message
-     * @return mixed
-     */
-    function error404(Application $app, $message)
-    {
-        $argsArray = [];
-        $templateName = '404';
-        return $app['twig']->render($templateName . '.html.twig', $argsArray);
-    }

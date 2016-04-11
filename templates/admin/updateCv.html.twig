@@ -1,10 +1,7 @@
-{#----------------#}
-{# templates/admin.html.twig #}
-{#----------------#}
-
 {% extends '_base.html.twig' %}
 
-{% block title %}Student CV{% endblock %}
+{# ------------------------------------------------- #}
+{% block pageTitle %}Resume for {{ userDetails.username }} {% endblock %}
 
 {% block main %}
 
@@ -21,7 +18,7 @@
                         <p>
                             {{ otherMessage }}
                         </p>
-                        <h2>Curriculum vitae</h2>
+                        <h2>Update Curriculum vitae for user : {{ userDetails.username }}</h2>
                         <p>This is your form description. Click here to edit.</p>
                     </div>
                     <ul>
@@ -86,7 +83,7 @@
 
                         <div class="left">
                             <select class="element select medium" name="country">
-                                <option value="Ireland" selected="selected">Ireland</option>
+                                <option value="" selected="selected"></option>
                                 <option value="Afghanistan" >Afghanistan</option>
                                 <option value="Albania" >Albania</option>
                                 <option value="Algeria" >Algeria</option>

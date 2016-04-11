@@ -1,0 +1,115 @@
+{% extends '_base.html.twig' %}
+
+{# ------------------------------------------------- #}
+{% block pageTitle %}Details for {{ userDetails.username }} {% endblock %}
+
+
+{# ------------------------------------------------- #}
+{% block main %}
+
+<!-- start table for displaying DVD details -->
+<h2>Details of user {{ userDetails.username }}</h2>
+    <br>
+    <div class="adminIndex">
+        <h3> Login Details </h3>
+        <table>
+            <tr>
+                <th> Email Address </th>
+                <th> Username </th>
+                <th> Password </th>
+                <th> Role </th>
+                <th> Status </th>
+                <th> Edit</th>
+            </tr>
+            <tr>
+                <td>{{ userDetails.email }}</td>
+                <td>{{ userDetails.username }}</td>
+                <td>{{ userDetails.password }}</td>
+                <td>{{ userDetails.role }}</td>
+                <td>{{ userDetails.status }}</td>
+                <td>
+                    <form action="/editUserLogin/{{ userDetails.id }}" method="post">
+                        <input type="submit" value="Edit Details" class="tableButtonAction">
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <div class="adminIndex">
+        <h3> Resume Details </h3>
+        <table>
+            <tr>
+                <th> First Name </th>
+                <th> Surname </th>
+                <th> Email </th>
+                <th> Number </th>
+            </tr>
+            <tr>
+                <td> {{ userCvDetails.name }} </td>
+                <td> {{ userCvDetails.surname }} </td>
+                <td> {{ userCvDetails.id }}</td>
+                <td> {{ userCvDetails.number }} </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th> Image </th>
+            </tr>
+            <tr>
+                <td><img src="/images/"{{ userCvDetails.image }} alt="image of user"/> </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th> Address </th>
+                <th> Town </th>
+                <th> City </th>
+                <th> Eircode </th>
+                <th> Country </th>
+            </tr>
+            <tr>
+                <td> {{ userCvDetails.address }} </td>
+                <td> {{ userCvDetails.town }} </td>
+                <td> {{ userCvDetails.city }} </td>
+                <td> {{ userCvDetails.eircode }}</td>
+                <td> {{ userCVDetails.country }}</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th> Previous Employment Details </th>
+            </tr>
+            <tr>
+                <td> {{  userCvDetails.employment }}</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th> Qualifications </th>
+            </tr>
+            <tr>
+                <td> {{  userCvDetails.qualifications }}</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th> Skills </th>
+            </tr>
+            <tr>
+                <td> {{  userCvDetails.skills }}</td>
+            </tr>
+        </table>
+
+        <form action="/editUserResume/{{ userDetails.id }}" method="post">
+            <input type="submit" value="Edit Resume" class="tableButtonAction">
+        </form>
+    </div>
+
+
+
+
+
+{% endblock %}

@@ -11,13 +11,13 @@ namespace Adamoconnorframeworks\Model;
 use Mattsmithdev\PdoCrud\DatabaseTable;
 use Mattsmithdev\PdoCrud\DatabaseManager;
 
-class User extends DatabaseTable
+class Admin extends DatabaseTable
 {
     /**
      * @var
      */
     private $id;
-    
+
     /**
      * id for each user email address.
      * @var
@@ -42,17 +42,11 @@ class User extends DatabaseTable
      */
     private $role;
 
-    /**
-     * if the user is employed or not.
-     * @var
-     */
-    private $status;
-
     public function getId()
     {
         return $this->id;
     }
-    
+
     /**
      * get the id of the user
      * @return mixed
@@ -128,23 +122,6 @@ class User extends DatabaseTable
     }
 
     /**
-     * get the employment status
-     * @return mixed
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param $status
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-    }
-
-    /**
      * return success (or not) of attempting to find matching username/password in the repo
      * @param $username
      * @param $password
@@ -153,7 +130,7 @@ class User extends DatabaseTable
      */
     public static function canFindMatchingUsernameAndPassword($username, $password)
     {
-        $user = User::getOneByUsername($username);
+        $user = Admin::getOneByUsername($username);
 
         // if no record has this username, return FALSE
         if (null == $user) {
@@ -205,23 +182,6 @@ class User extends DatabaseTable
         return $storedRoleNumber;
     }
 
-    public static function getUserByStudentRole($role)
-    {
-        $db = new DatabaseManager();
-        $connection = $db->getDbh();
-
-        $sql = 'SELECT * FROM users WHERE role=:role';
-        $statement = $connection->prepare($sql);
-        $statement->bindParam(':role', $role, \PDO::PARAM_STR);
-        $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
-        $statement->execute();
-
-        if ($object = $statement->fetch()) {
-            return $object;
-        } else {
-            return null;
-        }
-    }
 
     /**
      * if record exists with $username, return User object for that record
@@ -234,27 +194,9 @@ class User extends DatabaseTable
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'SELECT * FROM users WHERE username=:username';
+        $sql = 'SELECT * FROM admin WHERE username=:username';
         $statement = $connection->prepare($sql);
         $statement->bindParam(':username', $username, \PDO::PARAM_STR);
-        $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
-        $statement->execute();
-
-        if ($object = $statement->fetch()) {
-            return $object;
-        } else {
-            return null;
-        }
-    }
-
-    public static function getIdByEmail($email)
-    {
-        $db = new DatabaseManager();
-        $connection = $db->getDbh();
-
-        $sql = 'SELECT * FROM users WHERE email=:email';
-        $statement = $connection->prepare($sql);
-        $statement->bindParam(':email', $email, \PDO::PARAM_STR);
         $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
         $statement->execute();
 
@@ -277,7 +219,7 @@ class User extends DatabaseTable
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'SELECT * FROM users WHERE email = :email OR username = :username';
+        $sql = 'SELECT * FROM admin WHERE email = :email OR username = :username';
         $statement = $connection->prepare($sql);
         $statement->bindParam(':email', $email, \PDO::PARAM_STR);
         $statement->bindParam(':username', $username, \PDO::PARAM_STR);
@@ -296,25 +238,23 @@ class User extends DatabaseTable
      * @param User $user
      * @return null|string
     */
-    public static function insert(User $user)
+    public static function insert(Admin $user)
     {
         $email = $user->getEmail();
         $username = $user->getUsername();
         $password = $user->getPassword();
         $role = $user->getRole();
-        $status = $user->getStatus();
 
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
         // INSERT INTO users (id, username, password, role, employment)
         // VALUES (:id, :username, :password, :role, :employment)
-        $statement = $connection->prepare('INSERT into users (email, username, password, role, status) VALUES (:email, :username, :password, :role, :status)');
+        $statement = $connection->prepare('INSERT into admin (email, username, password, role) VALUES (:email, :username, :password, :role)');
         $statement->bindParam(':email', $email, \PDO::PARAM_STR);
         $statement->bindParam(':username', $username, \PDO::PARAM_STR);
         $statement->bindParam(':password', $password, \PDO::PARAM_STR); // there isn't a PARAM_FLOAT ...
         $statement->bindParam(':role', $role, \PDO::PARAM_STR);
-        $statement->bindParam(':status', $status, \PDO::PARAM_STR);
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);

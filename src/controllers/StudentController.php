@@ -58,10 +58,8 @@ class StudentController
         // test if 'username' stored in session ...
         $username = getAuthenticatedUserName($app);
         $currentUser = User::getOneByUsername($username);
-        $user = $currentUser->getId();
+        $user = $currentUser->getEmail();
         $sampleData = Resume::getOneByUsername($user);
-       // $sampleData = Resume::getOneByEmail('adam-o-connor@hotmail.com');
-        //$test = $sampleData->getName();
 
         // check we are authenticated --------
         $isAuthenticated = (null != $username);
@@ -76,21 +74,7 @@ class StudentController
         $argsArray = array(
             'username' => $username,
             'roleName' => 'Student',
-            'name' => $sampleData->getName(),
-            'surname' => $sampleData->getSurname(), 
-            'currentEmail' => $sampleData->getId(),
-            'myNumber' => $sampleData->getNumber(),
-            'image' => $sampleData->getImage(),
-            'status' => $sampleData->getStatus(),
-            'address' => $sampleData->getAddress(),
-            'town' => $sampleData->getTown(),
-            'city' => $sampleData->getCity(),
-            'eircode' => $sampleData->getEircode(),
-            'country' => $sampleData->getCountry(),
-            'employment' => $sampleData->getEmployment(),
-            'skills' => $sampleData->getSkills(),
-            'qualifications' => $sampleData->getQualifications()
-           // 'emlploymentDetails' => $sampleData->getPreviousEmployment()
+            'resumeDetails' => $sampleData
         );
 
         // template for student records
@@ -109,8 +93,8 @@ class StudentController
     {
         $username = getAuthenticatedUserName($app);
         $currentUser = User::getOneByUsername($username);
-        $user = $currentUser->getId();
-        $sampleData = Resume::getOneByUsername($user);
+       // $user = $currentUser->getEmail();
+       // $sampleData = Resume::getOneByUsername($user);
 
         $isAuthenticated = (null != $username);
         if (!$isAuthenticated) {
@@ -136,7 +120,8 @@ class StudentController
         $updateCv = new Resume();
 
         // set each of the fields with the registration form data.
-        $updateCv->setId($email);
+        $updateCv->setId($currentUser->getId());
+        $updateCv->setEmail($email);
         $updateCv->setName($firstName);
         $updateCv->setSurname($surname);
         $updateCv->setNumber($number);

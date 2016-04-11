@@ -9,6 +9,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Adamoconnorframeworks\Model\User;
 use Adamoconnorframeworks\Model\Resume;
+use Adamoconnorframeworks\Model\Admin;
 
 /**
  * Class UserController
@@ -30,29 +31,29 @@ class UserController
         $password = $request->get('password');
 
         $isLoggedIn = User::canFindMatchingUsernameAndPassword($username, $password);
-        $roleNumber = User::canFindSpecificRoleOfUser($username);
+        $roleName = User::canFindSpecificRoleOfUser($username);
+        $isAdminLoggedIn = Admin::canFindMatchingUsernameAndPassword($username, $password);
+       // $adminRole = Admin::canFindSpecificRoleOfUser($username);
         
         // if the user is logged in do this.
         if ($isLoggedIn) {
-            
             // get the role number of the user that has logged in.
-            switch ($roleNumber) {
-                case 1:
+            switch ($roleName) {
+                case 'Student':
                     $app['session']->set('user', array('username' => $username));
                     return $app->redirect('/student');
-                case 2:
-                    $app['session']->set('user', array('username' => $username));
-                    return $app->redirect('/admin');
-                case 3:
+                case 'Employer':
                     $app['session']->set('user', array('username' => $username));
                     return $app->redirect('/employer');
                 default:
-                    $message = 'We are sorry, but something went wrong.';
-                    return error404($app, $message);
+                    return $app->redirect('/error404');
             }
         }
-        
-        // used if the login is wrong.
+
+        else if($isAdminLoggedIn) {
+            $app['session']->set('user', array('username' => $username));
+            return $app->redirect('/admin');
+        }
         else {
             $templateName = 'index';
             $argsArray = array(
@@ -76,50 +77,88 @@ class UserController
         $emailId = $request->get('email');
         $username = $request->get('username');
         $password = $request->get('password');
-        $employmentStatus = $request->get('status');
+        $status = $request->get('status');
 
-        $checkDetails = User::checkRegistration($emailId);
+        $checkDetails = User::checkRegistration($emailId, $username);
 
         if (!$checkDetails) {
-            // instantiate the class needed
-            $newUser = new User();
 
-            // set each of the fields with the registration form data.
-            $newUser->setId($emailId);
-            $newUser->setRole($accountType);
-            $newUser->setUsername($username);
-            $newUser->setPassword($password);
-            $newUser->setEmployment($employmentStatus);
-            
-            $insertResumeSampleData = new Resume();
+            if($accountType == 'Lecturer')
+            {
+                
+                $newAdmin = new Admin();
+                
+                $newAdmin->setEmail($emailId);
+                $newAdmin->setRole($accountType);
+                $newAdmin->setUsername($username);
+                $newAdmin->setPassword($password);
 
-            $insertResumeSampleData->setId($emailId);
-            $insertResumeSampleData->setEmploymentStatus($employmentStatus);
-            
-            // insert the data into the database.
-            $success = User::insert($newUser);
+                $success = Admin::insert($newAdmin);
+                
+                if ($success != null) {
 
-            // if the insert is successful then message will be shown
-            if ($success != null) {
-                $templateCV = Resume::insert($insertResumeSampleData);
-                $templateName = 'redirect';
-                $argsArray = array(
-                    'headingMessage' => 'Welcome you are now registered.',
-                    'otherMessage' => 'you can now login and create your curriculum vitae to look',
-                    'otherMessage02' => 'for jobs in your area.'
-                );
-            } // otherwise show this message
+                    $templateName = 'redirect';
+                    $argsArray = array(
+                        'headingMessage' => 'Welcome you are now registered.',
+                        'otherMessage' => 'you are now registered as admin',
+                    );
+                } // otherwise show this message
+                else {
+                    $templateName = 'register';
+                    $argsArray = array(
+                        'errorMessage' => 'Sorry something went wrong!! please try again.'
+                    );
+                }
+            }
             else {
-                $templateName = 'register';
-                $argsArray = array(
-                    'errorMessage' => 'Sorry something went wrong!! please try again.'
-                );
+
+                // instantiate the class needed
+                $newUser = new User();
+
+                // set each of the fields with the registration form data.
+                $newUser->setEmail($emailId);
+                $newUser->setRole($accountType);
+                $newUser->setUsername($username);
+                $newUser->setPassword($password);
+                $newUser->setStatus($status);
+
+                $success = User::insert($newUser);
+
+
+                // insert the data into the database.
+
+                // if the insert is successful then message will be shown
+                if ($success != null) {
+
+                    if ($accountType == 'Student') {
+                        $currentUser = User::getIdByEmail($emailId);
+
+                        $insertResumeSampleData = new Resume();
+                        $insertResumeSampleData->setId($currentUser->getId());
+                        $insertResumeSampleData->setEmail($emailId);
+                        $insertResumeSampleData->setStatus($status);
+                        Resume::insert($insertResumeSampleData);
+                    }
+
+                    $templateName = 'redirect';
+                    $argsArray = array(
+                        'headingMessage' => 'Welcome you are now registered.',
+                        'otherMessage' => 'you can now login and create your curriculum vitae to look',
+                        'otherMessage02' => 'for jobs in your area.'
+                    );
+                } // otherwise show this message
+                else {
+                    $templateName = 'register';
+                    $argsArray = array(
+                        'errorMessage' => 'Sorry something went wrong!! please try again.'
+                    );
+                }
             }
         } else {
             $templateName = 'register';
             $argsArray = array(
                  'errorMessage' => 'Sorry the details you have enterd match another users please use 
-                 a different email address!!'
+                 a different email address or username!!'
              );
         }
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
