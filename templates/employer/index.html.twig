@@ -7,11 +7,42 @@
 {% block title %}Employer home{% endblock %}
 
 {% block main %}
-
+<div class="adminIndex">
     <h1>Welcome to the Employer home page !</h1>
 
     <p>
-        visit the <a href="/adminCodes">codes page</a> to learn how to rendezvous with visiting spies
+       please send the information to a lecturer.
     </p>
 
+    <form method="post" action="/processJob">
+
+        <p>
+            Job Description:
+            <br>
+            <textarea name="description" cols="40" rows="5" placeholder="description of the job" required></textarea>
+        </p>
+        <p>
+            Position:
+            <br>
+            <input type="text" name="position" placeholder="position">
+        </p>
+        <p>
+            Company :
+            <br>
+            <input type="text" name="company" placeholder="company name" required>
+        </p>
+        <p>
+            DeadLine
+            <br>
+            <input type="time" name="time" placeholder="HH:MM 24 Hour" required>
+            <br>
+            <input type="date" name="date" placeholder="DD.MM.YYYY" required>
+        </p>
+        <p>
+            <input type="hidden" name="usernameId" value="{{ username }}">
+            <input type="submit" value="Send Job">
+        </p>
+
+    </form>
+</div>
 {% endblock %}

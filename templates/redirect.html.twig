@@ -11,11 +11,15 @@
 <div id="mainSection">
 
     <h1>
-        {{ headingMessage }}
+        {% if headingMessage %}
+            {{ headingMessage }}
+        {% endif %}
     </h1>
 
     <p>
-        {{ otherMessage }}
+        {% if otherMessage %}
+            {{ otherMessage }}
+        {% endif %}
     </p>
 </div>
 {% endblock %}

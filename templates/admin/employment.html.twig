@@ -1,0 +1,40 @@
+{#----------------#}
+{# templates/admin.html.twig #}
+{#----------------#}
+
+{% extends '_base.html.twig' %}
+
+{% block title %}Employer home{% endblock %}
+
+{% block main %}
+<div class="adminIndex">
+    <h1>Pending employment jobs from employers !</h1>
+
+    <p>
+       these are the list of jobs employers have sent that are pending.
+    </p>
+
+    <table>
+        <tr>
+            <th> Company </th>
+            <th> Description </th>
+            <th> Position </th>
+            <th> Closing date </th>
+            <th> Submit job </th>
+        </tr>
+    {% for job in jobs %}
+        <tr>
+            <td> {{ job.company }} </td>
+            <td> {{ job.description }} </td>
+            <td> {{ job.position }} </td>
+            <td> {{ job.date|date("l jS M h:i:s A", "Europe/Dublin")  }} </td>
+            <td>
+                <form action="/setStatusOfJob/{{ job.id }}" method="post" class="messageForm">
+                    <input type="submit" value="Submit Job" class="tableButtonAction">
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}

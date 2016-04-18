@@ -1,0 +1,42 @@
+{% extends '_base.html.twig' %}
+
+{# ------------------------------------------------- #}
+{% block pageTitle %}Admin Messages page{% endblock %}
+
+{# ------------------------------------------------- #}
+{% block main %}
+
+<h2>Messages from people</h2>
+    <br>
+    <a href="/adminCreateMessage" class="createMessage">Create Message</a>
+    <a href="/showPrivate" class="createMessage">Private Messages</a>
+    <br>
+{% for message in messages %}
+    <hr>
+    <div class="adminIndex">
+        <p>
+            posted by <strong>{{ message.user }}</strong>
+            <br>
+            {{ message.timestamp|date("l jS M h:i:s A", "Europe/Dublin")  }}
+        </p>
+
+        <blockquote>
+            {{ message.text }}
+        </blockquote>
+        {% if message.email is sameas(emailId) %}
+            {% include 'messageUD.html.twig' %}
+        {% else %}
+            <br>
+        {% endif %}
+
+    {% else %}
+        {% if otherMessage %}
+            <p>{{ otherMessage }}</p>
+        {% else %}
+            <hr>
+        <p>(no messages found)</p>
+        {% endif %}
+    </div>
+{% endfor %}
+
+{% endblock %}

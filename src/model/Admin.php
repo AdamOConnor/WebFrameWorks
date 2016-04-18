@@ -11,10 +11,16 @@ namespace Adamoconnorframeworks\Model;
 use Mattsmithdev\PdoCrud\DatabaseTable;
 use Mattsmithdev\PdoCrud\DatabaseManager;
 
+/**
+ * Class Admin
+ * @package Adamoconnorframeworks\Model
+ */
+
 class Admin extends DatabaseTable
 {
     /**
-     * @var
+     * id of the admin table
+     * @var int
      */
     private $id;
 
@@ -42,13 +48,17 @@ class Admin extends DatabaseTable
      */
     private $role;
 
+    /**
+     * get the id of the administrator.
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-     * get the id of the user
+     * get the email address of the user.
      * @return mixed
      */
     public function getEmail()
@@ -57,7 +67,7 @@ class Admin extends DatabaseTable
     }
 
     /**
-     * set the id of the user
+     * set the email address of the administrator.
      * @param mixed $id
      */
     public function setEmail($email)
@@ -113,7 +123,7 @@ class Admin extends DatabaseTable
     }
 
     /**
-     * set users role lecture/employer/student
+     * set users role employer/student
      * @param mixed $role
      */
     public function setRole($role)
@@ -233,6 +243,49 @@ class Admin extends DatabaseTable
         }
     }
 
+    /**
+     * get the a single admin by 
+     * the id of the admin.
+     * @param $id
+     * @return mixed|null
+     */
+    public static function getOneById($id)
+    {
+        $db = new DatabaseManager();
+        $connection = $db->getDbh();
+
+        $sql = 'SELECT * FROM admin WHERE id=:id';
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(':id', $id, \PDO::PARAM_STR);
+        $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
+        $statement->execute();
+
+        if ($object = $statement->fetch()) {
+            return $object;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * get all the administrators,
+     * from the admin table.
+     * @return array
+     */
+    public static function getAll()
+    {
+        $db = new DatabaseManager();
+        $connection = $db->getDbh();
+
+        $sql = 'SELECT * FROM admin';
+        $statement = $connection->prepare($sql);
+        $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
+        $statement->execute();
+
+        $objects = $statement->fetchAll();
+        return $objects;
+    }
+    
     /**
      * insert new user used for registration.
      * @param User $user

@@ -1,0 +1,47 @@
+{% extends '_base.html.twig' %}
+
+{% block title %}Student home{% endblock %}
+
+{% block main %}
+
+    <h1>Private message </h1>
+
+    <fieldset>
+
+        <form method="post" action="/privateMessage">
+            <div class="adminIndex">
+            <p>
+                Your message:
+                <br>
+                <textarea name="text" cols="40" rows="5" required></textarea>
+            </p>
+            <p>
+                <select name="aboutCvMessage" required>
+                    <option value="" selected="selected">Please select detail</option>
+                    <option value="Name Details" >Name Details</option>
+                    <option value="Contact Details" >Contact Details</option>
+                    <option value="Image" >Image Details</option>
+                    <option value="Address Details">Address Details</option>
+                    <option value="Previous Employment Details">Previous Employment Details</option>
+                    <option value="Qualification Details" >Qualification Details</option>
+                    <option value="Skills Details">Skills Details</option>
+                    <option value="Other">Other</option>
+                </select>
+            </p>
+            <p>
+                <select name="receivingId" required>
+                    <option value="" selected="selected">please select user</option>
+                    {% for receiver in receivers %}
+                    <option value="{{ receiver.username }}" >{{ receiver.username }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <input type="hidden" name="senderId" value="{{ sendingUser.username }}">
+                <input type="submit"value="Send Message">
+            </p>
+            </div>
+        </form>
+    </fieldset>
+
+{% endblock %}

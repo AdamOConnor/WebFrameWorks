@@ -11,12 +11,15 @@
 
 <!-- start table for displaying DVD details -->
 <h2>Messages from people</h2>
+    <br>
+    <a href="/showPrivate" class="createMessage">Private Messages</a>
+    <br>
 {% for message in messages %}
     <hr>
     <p>
         posted by <strong>{{ message.user }}</strong>
         <br>
-        {{ message.timestamp|date("l jS M h:i:s A")  }}
+        {{ message.timestamp|date("l jS M h:i:s A", "Europe/Dublin")  }}
     </p>
 
     <blockquote>

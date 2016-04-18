@@ -10,7 +10,7 @@
             <div id="form_container">
 
                 <h1 class ="formH1"><a></a></h1>
-                <form action="/processForm" class="cv" method="post" >
+                <form action="/adminUpdateUserCv/{{ resumeDetails.id }}" class="cv" method="post" >
                     <div class="form_description">
                         <h3>
                             {{ headingMessage }}
@@ -83,7 +83,7 @@
 
                         <div class="left">
                             <select class="element select medium" name="country">
-                                <option value="" selected="selected"></option>
+                                <option value="{{ resumeDetails.country }}" selected="selected">{{ resumeDetails.country }}</option>
                                 <option value="Afghanistan" >Afghanistan</option>
                                 <option value="Albania" >Albania</option>
                                 <option value="Algeria" >Algeria</option>

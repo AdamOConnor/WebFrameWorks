@@ -11,50 +11,59 @@ namespace Adamoconnorframeworks\Model;
 use Mattsmithdev\PdoCrud\DatabaseTable;
 use Mattsmithdev\PdoCrud\DatabaseManager;
 
+/**
+ * Class User
+ * @package Adamoconnorframeworks\Model
+ */
 class User extends DatabaseTable
 {
     /**
-     * @var
+     * id of the user.
+     * @var int
      */
     private $id;
     
     /**
      * id for each user email address.
-     * @var
+     * @var string
      */
     private $email;
 
     /**
      * username for login
-     * @var
+     * @var string
      */
     private $username;
 
     /**
      * password for login
-     * @var
+     * @var string
      */
     private $password;
 
     /**
-     * role of user 1 = student, 2 = admin/lecture, 3 = employer
+     * role of user student ,employer
      * @var
      */
     private $role;
 
     /**
      * if the user is employed or not.
-     * @var
+     * @var string
      */
     private $status;
 
+    /**
+     * get the id of the user.
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
     
     /**
-     * get the id of the user
+     * get the email address of the user
      * @return mixed
      */
     public function getEmail()
@@ -63,7 +72,7 @@ class User extends DatabaseTable
     }
 
     /**
-     * set the id of the user
+     * set the email address of the user
      * @param mixed $id
      */
     public function setEmail($email)
@@ -137,6 +146,7 @@ class User extends DatabaseTable
     }
 
     /**
+     * set the employment status of the user.
      * @param $status
      */
     public function setStatus($status)
@@ -148,7 +158,6 @@ class User extends DatabaseTable
      * return success (or not) of attempting to find matching username/password in the repo
      * @param $username
      * @param $password
-     *
      * @return bool
      */
     public static function canFindMatchingUsernameAndPassword($username, $password)
@@ -205,6 +214,11 @@ class User extends DatabaseTable
         return $storedRoleNumber;
     }
 
+    /**
+     * get the user by the role of the user.
+     * @param $role
+     * @return mixed|null
+     */
     public static function getUserByStudentRole($role)
     {
         $db = new DatabaseManager();
@@ -247,6 +261,12 @@ class User extends DatabaseTable
         }
     }
 
+    /**
+     * get all the information by the email
+     * address of the user.
+     * @param $email
+     * @return mixed|null
+     */
     public static function getIdByEmail($email)
     {
         $db = new DatabaseManager();
@@ -266,9 +286,9 @@ class User extends DatabaseTable
     }
 
     /**
-     * find user specific username 
+     * find user specific username
      * and id.
-     * @param $identity
+     * @param $email
      * @param $username
      * @return mixed|null
      */
@@ -322,6 +342,43 @@ class User extends DatabaseTable
             return $connection->lastInsertId();
         } else {
             return null;
+        }
+    }
+
+    /**
+     * admin update for student users.
+     * login information.
+     * @param User $user
+     * @param $id
+     * @return int|string
+     */
+    public static function updateUserLogin(User $user, $id)
+    {
+        
+        $email = $user->getEmail();
+        $username = $user->getUsername();
+        $password = $user->getPassword();
+        $status = $user->getStatus();
+        $role = $user->getRole();
+        
+        $db = new DatabaseManager();
+        $connection = $db->getDbh();
+
+        $sql = 'UPDATE users SET email=:email, username=:username, password=:password, status=:status, role=:role WHERE id=:id';
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(':id', $id, \PDO::PARAM_INT);
+        $statement->bindParam(':email', $email, \PDO::PARAM_STR);
+        $statement->bindParam(':username', $username, \PDO::PARAM_STR);
+        $statement->bindParam(':password', $password, \PDO::PARAM_STR);
+        $statement->bindParam(':status', $status, \PDO::PARAM_STR);
+        $statement->bindParam(':role', $role, \PDO::PARAM_STR);
+        $statement->execute();
+
+        $queryWasSuccessful = ($statement->rowCount() > 0);
+        if($queryWasSuccessful) {
+            return $connection->lastInsertId();
+        } else {
+            return 1;
         }
     }
 }

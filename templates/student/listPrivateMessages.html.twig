@@ -1,0 +1,47 @@
+{% extends '_base.html.twig' %}
+
+{% block title %}Student Private Messages{% endblock %}
+
+{% block main %}
+    <div class="adminIndex">
+        <h3> Private Messages </h3>
+
+        <h2>Messages from people</h2>
+        <br>
+        <a href="/createAdminMessage" class="createMessage">Create Message</a>
+        {% for message in messages %}
+            {% if message.sender_username is sameas(username) or message.receiver_username is sameas(username)%}
+                <hr>
+                <p>
+                    posted by
+                    <strong>
+                        {{ message.sender_username }}
+                    </strong>
+                    <br>
+                    {{ message.timestamp|date("l jS M h:i:s A", "Europe/Dublin")  }}
+                </p>
+                <p>
+                    Subject : {{ message.about }}
+                </p>
+                <p>
+                    posted to
+                    <strong>
+                        {{ message.receiver_username }}
+                    </strong>
+                </p>
+                <blockquote>
+                    {{ message.text }}
+                </blockquote>
+                {% if username is sameas(message.sender_username) %}
+                    {% include 'privateMessageUD.html.twig' %}
+                {% else %}
+                    {% include 'privateMessageReply.html.twig' %}
+                {% endif %}
+            {% endif %}
+        {% else %}
+            <p>
+                (No Messages Found)
+            </p>
+        {% endfor %}
+    </div>
+{% endblock %}

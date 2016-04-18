@@ -36,6 +36,16 @@ class Message extends DatabaseTable
     private $timestamp;
 
     /**
+     * set the id of the message.
+     * @param $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * get the id of the message.
      * @return int
      */
     public function getId()
@@ -43,36 +53,64 @@ class Message extends DatabaseTable
         return $this->id;
     }
 
+    /**
+     * get email address of message.
+     * @return string
+     */
     public function getEmail()
     {
         return $this->email;
     }
 
+    /**
+     * set the email address of the message.
+     * @param $email
+     */
     public function setEmail($email)
    {
         $this->email = $email;
    }
 
-    public function setText($text)
-    {
-        $this->text = $text;
-    }
-
-    public function setUser($user)
-    {
-        $this->user = $user;
-    }
-
+    /**
+     * get the text of the message.
+     * @return string
+     */
     public function getText()
     {
         return $this->text;
     }
 
+    /**
+     * set the text of the message.
+     * @param $text
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+    }
+
+    /**
+     * set the user that sent the message.
+     * @param $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * get the user of the message.
+     * @return string
+     */
     public function getUser()
     {
         return $this->user;
     }
 
+    /**
+     * set the timestamp of the message.
+     * @param $timestamp
+     */
     public function setTimestamp($timestamp)
     {
         $this->timestamp = $timestamp;
@@ -90,6 +128,11 @@ class Message extends DatabaseTable
         return $dateTimeObject;
     }
 
+    /**
+     * get all of the messages from the,
+     * message table in the database.
+     * @return array
+     */
     public static function getAll()
     {
         $db = new DatabaseManager();
@@ -103,5 +146,5 @@ class Message extends DatabaseTable
         $objects = $statement->fetchAll();
         return $objects;
     }
-
+    
 }

@@ -1,0 +1,46 @@
+{% extends '_base.html.twig' %}
+
+{% block title %}Student home{% endblock %}
+
+{% block main %}
+
+    <h1>Private message </h1>
+
+    <fieldset>
+        <legend>
+            Send message to user {{ receivingUser.username }} !!!
+            <br>
+            Users Email Address is : {{ receivingUser.email }}
+        </legend>
+
+        <form method="post" action="/privateMessage">
+
+            <p>
+                Your message:
+                <br>
+                <label for="text" > </label>
+                <textarea name="text" cols="40" rows="5" required></textarea>
+            </p>
+            <p>
+                <select name="aboutCvMessage" required>
+                    <option value=" " selected="selected"> </option>
+                    <option value="Name Details" >Name Details</option>
+                    <option value="Contact Details" >Contact Details</option>
+                    <option value="Image" >Image Details</option>
+                    <option value="Address Details">Address Details</option>
+                    <option value="Previous Employment Details">Previous Employment Details</option>
+                    <option value="Qualification Details" >Qualification Details</option>
+                    <option value="Skills Details">Skills Details</option>
+                    <option value="Other">Other</option>
+                </select>
+            </p>
+            <p>
+                <input type="hidden" name="senderId" value="{{ sendingUser.id }}">
+                <input type="hidden" name="receivingId" value="{{ receivingUser.id }}">
+                <input type="submit"value="Send Message">
+            </p>
+
+        </form>
+    </fieldset>
+
+{% endblock %}

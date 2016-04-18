@@ -10,7 +10,7 @@
             <div id="form_container">
 
                 <h1 class ="formH1"><a></a></h1>
-                <form action="/processForm" class="cv" method="post" >
+                <form action="/adminUpdateLogin/{{ userDetails.id }}" class="cv" method="post" >
                     <div class="form_description">
                         <h3>
                             {{ headingMessage }}
@@ -39,7 +39,7 @@
                         <li>
                             <label class="description">Re-Enter Password </label>
                             <div class="details">
-                                <input class="element text medium" type="text" maxlength="255" name="repassword" value="{{ userDetails.password }}" readonly/>
+                                <input class="element text medium" type="text" maxlength="255" name="repassword" value="{{ userDetails.password }}"/>
                             </div>
                         </li>
                         <li>

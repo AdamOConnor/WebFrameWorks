@@ -14,21 +14,12 @@ Edit your message
 <fieldset>
     <legend>Send us a message to say hi!</legend>
 
-    <form
-            method="post"
-            action="/processMessageUpdateForm"
-    >
+    <form method="post" action="/processMessageUpdateForm">
 
         <p>
             Your message:
             <br>
-            <textarea name="text" cols="40" rows="5" required >{{ message.text }}</textarea>
-        </p>
-
-        <p>
-            Your name:
-            <br>
-            <input type="text" name="user" required value="{{ message.user }}">
+            <textarea name="text" cols="40" rows="5" required>{{ message.text }}</textarea>
         </p>
 
         <input type="hidden" name="id" value="{{ message.id }}">

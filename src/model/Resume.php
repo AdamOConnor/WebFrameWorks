@@ -13,30 +13,82 @@ use Mattsmithdev\PdoCrud\DatabaseManager;
 
 class Resume extends DatabaseTable
 {
+    /**
+     * the id of the resume.
+     * @var int
+     */
     private $id;
-    
+
+    /**
+     * the email address of the resume.
+     * @var string
+     */
     private $email;
 
+    /**
+     * name on the cv.
+     * @var string
+     */
     private $name;
 
+    /**
+     * surname on the cv.
+     * @var string
+     */
     private $surname;
 
+    /**
+     * number on the cv.
+     * @var int
+     */
     private $number;
 
+    /**
+     * the name of the image needed.
+     * @var string
+     */
     private $image;
 
+    /**
+     * employment status of the user.
+     * @var string 
+     */
     private $status;
 
+    /**
+     * address of the cv
+     * @var string
+     */
     private $address;
 
+    /** 
+     * town of the cv user.
+     * @var string
+     */
     private $town;
 
+    /**
+     * get the city of the cv
+     * @var string
+     */
     private $city;
 
+    /**
+     * eircode of the cv.
+     * @var string
+     */
     private $eircode;
 
+    /**
+     * country of the cv.
+     * @var string
+     */
     private $country;
 
+    /**
+     * previous employment of the cv.
+     * @var string
+     */
     private $employment;
 
     /**
@@ -52,6 +104,7 @@ class Resume extends DatabaseTable
     private $skills;
 
     /**
+     * get the id of the user.
      * @return mixed
      */
     public function getId()
@@ -60,6 +113,7 @@ class Resume extends DatabaseTable
     }
 
     /**
+     * set the id of the user.
      * @param mixed $id
      */
     public function setId($id)
@@ -68,6 +122,7 @@ class Resume extends DatabaseTable
     }
     
     /**
+     * get the email address of the resume.
      * @return mixed
      */
     public function getEmail()
@@ -76,6 +131,7 @@ class Resume extends DatabaseTable
     }
 
     /**
+     * set the email address of the resume.
      * @param mixed $id
      */
     public function setEmail($email)
@@ -156,7 +212,9 @@ class Resume extends DatabaseTable
     }
 
     /**
-     * @return mixed
+     * get the employment status of the 
+     * user's cv.
+     * @return string
      */
     public function getStatus()
     {
@@ -272,8 +330,8 @@ class Resume extends DatabaseTable
     }
 
     /**
-     * set the previous employment of the user
-     * @param mixed $previousEmployment
+     * set the previous employment of the user.
+     * @param $employment
      */
     public function setEmployment($employment)
     {
@@ -317,6 +375,8 @@ class Resume extends DatabaseTable
     }
 
     /**
+     * get the resume by a email address
+     * that has been used 
      * @param $emailAddress
      * @return mixed|null
      */
@@ -339,6 +399,8 @@ class Resume extends DatabaseTable
     }
 
     /**
+     * get the resume by the username that
+     * has been used by the user.
      * @param $username
      * @return mixed|null
      */
@@ -361,7 +423,9 @@ class Resume extends DatabaseTable
     }
 
     /**
-     * @param $username
+     * get the resume from the id that 
+     * is inserted.
+     * @param $id
      * @return mixed|null
      */
     public static function getOneById($id)
@@ -383,6 +447,25 @@ class Resume extends DatabaseTable
     }
 
     /**
+     * delete the resume where the id
+     * is the one to delete.
+     * @param $id
+     * @return bool
+     */
+    public static function deleteResume($id)
+    {
+        $db = new DatabaseManager();
+        $connection = $db->getDbh();
+
+        $sql = 'DELETE FROM resume WHERE id=:id';
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(':id', $id, \PDO::PARAM_INT);
+        $queryWasSuccessful = $statement->execute();
+        return $queryWasSuccessful;
+    }
+
+    /**
+     * update a resume generically.
      * @param Resume $resume
      * @return null|string
     */
@@ -426,7 +509,6 @@ class Resume extends DatabaseTable
         $statement->bindParam(':employment', $previousEmployment, \PDO::PARAM_STR);
         $statement->bindParam(':qualifications', $qualifications, \PDO::PARAM_STR);
         $statement->bindParam(':skills', $skills, \PDO::PARAM_STR);
-      
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
@@ -438,6 +520,38 @@ class Resume extends DatabaseTable
     }
 
     /**
+     * update the user's cv where the id is the same thats 
+     * being updated.
+     * @param Resume $user
+     * @param $id
+     * @return mixed|null
+     */
+    public static function updateUserCv(Resume $user, $id)
+    {
+        $email = $user->getEmail();
+        $status = $user->getStatus();
+
+        $db = new DatabaseManager();
+        $connection = $db->getDbh();
+
+        $sql = 'UPDATE resume SET email=:email, status=:status WHERE id=:id';
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(':id', $id, \PDO::PARAM_INT);
+        $statement->bindParam(':email', $email, \PDO::PARAM_STR);
+        $statement->bindParam(':status', $status, \PDO::PARAM_STR);
+        $statement->execute();
+
+        $queryWasSuccessful = ($statement->rowCount() > 0);
+        if($queryWasSuccessful) {
+            return $connection->lastInsertId();
+        } else {
+            return 1;
+        }
+    }
+
+    /**
+     * insert the dummy data into the resume form,
+     * when the student user creates and account.
      * @param Resume $resume
      * @return null|string
      */

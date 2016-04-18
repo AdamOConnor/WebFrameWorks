@@ -1,0 +1,47 @@
+{% extends '_base.html.twig' %}
+
+{# ------------------------------------------------- #}
+{% block pageTitle %}message edit page{% endblock %}
+
+{# ------------------------------------------------- #}
+{% block main %}
+
+<h1>
+Edit your message
+</h1>
+
+
+<fieldset>
+    <legend>Send us a message to say hi!</legend>
+
+    <form method="post" action="/privateMessageUpdateForm">
+
+        <p>
+            Your message:
+            <br>
+            <textarea name="text" cols="40" rows="5" required>{{ message.text }}</textarea>
+        </p>
+        <p>
+            <select name="aboutCvMessage" required>
+                <option value="{{ message.about }}" selected="selected">{{ message.about }}</option>
+                <option value="Name Details" >Name Details</option>
+                <option value="Contact Details" >Contact Details</option>
+                <option value="Image" >Image Details</option>
+                <option value="Address Details">Address Details</option>
+                <option value="Previous Employment Details">Previous Employment Details</option>
+                <option value="Qualification Details" >Qualification Details</option>
+                <option value="Skills Details">Skills Details</option>
+                <option value="Other">Other</option>
+            </select>
+        </p>
+
+        <input type="hidden" name="id" value="{{ id }}">
+
+        <p>
+            <input type="submit" value="update message">
+        </p>
+
+    </form>
+</fieldset>
+
+{% endblock %}

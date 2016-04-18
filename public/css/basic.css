@@ -81,6 +81,40 @@ a.logoutButton:hover {
     box-shadow: none;
 }
 
+a.createMessage {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    padding: 6px 40px 0px 40px;
+    text-decoration: none;
+    width: 80px; height: 27px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #36b0b6;
+    background: -moz-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #36b0b6), color-stop(100%, #2a8a8f));
+    background: -webkit-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: -o-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: -ms-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    background: linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@top-color', endColorstr='@bottom-color', GradientType=0);
+    -webkit-box-shadow: 0 3px rgba(58,87,175,.75);
+    -moz-box-shadow: 0 3px rgba(58,87,175,.75);
+    box-shadow: 0 3px rgba(58,87,175,.75);
+    transition: all 0.1s linear 0s;
+    position: relative;
+    margin-left: 15px;
+}
+/* used for the logout hover */
+a.createMessage:hover {
+    top: 3px;
+    background-color:#2e458b;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
 
 .tableButtonAction {
     font-size: 14px;
@@ -129,7 +163,7 @@ table {
     color: #024457;
     border-radius: 10px;
     border: 1px solid #167F92;
-    width: 90%;
+    width: 96%;
 
 }
 
@@ -174,3 +208,22 @@ table th, table td {
     margin-left: 1.5em;
 }
 
+.adminIndex, input {
+    margin-bottom: 15px;
+}
+
+.adminIndex, textarea, select {
+    margin-bottom: 15px;
+}
+
+.adminIndex, blockquote {
+    margin: 10px;
+}
+
+.messageForm {
+    display: inline;
+}
+
+.messageText {
+    margin: 1em;
+}

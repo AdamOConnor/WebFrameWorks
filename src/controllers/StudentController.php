@@ -9,6 +9,8 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Adamoconnorframeworks\Model\User;
 use Adamoconnorframeworks\Model\Resume;
+use Adamoconnorframeworks\Model\Admin;
+use Adamoconnorframeworks\Model\PrivateMessage;
 
 /**
  * simple authentication getting specific links
@@ -67,8 +69,6 @@ class StudentController
             // not authenticated, so redirect to LOGIN page
             return $app->redirect('/login');
         }
-
-       // echo 'here we rea\z'.$user;
 
         // store username into args array
         $argsArray = array(
@@ -185,7 +185,107 @@ class StudentController
         );
 
         // template for student records
-        $templateName = 'student/redirect';
+        $templateName = 'redirect';
+        return $app['twig']->render($templateName . '.html.twig', $argsArray);
+    }
+
+    /**
+     * private message page
+     * @param Request $request
+     * @param Application $app
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function privateMessageAction(Request $request, Application $app, $id)
+    {
+        $username = getAuthenticatedUserName($app);
+        $sending = Admin::getOneByUsername($username);
+        $receiver = User::getOneById($id);
+
+
+        // check we are authenticated --------
+        $isAuthenticated = (null != $username);
+        if (!$isAuthenticated) {
+            // not authenticated, so redirect to LOGIN page
+            return $app->redirect('/login');
+        }
+
+        $argsArray = array(
+            'username' => $username,
+            'roleName' => $sending->getRole(),
+            'receivingUser' => $receiver,
+            'sendingUser' => $sending
+        );
+
+        // template for student records
+        $templateName = 'student/privateMessage';
+        return $app['twig']->render($templateName . '.html.twig', $argsArray);
+    }
+
+    /**
+     * show private messages to students action.
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function showPrivateMessagesAction(Request $request, Application $app)
+    {
+        // test if 'username' stored in session ...
+        $username = getAuthenticatedUserName($app);
+        $currentUser = User::getOneByUsername($username);
+        $messages = PrivateMessage::getAll();
+        $admin = Admin::getAll();
+
+        // check we are authenticated --------
+        $isAuthenticated = (null != $username);
+        if (!$isAuthenticated) {
+            // not authenticated, so redirect to LOGIN page
+            return $app->redirect('/login');
+        }
+
+        // store username into args array
+        $argsArray = array(
+            'username' => $username,
+            'roleName' => $currentUser->getRole(),
+            'messages' => $messages,
+            'student' => $currentUser,
+            'admins' => $admin
+        );
+
+        // template used for student index
+        $templateName = 'student/listPrivateMessages';
+        return $app['twig']->render($templateName . '.html.twig', $argsArray);
+    }
+
+    /**
+     * private message page
+     * @param Request $request
+     * @param Application $app
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function studentPrivateMessageAction(Request $request, Application $app, $id)
+    {
+        $username = getAuthenticatedUserName($app);
+        $sending = User::getOneByUsername($username);
+        $receiver = Admin::getOneById($id);
+       
+        // check we are authenticated --------
+        $isAuthenticated = (null != $username);
+        if (!$isAuthenticated) {
+            // not authenticated, so redirect to LOGIN page
+            return $app->redirect('/login');
+        }
+
+        $argsArray = array(
+            'username' => $username,
+            'roleName' => $sending->getRole(),
+            'receivingUser' => $receiver,
+            'sendingUser' => $sending
+        );
+
+        // template for student records
+        $templateName = 'admin/privateMessage';
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 }

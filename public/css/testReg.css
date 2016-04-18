@@ -39,7 +39,7 @@ select {
     margin: 20px auto;
     margin-bottom: 4em;
     width: 500px;
-    height: 440px;
+    height: 460px;
     -webkit-border-radius: 8px/7px;
     -moz-border-radius: 8px/7px;
     border-radius: 8px/7px;
@@ -148,7 +148,7 @@ input[type=text], input[type=password]{
     margin-right: 4em;
 }
 
-input[type=password]{
+.passwordField {
     margin-bottom: 25px;
 }
 
