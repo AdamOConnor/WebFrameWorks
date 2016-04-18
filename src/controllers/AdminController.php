@@ -87,6 +87,39 @@ class AdminController
         $templateName = 'admin/employment';
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
+
+    /**
+     * action to go to employment details.
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function pendingJobAction(Request $request, Application $app)
+    {
+        // test if 'username' stored in session ...
+        $username = getAuthenticatedUserName($app);
+
+        $pendingJobs = Pending::getAll();
+
+        // check we are authenticated --------
+        $isAuthenticated = (null != $username);
+        if (!$isAuthenticated) {
+            // not authenticated, so redirect to LOGIN page
+            return $app->redirect('/login');
+        }
+
+        // store username into args array
+        // and rolename
+        $argsArray = array(
+            'username' => $username,
+            'roleName' => 'Lecturer',
+            'jobs' => $pendingJobs
+        );
+
+        // template for admin index
+        $templateName = 'admin/pendingJobs';
+        return $app['twig']->render($templateName . '.html.twig', $argsArray);
+    }
     
     /**
      * allow access to the codesAction
@@ -189,7 +222,53 @@ class AdminController
         }
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
-    
+
+    /**
+     * deletes the job from the pending_jobs table.
+     * @param Request $request
+     * @param Application $app
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteJobAction(Request $request, Application $app, $id)
+    {
+        $username = getAuthenticatedUserName($app);
+        $currentUser = User::getOneByUsername($username);
+        
+        if($currentUser == null)
+        {
+            $currentUser = Admin::getOneByUsername($username);
+        }
+
+        $isAuthenticated = (null != $username);
+        if (!$isAuthenticated) {
+            // not authenticated, so redirect to LOGIN page
+            return $app->redirect('/login');
+        }
+       
+        $deleteJob = Pending::delete($id);
+
+        if($deleteJob == true)
+        {
+            $templateName = 'redirect';
+            $argsArray = array(
+                'headingMessage' => 'Success the job has been added !!',
+                'otherMessage' => 'Job has now been added and students can now view....',
+                'username' => $username,
+                'roleName' => $currentUser->getRole()
+            );
+        }else {
+            $templateName = 'redirect';
+            $argsArray = array(
+                'headingMessage' => 'Sorry job has not been added !!',
+                'otherMessage' => 'Something terrible has happend sorry....',
+                'username' => $username,
+                'roleName' => $currentUser->getRole()
+            );
+        }
+       
+        return $app['twig']->render($templateName . '.html.twig', $argsArray);
+    }
     
     /**
      * edit resume details 
@@ -653,7 +732,8 @@ class AdminController
     public function jobStatusAction(Request $request, Application $app, $id)
     {
         $username = getAuthenticatedUserName($app);
-        $sending = Admin::getOneByUsername($username);
+        $currentUser = Admin::getOneByUsername($username);
+        
 
         // check we are authenticated --------
         $isAuthenticated = (null != $username);
@@ -664,22 +744,26 @@ class AdminController
         
         $status = 'Active';
         
-        $pending = Pending::update($status, $id);
+        $pending = Pending::updateStatus($status, $id);
         
         if($pending != null)
         {
-            
+            $templateName = 'redirect';
+            $argsArray = array(
+                'headingMessage' => 'Success the job has been added !!',
+                'otherMessage' => 'Job has now been added and students can now view....',
+                'username' => $username,
+                'roleName' => $currentUser->getRole()
+            );
         }else {
-            
+            $templateName = 'redirect';
+            $argsArray = array(
+                'headingMessage' => 'Sorry job has not been added !!',
+                'otherMessage' => 'Something terrible has happend sorry....',
+                'username' => $username,
+                'roleName' => $currentUser->getRole()
+            );
         }
-        
-        $argsArray = array(
-            'username' => $username,
-            'roleName' => $sending->getRole(),
-        );
-
-        // template for student records
-        $templateName = 'admin/privateMessage';
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 

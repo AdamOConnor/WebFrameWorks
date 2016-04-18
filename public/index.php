@@ -46,7 +46,7 @@ $app->get('/adminMessages', controller('Adamoconnorframeworks\Controller', 'mess
 $app->get('/adminCreateMessage', controller('Adamoconnorframeworks\Controller', 'admin/createMessage'));
 $app->post('/redirectAdminForm', controller('Adamoconnorframeworks\Controller', 'admin/processRegistrationFormAdmin'));
 
-
+$app->post('/deleteJob/{id}', controller('Adamoconnorframeworks\Controller', 'admin/deleteJob'));
 $app->post('/processForm', controller('Adamoconnorframeworks\Controller', 'student/processResume'));
 $app->post('/login', controller('Adamoconnorframeworks\Controller', 'user/processLogin'));
 $app->post('/redirectForm', controller('Adamoconnorframeworks\Controller', 'user/processRegistrationForm'));
@@ -61,6 +61,7 @@ $app->post('/privateMessage', controller('Adamoconnorframeworks\Controller', 'me
 $app->post('/privateDeleteMessage/{id}', controller('Adamoconnorframeworks\Controller', 'message/privateDelete'));
 $app->post('/privateEditMessage/{id}', controller('Adamoconnorframeworks\Controller', 'message/privateMessageEdit'));
 $app->get('/employment', controller('Adamoconnorframeworks\Controller', 'admin/employment'));
+$app->get('/pendingJob', controller('Adamoconnorframeworks\Controller', 'admin/pendingJob'));
 $app->post('/setStatusOfJob/{id}', controller('Adamoconnorframeworks\Controller', 'admin/jobStatus'));
 //-----------------------------------------
 // secure student page
@@ -68,6 +69,7 @@ $app->post('/setStatusOfJob/{id}', controller('Adamoconnorframeworks\Controller'
 $app->get('/student', controller('Adamoconnorframeworks\Controller', 'student/index'));
 $app->get('/studentCv', controller('Adamoconnorframeworks\Controller', 'student/cv'));
 $app->get('/showPrivateMessagesStudent', controller('Adamoconnorframeworks\Controller', 'student/showPrivateMessages'));
+$app->get('/jobs', controller('Adamoconnorframeworks\Controller', 'student/jobs'));
 
 //-----------------------------------------
 // secure employer page

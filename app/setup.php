@@ -12,7 +12,6 @@ define('DB_NAME', 'itb');
 
 $loader = new Twig_Loader_Filesystem($templatesPath);
 $twig = new Twig_Environment($loader);
-$twig->getExtension('core')->setTimezone('Europe/Dublin');
 
 // set up silex
 $app = new Silex\Application();

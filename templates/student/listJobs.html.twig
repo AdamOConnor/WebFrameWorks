@@ -8,13 +8,10 @@
 
 {% block main %}
 <div class="adminIndex">
-    <h1>Active jobs from employers !</h1>
-    <br>
-    <a href="/pendingJob" class="createMessage">Pending Jobs</a>
-    <br>
-    <br>
+    <h1>List of jobs from employers !</h1>
+
     <p>
-       these are the list of jobs employers have sent that are Active.
+       these are the list of jobs employers have sent.
     </p>
 
     <table>
@@ -23,7 +20,7 @@
             <th> Description </th>
             <th> Position </th>
             <th> Closing date </th>
-            <th> Delete job </th>
+            <th> Submit Application </th>
         </tr>
     {% for job in jobs %}
         {% if job.status is sameas("Active") %}
@@ -33,12 +30,14 @@
             <td> {{ job.position }} </td>
             <td> {{ job.date|date("l jS M h:i:s A", "Europe/Dublin")  }} </td>
             <td>
-                <form action="/deleteJob/{{ job.id }}" method="post" class="messageForm">
-                    <input type="submit" value="Delete Job" class="tableButtonAction">
+                <form action="/setStatusOfJob/{{ job.id }}" method="post" class="messageForm">
+                    <input type="submit" value="Submit Job" class="tableButtonAction">
                 </form>
             </td>
         </tr>
         {% endif %}
+        {% else %}
+         No Jobs Available
     {% endfor %}
     </table>
 </div>

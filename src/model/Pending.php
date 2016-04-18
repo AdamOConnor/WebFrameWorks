@@ -205,6 +205,11 @@ class Pending extends DatabaseTable
         return $objects;
     }
 
+    /**
+     * inserting a pending job into the database table.
+     * @param Pending $job
+     * @return null|string
+     */
     public static function insert(Pending $job)
     {
         $status = $job->getStatus();
@@ -227,6 +232,49 @@ class Pending extends DatabaseTable
         $statement->bindParam(':description', $description, \PDO::PARAM_STR);
         $statement->bindParam(':jobposition', $position, \PDO::PARAM_STR);
         $statement->bindParam(':mytime', $time, \PDO::PARAM_STR);
+        $statement->execute();
+
+        $queryWasSuccessful = ($statement->rowCount() > 0);
+        if($queryWasSuccessful) {
+            return $connection->lastInsertId();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * delete a job from the pending jobs table.
+     * @param $id
+     * @return bool
+     */
+    public static function delete($id)
+    {
+        $db = new DatabaseManager();
+        $connection = $db->getDbh();
+
+        $sql = 'DELETE FROM pending_jobs WHERE id=:id';
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(':id', $id, \PDO::PARAM_INT);
+        $queryWasSuccessful = $statement->execute();
+        return $queryWasSuccessful;
+    }
+
+    /**
+     * updating the status of the job
+     * so that the lecturer can make that job become active.
+     * @param $status
+     * @param $id
+     * @return null|string
+     */
+    public static function updateStatus($status, $id)
+    {
+        $db = new DatabaseManager();
+        $connection = $db->getDbh();
+
+        $sql = 'UPDATE pending_jobs SET status=:status WHERE id=:id';
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(':id', $id, \PDO::PARAM_INT);
+        $statement->bindParam(':status', $status, \PDO::PARAM_STR);
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
