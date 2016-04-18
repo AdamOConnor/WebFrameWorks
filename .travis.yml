@@ -9,6 +9,10 @@ matrix:
     - php: 7.0
     - php: hhvm
 
+install:
+- php vendor/vendors.php
+- composer require mattsmithdev/pdo-crud-for-free=dev-master
+
 # configure notifications (email, IRC, campfire etc)
 notifications:
   irc: "irc.freenode.org#yourfavouriteroomfortravis"
