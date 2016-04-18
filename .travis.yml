@@ -10,7 +10,7 @@ matrix:
     - php: hhvm
 
 install:
-- php vendor/vendors.php
+- composer dump-autoload
 - composer require mattsmithdev/pdo-crud-for-free=dev-master
 
 # configure notifications (email, IRC, campfire etc)
