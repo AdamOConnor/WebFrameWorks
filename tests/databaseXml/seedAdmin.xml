@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<dataset name="itb_test">
+    <table name="admin">
+        <column name="id">id</column>
+        <column name="email">email</column>
+        <column name="username">username</column>
+        <column name="role">role</column>
+
+        <row name="admin">
+            <value name="id">1</value>
+            <value name="email">admin@itb.ie</value>
+            <value name="username">admin</value>
+            <value name="role">Lecturer</value>
+        </row>
+    </table>
+</dataset>

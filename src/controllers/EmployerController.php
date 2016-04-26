@@ -9,7 +9,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Adamoconnorframeworks\Model\Pending;
 use Adamoconnorframeworks\Model\User;
-
+use Adamoconnorframeworks\Pdf;
 /**
  * simple authentication using silex and twig template's
  * Class EmployerController
@@ -35,14 +35,11 @@ class EmployerController
             // not authenticated, so redirect to LOGIN page
             return $app->redirect('/login');
         }
-        $date = '07.03.2011';
-        date_default_timezone_set('Europe/Dublin');
-        $x = strtotime("$date 18:11");
+
         // store username into args array
         $argsArray = array(
             'username' => $username,
-            'roleName' => 'Employer',
-            'time' => $x
+            'roleName' => 'Employer'
         );
 
         // get the correct template.
@@ -60,6 +57,8 @@ class EmployerController
     {
         // test if 'username' stored in session ...
         $username = getAuthenticatedUserName($app);
+        $currentUser = User::getOneByUsername($username);
+        $jobs = Pending::getAll();
 
         // check we are authenticated --------
         $isAuthenticated = (null != $username);
@@ -67,11 +66,16 @@ class EmployerController
             // not authenticated, so redirect to LOGIN page
             return $app->redirect('/login');
         }
+        
+        $now = new \DateTime();
+        $timestamp = $now->getTimestamp();
 
         // store username into args array
         $argsArray = array(
             'username' => $username,
-            'roleName' => 'Employer'
+            'roleName' => $currentUser->getRole(),
+            'jobs' => $jobs,
+            'time' => $timestamp
         );
 
         // template for the employer records
@@ -140,5 +144,7 @@ class EmployerController
         }
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
+
+
 
 }

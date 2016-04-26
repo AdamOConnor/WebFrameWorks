@@ -8,26 +8,40 @@
 
 {% block main %}
 
-    <h1>Here are today's secret agent codes</h1>
+    <div class="adminIndex">
+        <h1>List of jobs from employers !</h1>
 
-    <ul>
-        <li>
-            q: how is the weather in Limerick?
-            <br>
-            a: wet and windy for this time of year
-        </li>
+        <p>
+            these are the list of jobs employers have sent.
+        </p>
 
-        <li>
-            q: Is that the New York Stamp Collector Annual you are reading?
-            <br>
-            a: yes, philately is my favourite hobby for this time of year
-        </li>
-
-        <li>
-            q: good weather for ducks!
-            <br>
-            a: yes, they like the wind and rain this time of year
-        </li>
-    </ul>
+        <table>
+            <tr>
+                <th> Company </th>
+                <th> Description </th>
+                <th> Position </th>
+                <th> Closing date </th>
+                <th> Submit Application </th>
+            </tr>
+            {% for job in jobs %}
+                {% if job.status is sameas("Active") and time > job.date and job.username is sameas(username) %}
+                    <tr>
+                        <td> {{ job.company }} </td>
+                        <td> {{ job.description }} </td>
+                        <td> {{ job.position }} </td>
+                        <td> {{ job.date|date("l jS M h:i:s A", "Europe/Dublin")  }} </td>
+                        <td>
+                            <form action="/getAll/{{ job.id }}" method="post" class="messageForm">
+                                <input type="hidden" name="jobId" value="{{ job.id }}">
+                                <input type="submit" value="Get Applications">
+                            </form>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% else %}
+                No Jobs Available
+            {% endfor %}
+        </table>
+    </div>
 
 {% endblock %}

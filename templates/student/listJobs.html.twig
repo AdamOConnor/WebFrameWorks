@@ -23,15 +23,15 @@
             <th> Submit Application </th>
         </tr>
     {% for job in jobs %}
-        {% if job.status is sameas("Active") %}
+        {% if job.status is sameas("Active") and time <= job.date %}
         <tr>
             <td> {{ job.company }} </td>
             <td> {{ job.description }} </td>
             <td> {{ job.position }} </td>
             <td> {{ job.date|date("l jS M h:i:s A", "Europe/Dublin")  }} </td>
             <td>
-                <form action="/setStatusOfJob/{{ job.id }}" method="post" class="messageForm">
-                    <input type="submit" value="Submit Job" class="tableButtonAction">
+                <form action="/applyForJob/{{ job.id }}" method="post" class="messageForm">
+                    <input type="submit" value="Submit Cv" class="tableButtonAction">
                 </form>
             </td>
         </tr>

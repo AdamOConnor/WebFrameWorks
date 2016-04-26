@@ -1,12 +1,10 @@
 {% extends '_base.html.twig' %}
 
 {# ------------------------------------------------- #}
-{% block pageTitle %}Registration Succeed{% endblock %}
+{% block pageTitle %}{{ title }}{% endblock %}
 
 {# ------------------------------------------------- #}
 
-
-{# ------------------------------------------------- #}
 {% block main %}
 <div id="mainSection">
 
@@ -20,6 +18,11 @@
         {% if otherMessage %}
             {{ otherMessage }}
         {% endif %}
+    </p>
+    <p>
+        {% for file in files %}
+            {{ file }}
+        {% endfor %}
     </p>
 </div>
 {% endblock %}

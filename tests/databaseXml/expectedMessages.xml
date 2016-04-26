@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+   <dataset name="itb_test">
+    <table name="messages">
+        <column name="id">id</column>
+        <column name="email">email</column>
+        <column name="text">text</column>
+        <column name="user">user</column>
+        <column name="timestamp">timestamp</column>
+
+        <row name="messages">
+            <value name="id">11</value>
+            <value name="email">admin@itb.ie</value>
+            <value name="text">duno ?</value>
+            <value name="user">admin</value>
+            <value name="timestamp">1460577489</value>
+        </row>
+
+        <row name="messages">
+            <value name="id">12</value>
+            <value name="email">adam-o-connor@hotmail.com</value>
+            <value name="text">hello how are you ?</value>
+            <value name="user">adam</value>
+            <value name="timestamp">1460577338</value>
+        </row>
+
+    </table>
+</dataset>

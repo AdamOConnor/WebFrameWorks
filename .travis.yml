@@ -1,14 +1,6 @@
 # see http://about.travis-ci.org/docs/user/languages/php/ for more hints
 language: php
 
-matrix:
-  exclude:
-    - php: hhvm
-      env: DB=pgsql  # PDO driver for pgsql is unsupported by HHVM (3rd party install for support)
-  allow_failures:
-    - php: 7.0
-    - php: hhvm
-
 install:
 - composer dump-autoload
 - composer require mattsmithdev/pdo-crud-for-free=dev-master

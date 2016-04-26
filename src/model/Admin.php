@@ -58,6 +58,15 @@ class Admin extends DatabaseTable
     }
 
     /**
+     * set the id of the admin.
+     * @param $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
      * get the email address of the user.
      * @return mixed
      */

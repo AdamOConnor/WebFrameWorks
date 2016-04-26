@@ -103,6 +103,46 @@ class StudentController
             return $app->redirect('/login');
         }
 
+        $storage = new \Upload\Storage\FileSystem('/');
+        $file = new \Upload\File($request->get('image'), $storage);
+
+// Optionally you can rename the file on upload
+        $new_filename = uniqid();
+        $file->setName($new_filename);
+
+// Validate file upload
+// MimeType List => http://www.iana.org/assignments/media-types/media-types.xhtml
+        $file->addValidations(array(
+            // Ensure file is of type "image/png"
+            // new \Upload\Validation\Mimetype('image/png'),
+
+            //You can also add multi mimetype validation
+            new \Upload\Validation\Mimetype(array('image/png', 'image/gif', 'image/jpg')),
+
+            // Ensure file is no larger than 5M (use "B", "K", M", or "G")
+            new \Upload\Validation\Size('5M')
+        ));
+
+        // Access data about the file that has been uploaded
+        $data = array(
+            'name'       => $file->getNameWithExtension(),
+            'extension'  => $file->getExtension(),
+            'mime'       => $file->getMimetype(),
+            'size'       => $file->getSize(),
+            'md5'        => $file->getMd5(),
+            'dimensions' => $file->getDimensions()
+        );
+
+        // Try to upload file
+        try {
+            // Success!
+            $file->upload();
+        } catch (\Exception $e) {
+            // Fail!
+            $errors = $file->getErrors();
+            echo $errors;
+        }
+
         $email = $request->get('emailAddress');
         $firstName = $request->get('firstname');
         $surname = $request->get('surname');
@@ -126,7 +166,7 @@ class StudentController
         $updateCv->setName($firstName);
         $updateCv->setSurname($surname);
         $updateCv->setNumber($number);
-        $updateCv->setImage($image);
+        $updateCv->setImage('upload/'.$image);
         $updateCv->setStatus($employmentStatus);
         $updateCv->setAddress($addressLine01);
         $updateCv->setTown($addressLine02);
@@ -319,10 +359,15 @@ class StudentController
 
         // store username into args array
         // and rolename
+
+        $now = new \DateTime();
+        $timestamp = $now->getTimestamp();
+        
         $argsArray = array(
             'username' => $username,
             'roleName' => $currentUser->getRole(),
-            'jobs' => $pendingJobs
+            'jobs' => $pendingJobs,
+            'time' => $timestamp
         );
 
         // template for admin index

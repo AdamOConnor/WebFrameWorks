@@ -70,13 +70,18 @@ $app->get('/student', controller('Adamoconnorframeworks\Controller', 'student/in
 $app->get('/studentCv', controller('Adamoconnorframeworks\Controller', 'student/cv'));
 $app->get('/showPrivateMessagesStudent', controller('Adamoconnorframeworks\Controller', 'student/showPrivateMessages'));
 $app->get('/jobs', controller('Adamoconnorframeworks\Controller', 'student/jobs'));
+$app->post('/applyForJob/{id}', controller('Adamoconnorframeworks\Controller', 'job/apply'));
+
 
 //-----------------------------------------
 // secure employer page
 //-----------------------------------------
 $app->get('/employer', controller('Adamoconnorframeworks\Controller', 'employer/index'));
-$app->get('/employerRecords', controller('Adamoconnorframeworks\Controller', 'employer/codes'));
+$app->get('/employerRecords', controller('Adamoconnorframeworks\Controller', 'employer/records'));
 $app->post('/processJob', controller('Adamoconnorframeworks\Controller', 'employer/processJob'));
+
+$app->post('/getAll/{id}', controller('Adamoconnorframeworks\Controller', 'pdf/index'));
+$app->get('/redirectJob', controller('Adamoconnorframeworks\Controller', 'pdf/redirect'));
 //-----------------------------------------
 // error pages if users enter url
 //-----------------------------------------
@@ -94,5 +99,6 @@ $app->error(function (\Exception $e, $code) use ($app) {
 });
 //run the silex front controller
 //------------------------------
+//$app['debug']=true;
 $app->run();
   

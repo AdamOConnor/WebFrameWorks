@@ -205,6 +205,24 @@ class Pending extends DatabaseTable
         return $objects;
     }
 
+    public static function getOneByUsername($username)
+    {
+        $db = new DatabaseManager();
+        $connection = $db->getDbh();
+
+        $sql = 'SELECT * FROM pending_jobs WHERE username=:username';
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(':username', $username, \PDO::PARAM_STR);
+        $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
+        $statement->execute();
+
+        if ($object = $statement->fetch()) {
+            return $object;
+        } else {
+            return null;
+        }
+    }
+
     /**
      * inserting a pending job into the database table.
      * @param Pending $job
