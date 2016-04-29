@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<dataset name="itb_test">
+    <!-- Table users -->
+    <table name="users">
+        <column name="id">id</column>
+        <column name="email">email</column>
+        <column name="username">username</column>
+        <column name="password">password</column>
+        <column name="role">role</column>
+        <column name="status">status</column>
+
+        <row name="users">
+            <value name="id">1</value>
+            <value name="email">adam-o-connor@hotmail.com</value>
+            <value name="username">adam</value>
+            <value name="password">$2y$10$K06Ab4mLBCZwMkwXk2vGtOZfejcSJLpHi5rju.0XiZXVukdPH2zgm</value>
+            <value name="role">Student</value>
+            <value name="status">employed</value>
+        </row>
+        <row name="users">
+            <value name="id">2</value>
+            <value name="email">hogarty.erica@gmail.com</value>
+            <value name="username">erica</value>
+            <value name="password">$2y$10$HAbUtqtKut3zHXSYCFEi9uYu04y/25yfZbuJoNFIS8U4DDLulHoU6</value>
+            <value name="role">Student</value>
+            <value name="status">unemployed</value>
+        </row>
+        <row name="users">
+            <value name="id">3</value>
+            <value name="email">employer@itb.ie</value>
+            <value name="username">Glaxo</value>
+            <value name="password">$2y$10$YGhdyZLs5lP3rz8okRpmLek0RI0NskNnB4aNP1h0UXDnReeDWVSHK</value>
+            <value name="role">Employer</value>
+            <value name="status">employed</value>
+        </row>
+    </table>
+</dataset>

@@ -1,16 +1,19 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: Adam O'Connor
- * Date: 01/04/2016
- * Time: 23:29
+ * used for the CRUD of the resume's
+ * of the user's who want to apply for a job.
  */
 
-namespace Adamoconnorframeworks\Model;
+namespace Adamoconnorframeworks\model;
 
 use Mattsmithdev\PdoCrud\DatabaseTable;
 use Mattsmithdev\PdoCrud\DatabaseManager;
 
+/**
+ * Class Resume
+ * @package Adamoconnorframeworks\model
+ */
 class Resume extends DatabaseTable
 {
     /**
@@ -397,31 +400,7 @@ class Resume extends DatabaseTable
             return null;
         }
     }
-
-    /**
-     * get the resume by the username that
-     * has been used by the user.
-     * @param $username
-     * @return mixed|null
-     */
-    public static function getOneByUsername($username)
-    {
-        $db = new DatabaseManager();
-        $connection = $db->getDbh();
-
-        $sql = 'SELECT * FROM resume WHERE email=:email';
-        $statement = $connection->prepare($sql);
-        $statement->bindParam(':email', $username, \PDO::PARAM_STR);
-        $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
-        $statement->execute();
-
-        if ($object = $statement->fetch()) {
-            return $object;
-        } else {
-            return null;
-        }
-    }
-
+    
     /**
      * get the resume from the id that 
      * is inserted.
@@ -467,8 +446,8 @@ class Resume extends DatabaseTable
     /**
      * update a resume generically.
      * @param Resume $resume
-     * @return null|string
-    */
+     * @return bool
+     */
     public static function update(Resume $resume)
     {
         $id = $resume->getId();
@@ -512,10 +491,10 @@ class Resume extends DatabaseTable
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
-        if($queryWasSuccessful) {
-            return $connection->lastInsertId();
+        if ($queryWasSuccessful) {
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 
@@ -542,10 +521,10 @@ class Resume extends DatabaseTable
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
-        if($queryWasSuccessful) {
-            return $connection->lastInsertId();
+        if ($queryWasSuccessful) {
+            return true;
         } else {
-            return 1;
+            return false;
         }
     }
 
@@ -553,7 +532,7 @@ class Resume extends DatabaseTable
      * insert the dummy data into the resume form,
      * when the student user creates and account.
      * @param Resume $resume
-     * @return null|string
+     * @return bool
      */
     public static function insert(Resume $resume)
     {
@@ -562,16 +541,28 @@ class Resume extends DatabaseTable
         $name = 'Joe';
         $surname = 'Bloggs';
         $number = '00851234567';
-        $image = 'noImage.jpg';
+        $image = 'upload/noImage.png';
         $status = $resume->getStatus();
         $address = '123 Fake Street';
         $town = 'Springfield';
         $city = 'Dublin';
         $eircode = 'F4K£STR33T';
         $country = 'Ireland';
-        $employment = 'sajsajsahsdss';
-        $qualifications = 'sakjskjska';
-        $skills = 'jaksjajsajsk';
+        $employment = 'STEPPING STONE ADVERTISING, New York, NY
+        A full-service ad agency devoted to the well-planned execution of customized direct and digital marketing campaigns. 
+        Graphic Design Specialist, Aug 2009-May 2011.
+        - Developed numerous marketing programs (logos, brochures, newsletters, infographics, presentations, and advertisements) and guaranteed that they exceeded the expectations of our clients.
+        - Managed up to 5 projects or tasks at a given time while under pressure to meet weekly deadlines.
+        - Recommended and consulted with clients on the most appropriate graphic design options based on their overall marketing goals.
+        - Created 4+ design presentations and proposals a month for clients and account managers.';
+        $qualifications = 'ROCHESTER INSTITUTE OF TECHNOLOGY, Rochester NY Bachelor of Fine Arts in Graphic Design May 2009,
+        - GPA: 3.4/4.0
+        - Designed the school\'s online newspaper';
+        $skills = '   - Proficiency in Adobe Creative Suite (InDesign, Illustrator, Photoshop)
+        - Member of the Society for Experiential Graphic Design (SEGD)
+        - Skilled in Microsoft Office Suite
+        - Working knowledge of HTML and CSS
+        - Bilingual in English and Spanish';
 
         $db = new DatabaseManager();
         $connection = $db->getDbh();
@@ -599,11 +590,6 @@ class Resume extends DatabaseTable
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
-        if($queryWasSuccessful) {
-            return $connection->lastInsertId();
-        } else {
-            return null;
-        }
+        return true;
     }
-    
 }

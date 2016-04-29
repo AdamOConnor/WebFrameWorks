@@ -1,12 +1,10 @@
 <?php
 
 /**
- * @Author Adam O'Connor
- * class that gets user's details
- * for logging into the website aswell as
- * registering, for an account.
+ * used for the CRUD of the normal users database,
+ * such as students and employers.
  */
-namespace Adamoconnorframeworks\Model;
+namespace Adamoconnorframeworks\model;
 
 use Mattsmithdev\PdoCrud\DatabaseTable;
 use Mattsmithdev\PdoCrud\DatabaseManager;
@@ -54,12 +52,21 @@ class User extends DatabaseTable
     private $status;
 
     /**
-     * get the id of the user.
+     * get id of user
      * @return int
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * settin the id of the user.
+     * @param $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
     
     /**
@@ -312,10 +319,10 @@ class User extends DatabaseTable
     }
 
     /**
-     * insert new user used for registration.
+     * insert new user
      * @param User $user
      * @return null|string
-    */
+     */
     public static function insert(User $user)
     {
         $email = $user->getEmail();
@@ -338,11 +345,7 @@ class User extends DatabaseTable
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
-        if ($queryWasSuccessful) {
-            return $connection->lastInsertId();
-        } else {
-            return null;
-        }
+        return true;
     }
 
     /**
@@ -354,7 +357,6 @@ class User extends DatabaseTable
      */
     public static function updateUserLogin(User $user, $id)
     {
-        
         $email = $user->getEmail();
         $username = $user->getUsername();
         $password = $user->getPassword();
@@ -375,10 +377,10 @@ class User extends DatabaseTable
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
-        if($queryWasSuccessful) {
-            return $connection->lastInsertId();
+        if ($queryWasSuccessful) {
+            return true;
         } else {
-            return 1;
+            return false;
         }
     }
 }

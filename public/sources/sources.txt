@@ -1,6 +1,15 @@
-email.png : my image made for 3rd year 1st semester project.
+code helping's
 registration form : http://codepen.io/afirulaf/pen/djAen?editors=1010
+PDF : using the fpdf website - http://www.fpdf.org/
+creating a zip folder in php : https://davidwalsh.name/create-zip-php
 
+images
 icons people.png
 interface.png
 profile.png : http://www.flaticon.com/search/2?word=id
+email.png : my image made for 3rd year 1st semester project.
+
+upload
+noImage.png : http://news.cpanel.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png
+man.jpg : http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg
+barack.jpg : http://pngimg.com/upload/face_PNG5660.png

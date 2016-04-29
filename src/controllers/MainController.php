@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @Author Adam O'Connor
- * maincontroller for common users
+ * main routing for the index page '/'
+ * normal user's
  */
 namespace Adamoconnorframeworks\Controller;
 
@@ -10,6 +10,11 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Adamoconnorframeworks\Model\User;
 use Adamoconnorframeworks\Model\Admin;
+
+/**
+ * Class MainController
+ * @package Adamoconnorframeworks\Controller
+ */
 
 class MainController
 {
@@ -69,10 +74,8 @@ class MainController
         $getUserRole = User::canFindSpecificRoleOfUser($username);
         $getAdminRole = Admin::canFindSpecificRoleOfUser($username);
 
-        if($getUserRole)
-        {
-            switch ($getUserRole)
-            {
+        if ($getUserRole) {
+            switch ($getUserRole) {
                 case 'Student':
                     $app['session']->set('user', array('username' => $username));
                     return $app->redirect('/student');
@@ -80,7 +83,7 @@ class MainController
                     $app['session']->set('user', array('username' => $username));
                     return $app->redirect('/employer');
             }
-        }elseif ($getAdminRole == 'Lecturer') {
+        } elseif ($getAdminRole == 'Lecturer') {
             $app['session']->set('user', array('username' => $username));
             return $app->redirect('/admin');
         }
@@ -115,14 +118,18 @@ class MainController
         return $app['twig']->render($template . '.html.twig', $argsArray);
     }
 
-    public static function error404(Application $app, $message, $heading)
+    /**
+     * routing to the error template of user goes of course.
+     * @param Application $app
+     * @return mixed
+     */
+    public static function error404(Application $app)
     {
         $argsArray = [
-            'errorMessage' => $message,
-            'errorHeading' => $heading
+            'errorMessage' => 'Sorry we couldnt find this page...',
+            'errorHeading' => 'No page found.'
         ];
         $templateName = '404';
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
-
 }

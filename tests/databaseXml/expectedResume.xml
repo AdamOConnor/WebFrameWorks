@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <dataset name="itb_test">
-    <table name="applications">
+    <table name="resume">
         <column name="id">id</column>
-        <column name="job">job</column>
+        <column name="email">email</column>
         <column name="name">name</column>
         <column name="surname">surname</column>
-        <column name="email">email</column>
         <column name="number">number</column>
         <column name="image">image</column>
         <column name="status">status</column>
@@ -19,12 +18,11 @@
         <column name="qualifications">qualifications</column>
         <column name="skills">skills</column>
 
-        <row name="applications">
+        <row name="resume">
             <value name="id">1</value>
-            <value name="job">2</value>
+            <value name="email">adam-o-connor@hotmail.com</value>
             <value name="name">Joe</value>
             <value name="surname">Bloggs</value>
-            <value name="email">adam-o-connor@hotmail.com</value>
             <value name="number">851234567</value>
             <value name="image">noImage.jpg</value>
             <value name="status">employed</value>
@@ -38,12 +36,11 @@
             <value name="skills">jaksjajsajsk</value>
         </row>
 
-        <row name="applications">
+        <row name="resume">
             <value name="id">2</value>
-            <value name="job">3</value>
+            <value name="email">hogarty.erica@hotmail.com</value>
             <value name="name">Joe</value>
             <value name="surname">Bloggs</value>
-            <value name="email">hogarty.erica@hotmail.com</value>
             <value name="number">851234567</value>
             <value name="image">noImage.jpg</value>
             <value name="status">employed</value>

@@ -5,18 +5,21 @@
         <column name="id">id</column>
         <column name="email">email</column>
         <column name="username">username</column>
+        <column name="password">password</column>
         <column name="role">role</column>
 
         <row name="itb_test">
             <value name="id">1</value>
             <value name="email">admin@itb.ie</value>
             <value name="username">admin</value>
+            <value name="password">$2y$10$gbhk2y00DTq2XLZ6GgvsJOoVuSFciVorPYVL3SL1zCpP8PqDHbMh6</value>
             <value name="role">Lecturer</value>
         </row>
         <row name="itb_test">
             <value name="id">2</value>
             <value name="email">mattsmith@itb.ie</value>
             <value name="username">matt</value>
+            <value name="password">$2y$10$Sr5NYiTkk/SRgpU8LSkNK.U7W3tlWuGu0RAg5ZYrkgnYKHE9vefDG</value>
             <value name="role">Lecturer</value>
         </row>
     </table>

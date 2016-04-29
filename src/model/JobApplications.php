@@ -1,16 +1,19 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: Adam O'Connor
- * Date: 01/04/2016
- * Time: 23:29
+ * used for the CRUD of the jobApplications that the
+ * students have applied for these resume's are stored here.
  */
 
-namespace Adamoconnorframeworks\Model;
+namespace Adamoconnorframeworks\model;
 
 use Mattsmithdev\PdoCrud\DatabaseTable;
 use Mattsmithdev\PdoCrud\DatabaseManager;
 
+/**
+ * Class JobApplications
+ * @package Adamoconnorframeworks\model
+ */
 class JobApplications extends DatabaseTable
 {
     /**
@@ -109,15 +112,16 @@ class JobApplications extends DatabaseTable
      */
     private $skills;
 
+
     /**
-     * get the id of the application.
+     * get the id of the job application
      * @return int
      */
     public function getId()
     {
         return $this->id;
     }
-
+    
     /**
      * set the id of the application.
      * @param $id
@@ -399,6 +403,11 @@ class JobApplications extends DatabaseTable
         $this->skills = $skills;
     }
 
+    /**
+     * get all of the applications
+     * in the table.
+     * @return array
+     */
     public static function getAll()
     {
         $db = new DatabaseManager();
@@ -413,6 +422,12 @@ class JobApplications extends DatabaseTable
         return $objects;
     }
 
+    /**
+     * get multiple job applications by using the
+     * job id number.
+     * @param $id
+     * @return array
+     */
     public static function getAllByJobId($id)
     {
         $db = new DatabaseManager();
@@ -427,11 +442,11 @@ class JobApplications extends DatabaseTable
         $objects = $statement->fetchAll();
         return $objects;
     }
-    
+
     /**
+     * inserting a students resume for a job.
      * @param JobApplications $resume
-     * @param $id
-     * @return null|string
+     * @return bool
      */
     public static function insert(JobApplications $resume)
     {
@@ -477,11 +492,6 @@ class JobApplications extends DatabaseTable
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
-        if($queryWasSuccessful) {
-            return $connection->lastInsertId();
-        } else {
-            return null;
-        }
+        return true;
     }
-    
 }

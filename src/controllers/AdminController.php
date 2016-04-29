@@ -1,7 +1,8 @@
 <?php
+
 /**
- * @Author Adam O'Connor
- * admin controller for lecturer
+ * used for all interactivity of the admin side of the login,
+ * CRUD all student records within the pages on this side.
  */
 namespace Adamoconnorframeworks\Controller;
 
@@ -65,7 +66,7 @@ class AdminController
     {
         // test if 'username' stored in session ...
         $username = getAuthenticatedUserName($app);
-        
+        // check for pending jobs from employers
         $pendingJobs = Pending::getAll();
 
         // check we are authenticated --------
@@ -155,6 +156,7 @@ class AdminController
      * view more information about user.
      * @param Request $request
      * @param Application $app
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function detailAction(Request $request, Application $app, $id)
@@ -208,10 +210,8 @@ class AdminController
         $resumeRepository = Resume::deleteResume($id);
         $userRepository = User::delete($id);
 
-        if($resumeRepository && $userRepository){
-
+        if ($resumeRepository && $userRepository) {
             return $app->redirect('/admin');
-           
         } else {
             $templateName = 'messages';
             $argsArray = array(
@@ -232,11 +232,12 @@ class AdminController
      */
     public function deleteJobAction(Request $request, Application $app, $id)
     {
+        // authenticated
         $username = getAuthenticatedUserName($app);
         $currentUser = User::getOneByUsername($username);
-        
-        if($currentUser == null)
-        {
+
+        // if user is not ther use admin.
+        if ($currentUser == null) {
             $currentUser = Admin::getOneByUsername($username);
         }
 
@@ -245,22 +246,22 @@ class AdminController
             // not authenticated, so redirect to LOGIN page
             return $app->redirect('/login');
         }
-       
+
+        // delete the job
         $deleteJob = Pending::delete($id);
 
-        if($deleteJob == true)
-        {
+        if ($deleteJob == true) {
             $templateName = 'redirect';
             $argsArray = array(
-                'headingMessage' => 'Success the job has been added !!',
-                'otherMessage' => 'Job has now been added and students can now view....',
+                'headingMessage' => 'Success the job has been deleted !!',
+                'otherMessage' => 'Job has now been deleted....',
                 'username' => $username,
                 'roleName' => $currentUser->getRole()
             );
-        }else {
+        } else {
             $templateName = 'redirect';
             $argsArray = array(
-                'headingMessage' => 'Sorry job has not been added !!',
+                'headingMessage' => 'Sorry job has not been deleted !!',
                 'otherMessage' => 'Something terrible has happend sorry....',
                 'username' => $username,
                 'roleName' => $currentUser->getRole()
@@ -306,6 +307,7 @@ class AdminController
     }
 
     /**
+     * used to edit the login information of a user.
      * @param Request $request
      * @param Application $app
      * @param $id
@@ -343,7 +345,7 @@ class AdminController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * 
      */
-    public function  updateLoginAction(Request $request, Application $app ,$id)
+    public function updateLoginAction(Request $request, Application $app, $id)
     {
         $username = getAuthenticatedUserName($app);
 
@@ -361,8 +363,7 @@ class AdminController
         $status = $request->get('status');
         $employmentStatus = $request->get('role');
         
-        if($password == $rePassword)
-        {
+        if ($password == $rePassword) {
             $updateUser = new User();
             // set each of the fields with the registration form data.
             $updateUser->setEmail($emailId);
@@ -378,8 +379,7 @@ class AdminController
             $tryUpdateResume = Resume::updateUserCv($updateResume, $id);
             $tryUpdateUser = User::updateUserLogin($updateUser, $id);
 
-            if($tryUpdateResume != null || $tryUpdateUser != null)
-            {
+            if ($tryUpdateResume != null || $tryUpdateUser != null) {
                 $argsArray = array(
                     'username' => $username,
                     'roleName' => 'Lecturer',
@@ -389,8 +389,7 @@ class AdminController
 
                 // template for student records
                 $templateName = 'redirect';
-            }
-            else {
+            } else {
                 $argsArray = array(
                     'username' => $username,
                     'roleName' => 'Lecturer',
@@ -400,8 +399,7 @@ class AdminController
                 // template for student records
                 $templateName = 'redirect';
             }
-        }
-        else {
+        } else {
             $argsArray = array(
                 'username' => $username,
                 'roleName' => 'Lecturer',
@@ -469,13 +467,13 @@ class AdminController
 
         $success = Resume::update($updateCv);
 
-        if($success) {
+        if ($success) {
             $app['session']->set('user', array(
                 'username' => $username,
                 'roleName' => 'Lecturer'
             ));
             return $app->redirect('/redirectAdmin');
-        }else {
+        } else {
             $app['session']->set('user', array(
                 'username' => $username,
                 'roleName' => 'Lecturer',
@@ -497,7 +495,7 @@ class AdminController
         $username = getAuthenticatedUserName($app);
         $currentUser = User::getOneByUsername($username);
 
-        if($currentUser == null) {
+        if ($currentUser == null) {
             $currentUser = Admin::getOneByUsername($username);
         }
 
@@ -532,16 +530,18 @@ class AdminController
         $username = getAuthenticatedUserName($app);
         $sending = Admin::getOneByUsername($username);
 
-        if($sending == null) {
+        if ($sending == null) {
             $sending = User::getOneByUsername($username);
         }
-       // $receiver = User::getOneById($id);
+
         $receiver = Admin::getOneByUsername($id);
 
-        if($receiver == null) {
+        if ($receiver == null) {
             $receiver = User::getOneByUsername($id);
         }
-
+        if ($receiver == null) {
+            $receiver = User::getOneById($id);
+        }
 
         // check we are authenticated --------
         $isAuthenticated = (null != $username);
@@ -618,8 +618,7 @@ class AdminController
         $rePassword = $request->get('rePassword');
         $status = $request->get('status');
 
-        if($password != $rePassword || $rePassword != $password) {
-
+        if ($password != $rePassword || $rePassword != $password) {
             $templateName = 'admin/registerUser';
             $argsArray = array(
                 'username' => $AdminUser->getUsername(),
@@ -633,15 +632,20 @@ class AdminController
 
         if ($checkDetails == null) {
             // instantiate the class needed
-            if($accountType == 'Lecturer') {
+            if ($accountType == 'Lecturer') {
                 $newAdmin = new Admin();
                 $newAdmin->setEmail($emailId);
                 $newAdmin->setRole($accountType);
                 $newAdmin->setUsername($username);
                 $newAdmin->setPassword($password);
                 $success = Admin::insert($newAdmin);
-            }
-            else {
+
+                $to = $emailId;
+                $subject = "Registration completed";
+                $txt = "Congratulations you have now been registered on the CDM Work Placement website ";
+                $headers = "From: B00066540@student.itb.ie" . "\r\n";
+                mail($to, $subject, $txt, $headers);
+            } else {
                 $newUser = new User();
                 $newUser->setEmail($emailId);
                 $newUser->setRole($accountType);
@@ -649,11 +653,16 @@ class AdminController
                 $newUser->setPassword($password);
                 $newUser->setStatus($status);
                 $success = User::insert($newUser);
+
+                $to = $emailId;
+                $subject = "Registration completed";
+                $txt = "Congratulations you have now been registered on the CDM Work Placement website ";
+                $headers = "From: B00066540@student.itb.ie" . "\r\n";
+                mail($to, $subject, $txt, $headers);
             }
 
-            if ($success != null) {
-
-                if($accountType == 'Student') {
+            if ($success) {
+                if ($accountType == 'Student') {
                     $currentUser = User::getIdByEmail($emailId);
                     $insertResumeSampleData = new Resume();
                     $insertResumeSampleData->setId($currentUser->getId());
@@ -668,7 +677,7 @@ class AdminController
                     'headingMessage' => 'Well done you now registered a user.',
                     'otherMessage' => 'users can now login and create your curriculum vitae to look',
                 );
-            }else {
+            } else {
                 $templateName = 'admin/registerUser';
                 $argsArray = array(
                     'username' => $AdminUser->getUsername(),
@@ -676,13 +685,12 @@ class AdminController
                     'errorMessage' => 'Sorry please choose a different email and username !!'
                 );
             }
-        }
-        else {
+        } else {
             $templateName = 'admin/registerUser';
             $argsArray = array(
                 'username' => $AdminUser->getUsername(),
                 'roleName' =>  $AdminUser->getRole(),
-                'errorMessage' => 'Sorry something went wrong!! please try again.'
+                'errorMessage' => 'Please choose different username and email.'
             );
         }
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
@@ -703,7 +711,7 @@ class AdminController
         $student = User::getAll();
         $admin = Admin::getOneByUsername($username);
 
-        if($currentUser == null) {
+        if ($currentUser == null) {
             $currentUser = User::getOneByUsername($username);
         }
 
@@ -728,7 +736,14 @@ class AdminController
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 
-    
+    /**
+     * used by admin to set the status of a pending job to active.
+     * so that students can view it.
+     * @param Request $request
+     * @param Application $app
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function jobStatusAction(Request $request, Application $app, $id)
     {
         $username = getAuthenticatedUserName($app);
@@ -746,8 +761,7 @@ class AdminController
         
         $pending = Pending::updateStatus($status, $id);
         
-        if($pending != null)
-        {
+        if ($pending != null) {
             $templateName = 'redirect';
             $argsArray = array(
                 'headingMessage' => 'Success the job has been added !!',
@@ -755,7 +769,7 @@ class AdminController
                 'username' => $username,
                 'roleName' => $currentUser->getRole()
             );
-        }else {
+        } else {
             $templateName = 'redirect';
             $argsArray = array(
                 'headingMessage' => 'Sorry job has not been added !!',
@@ -766,6 +780,4 @@ class AdminController
         }
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
-
-
 }

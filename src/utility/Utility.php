@@ -18,9 +18,12 @@ use Silex\Application;
      * input:   Mattsmithdev\Samples, hello/name
      * output:  Mattsmithdev\Samples\HelloController::nameAction
      *
-     * @param $shortName controller and action name sepaerate by "/"
+     * @param $namespace
+     * @param $shortName
      * @return string namespace, controller class name plus :: plus action name
+     *
      */
+
     function controller($namespace, $shortName)
     {
         list($shortClass, $shortMethod) = explode('/', $shortName, 2);

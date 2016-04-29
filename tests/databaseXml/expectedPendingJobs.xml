@@ -28,5 +28,14 @@
                 <value name="position">Graphic Designer</value>
                 <value name="timestamp">1461095760</value>
             </row>
+            <row name="jobs">
+                <value name="id">4</value>
+                <value name="status">Active</value>
+                <value name="username">glaxo</value>
+                <value name="company">Glaxo Technologies</value>
+                <value name="description">office manager position now open.</value>
+                <value name="position">Office Manager</value>
+                <value name="timestamp">1460988111</value>
+            </row>
         </table>
     </dataset>

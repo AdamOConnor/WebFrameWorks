@@ -1,8 +1,18 @@
 <?php
-namespace Adamoconnorframeworks\Model;
+
+/**
+ * used for CRUD normal messages in the
+ * database.
+ */
+namespace Adamoconnorframeworks\model;
 
 use Mattsmithdev\PdoCrud\DatabaseTable;
 use Mattsmithdev\PdoCrud\DatabaseManager;
+
+/**
+ * Class Message
+ * @package Adamoconnorframeworks\model
+ */
 
 class Message extends DatabaseTable
 {
@@ -19,6 +29,7 @@ class Message extends DatabaseTable
     private $email;
 
     /**
+     * text of the message.
      * @var string $text
      */
     private $text;
@@ -36,15 +47,6 @@ class Message extends DatabaseTable
     private $timestamp;
 
     /**
-     * set the id of the message.
-     * @param $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
      * get the id of the message.
      * @return int
      */
@@ -54,12 +56,12 @@ class Message extends DatabaseTable
     }
 
     /**
-     * get email address of message.
-     * @return string
+     * set the id of the message.
+     * @param $id
      */
-    public function getEmail()
+    public function setId($id)
     {
-        return $this->email;
+        $this->id = $id;
     }
 
     /**
@@ -67,17 +69,17 @@ class Message extends DatabaseTable
      * @param $email
      */
     public function setEmail($email)
-   {
+    {
         $this->email = $email;
-   }
+    }
 
     /**
-     * get the text of the message.
+     * get email
      * @return string
      */
-    public function getText()
+    public function getEmail()
     {
-        return $this->text;
+        return $this->email;
     }
 
     /**
@@ -90,7 +92,16 @@ class Message extends DatabaseTable
     }
 
     /**
-     * set the user that sent the message.
+     * get the text.
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * set username.
      * @param $user
      */
     public function setUser($user)
@@ -99,7 +110,7 @@ class Message extends DatabaseTable
     }
 
     /**
-     * get the user of the message.
+     * get the username.
      * @return string
      */
     public function getUser()
@@ -122,10 +133,7 @@ class Message extends DatabaseTable
      */
     public function getTimestamp()
     {
-        $dateTimeObject = new \DateTime();
-        $dateTimeObject->setTimestamp($this->timestamp);
-
-        return $dateTimeObject;
+        return $this->timestamp;
     }
 
     /**
@@ -146,5 +154,4 @@ class Message extends DatabaseTable
         $objects = $statement->fetchAll();
         return $objects;
     }
-    
 }

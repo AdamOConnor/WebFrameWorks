@@ -24,17 +24,19 @@
                 <th> Submit Application </th>
             </tr>
             {% for job in jobs %}
-                {% if job.status is sameas("Active") and time > job.date and job.username is sameas(username) %}
+                {% if job.status is sameas("Active") and job.username is sameas(username) %}
                     <tr>
                         <td> {{ job.company }} </td>
                         <td> {{ job.description }} </td>
                         <td> {{ job.position }} </td>
-                        <td> {{ job.date|date("l jS M h:i:s A", "Europe/Dublin")  }} </td>
+                        <td> {{ job.timestamp|date("l jS M h:i:s A", "Europe/Dublin")  }} </td>
                         <td>
+                    {% if job.status is sameas("Active") and time > job.timestamp and job.username is sameas(username) %}
                             <form action="/getAll/{{ job.id }}" method="post" class="messageForm">
                                 <input type="hidden" name="jobId" value="{{ job.id }}">
                                 <input type="submit" value="Get Applications">
                             </form>
+                    {% endif %}
                         </td>
                     </tr>
                 {% endif %}

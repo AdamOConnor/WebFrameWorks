@@ -4,7 +4,7 @@
  * pending_jobs model used for the employer to send jobs.
  * and so the lecturer can see these jobs.
  */
-namespace Adamoconnorframeworks\Model;
+namespace Adamoconnorframeworks\model;
 
 use Mattsmithdev\PdoCrud\DatabaseTable;
 use Mattsmithdev\PdoCrud\DatabaseManager;
@@ -58,17 +58,15 @@ class Pending extends DatabaseTable
      */
     private $timestamp;
 
-   
-
     /**
-     * get the id of the pending_job
+     * get the id of the pending job
      * @return int
      */
     public function getId()
     {
         return $this->id;
     }
-
+    
     /**
      * setting the id of the pending job.
      * @param int $id
@@ -196,7 +194,7 @@ class Pending extends DatabaseTable
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'SELECT * FROM pending_jobs';
+        $sql = 'SELECT * FROM jobs';
         $statement = $connection->prepare($sql);
         $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
         $statement->execute();
@@ -205,12 +203,12 @@ class Pending extends DatabaseTable
         return $objects;
     }
 
-    public static function getOneByUsername($username)
+    /*public static function getOneByUsername($username)
     {
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'SELECT * FROM pending_jobs WHERE username=:username';
+        $sql = 'SELECT * FROM jobs WHERE username=:username';
         $statement = $connection->prepare($sql);
         $statement->bindParam(':username', $username, \PDO::PARAM_STR);
         $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
@@ -221,12 +219,12 @@ class Pending extends DatabaseTable
         } else {
             return null;
         }
-    }
+    }*/
 
     /**
      * inserting a pending job into the database table.
      * @param Pending $job
-     * @return null|string
+     * @return string
      */
     public static function insert(Pending $job)
     {
@@ -242,7 +240,7 @@ class Pending extends DatabaseTable
 
         // INSERT INTO users (firstname, surname, id, mynumber, image, addressline01, addressline02, city, eircode, country, previousemployment, qualifications, skills)
         //VALUES (:firstname, :surname, :id, :mynumber, :image, addressline01, addressline02, :city, :eircode, :country, :previousemployment, :qualifications, :skills)
-        $statement = $connection->prepare('INSERT into pending_jobs (status, username, company, description, position, date)
+        $statement = $connection->prepare('INSERT into jobs (status, username, company, description, position, timestamp)
         VALUES (:status, :username, :company, :description, :jobposition, :mytime)');
         $statement->bindParam(':status', $status, \PDO::PARAM_STR);
         $statement->bindParam(':username', $username, \PDO::PARAM_STR);
@@ -253,11 +251,7 @@ class Pending extends DatabaseTable
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
-        if($queryWasSuccessful) {
-            return $connection->lastInsertId();
-        } else {
-            return null;
-        }
+        return true;
     }
 
     /**
@@ -270,7 +264,7 @@ class Pending extends DatabaseTable
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'DELETE FROM pending_jobs WHERE id=:id';
+        $sql = 'DELETE FROM jobs WHERE id=:id';
         $statement = $connection->prepare($sql);
         $statement->bindParam(':id', $id, \PDO::PARAM_INT);
         $queryWasSuccessful = $statement->execute();
@@ -282,25 +276,24 @@ class Pending extends DatabaseTable
      * so that the lecturer can make that job become active.
      * @param $status
      * @param $id
-     * @return null|string
+     * @return bool
      */
     public static function updateStatus($status, $id)
     {
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'UPDATE pending_jobs SET status=:status WHERE id=:id';
+        $sql = 'UPDATE jobs SET status=:status WHERE id=:id';
         $statement = $connection->prepare($sql);
         $statement->bindParam(':id', $id, \PDO::PARAM_INT);
         $statement->bindParam(':status', $status, \PDO::PARAM_STR);
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
-        if($queryWasSuccessful) {
-            return $connection->lastInsertId();
+        if ($queryWasSuccessful) {
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
-    
 }

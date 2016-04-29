@@ -14,8 +14,20 @@ use Adamoconnorframeworks\Model\JobApplications;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class JobController
+ * @package Adamoconnorframeworks\Controller
+ */
 class JobController
 {
+
+    /**
+     * used to apply for a job that the employer has distributed.
+     * @param Request $request
+     * @param Application $app
+     * @param $id
+     * @return mixed
+     */
     public function applyAction(Request $request, Application $app, $id)
     {
         $username = getAuthenticatedUserName($app);
@@ -39,7 +51,7 @@ class JobController
         $skills = $studentApplication->getSkills();
 
         $jobApplication = new JobApplications();
-        $jobApplication->setJobId($id);
+        $jobApplication->setJob($id);
         $jobApplication->setName($name);
         $jobApplication->setSurname($surname);
         $jobApplication->setEmail($email);
@@ -67,8 +79,7 @@ class JobController
             'otherMessage' => 'Thank you for submitting youe cv'
         );
 
-        if(!$success)
-        {
+        if (!$success) {
             $argsArray = array(
                 'username' => $username,
                 'roleName' => $currentUser->getRole(),
@@ -77,7 +88,7 @@ class JobController
             );
         }
         // template for student records
-       
+
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 }

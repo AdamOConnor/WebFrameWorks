@@ -1,5 +1,10 @@
 <?php
-namespace Adamoconnorframeworks\Model;
+
+/**
+ * model used to CRUD the private messages,
+ * database.
+ */
+namespace Adamoconnorframeworks\model;
 
 use Mattsmithdev\PdoCrud\DatabaseTable;
 use Mattsmithdev\PdoCrud\DatabaseManager;
@@ -20,13 +25,13 @@ class PrivateMessage extends DatabaseTable
      * sender user's name.
      * @var string
      */
-    private $sendingUser;
+    private $sender;
 
     /**
      *receiving users name.
      * @var string
      */
-    private $receivingUser;
+    private $receiver;
 
     /**
      * about what part of the cv.
@@ -45,16 +50,16 @@ class PrivateMessage extends DatabaseTable
      * @var \DateTime
      */
     private $timestamp;
-    
+
     /**
-     * get the id of the message.
+     * get the id of the private message.
      * @return int
      */
     public function getId()
     {
         return $this->id;
     }
-
+    
     /**
      * set the id of the private message.
      * @param $id
@@ -68,37 +73,37 @@ class PrivateMessage extends DatabaseTable
      * get the sending user's username.
      * @return string
      */
-    public function getSendingUser()
+    public function getSender()
     {
-        return $this->sendingUser;
+        return $this->sender;
     }
 
     /**
      * set the sending user's username.
-     * @param $sendingUser
+     * @param $sender
      */
-    public function setSendingUser($sendingUser)
+    public function setSender($sender)
     {
-        $this->sendingUser = $sendingUser;
+        $this->sender = $sender;
     }
 
     /**
      * get the receiving users username.
      * @return string
      */
-    public function getReceivingUser()
+    public function getReceiver()
     {
-        return $this->receivingUser;
+        return $this->receiver;
     }
 
     /**
      * set the receiving username of the 
      * private message.
-     * @param $receivingUser
+     * @param $receiver
      */
-    public function setReceivingUser($receivingUser)
+    public function setReceiver($receiver)
     {
-        $this->receivingUser = $receivingUser;
+        $this->receiver = $receiver;
     }
 
     /**
@@ -167,7 +172,7 @@ class PrivateMessage extends DatabaseTable
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'SELECT * FROM private_messages';
+        $sql = 'SELECT * FROM private';
         $statement = $connection->prepare($sql);
         $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
         $statement->execute();
@@ -192,7 +197,7 @@ class PrivateMessage extends DatabaseTable
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'UPDATE private_messages SET text=:text, about=:about, timestamp=:myTime WHERE id=:id';
+        $sql = 'UPDATE private SET text=:text, about=:about, timestamp=:myTime WHERE id=:id';
         $statement = $connection->prepare($sql);
         $statement->bindParam(':id', $id, \PDO::PARAM_INT);
         $statement->bindParam(':text', $text, \PDO::PARAM_STR);
@@ -201,10 +206,10 @@ class PrivateMessage extends DatabaseTable
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
-        if($queryWasSuccessful) {
-            return $connection->lastInsertId();
+        if ($queryWasSuccessful) {
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 
@@ -219,7 +224,7 @@ class PrivateMessage extends DatabaseTable
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $sql = 'SELECT * FROM private_messages WHERE id=:id';
+        $sql = 'SELECT * FROM private WHERE id=:id';
         $statement = $connection->prepare($sql);
         $statement->bindParam(':id', $id, \PDO::PARAM_STR);
         $statement->setFetchMode(\PDO::FETCH_CLASS, __CLASS__);
@@ -243,7 +248,7 @@ class PrivateMessage extends DatabaseTable
         $db = new DatabaseManager();
         $connection = $db->getDbh();
 
-        $statement = $connection->prepare('DELETE from private_messages WHERE id=:id');
+        $statement = $connection->prepare('DELETE from private WHERE id=:id');
         $statement->bindParam(':id', $id, \PDO::PARAM_INT);
         $queryWasSuccessful = $statement->execute();
         return $queryWasSuccessful;
@@ -257,10 +262,8 @@ class PrivateMessage extends DatabaseTable
      */
     public static function insert(PrivateMessage $message)
     {
-        $sendingUser = $message->getSendingUser();
-        $receivingUser = $message->getReceivingUser();
-        //$senderId = $message->getSendingId();
-        //$receiverId = $message->getReceivingId();
+        $sendingUser = $message->getSender();
+        $receivingUser = $message->getReceiver();
         $details = $message->getAbout();
         $text = $message->getText();
         $myTime = $message->getTimestamp();
@@ -270,27 +273,16 @@ class PrivateMessage extends DatabaseTable
 
         // INSERT INTO users (firstname, surname, id, mynumber, image, addressline01, addressline02, city, eircode, country, previousemployment, qualifications, skills)
         //VALUES (:firstname, :surname, :id, :mynumber, :image, addressline01, addressline02, :city, :eircode, :country, :previousemployment, :qualifications, :skills)
-        $statement = $connection->prepare('INSERT into private_messages (sender_username, receiver_username, text, about, timestamp)
-        VALUES (:sender_username, :receiver_username, :text, :about, :stamp)');
-        //$statement = $connection->prepare('INSERT into resume (firstname) VALUES (:firstname)');
-       // $statement->bindParam(':sender', $senderId, \PDO::PARAM_INT);
-        $statement->bindParam(':sender_username', $sendingUser, \PDO::PARAM_STR);
-        $statement->bindParam(':receiver_username', $receivingUser, \PDO::PARAM_STR);
-       // $statement->bindParam(':receiver', $receiverId, \PDO::PARAM_INT);
+        $statement = $connection->prepare('INSERT into private (sender, receiver, text, about, timestamp)
+        VALUES (:sender, :receiver, :text, :about, :stamp)');
+        $statement->bindParam(':sender', $sendingUser, \PDO::PARAM_STR);
+        $statement->bindParam(':receiver', $receivingUser, \PDO::PARAM_STR);
         $statement->bindParam(':text', $text, \PDO::PARAM_STR);
         $statement->bindParam(':about', $details, \PDO::PARAM_STR);
         $statement->bindParam(':stamp', $myTime, \PDO::PARAM_INT);
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
-        if ($queryWasSuccessful) {
-            return $connection->lastInsertId();
-        } else {
-            return null;
-        }
+        return true;
     }
-
-
-
-
 }

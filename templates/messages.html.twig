@@ -4,15 +4,13 @@
 {% block pageTitle %}Messages page{% endblock %}
 
 {# ------------------------------------------------- #}
-{% block messagesLinkStyle %}current_page{% endblock %}
-
-{# ------------------------------------------------- #}
 {% block main %}
 
 <!-- start table for displaying DVD details -->
+    <div class="adminIndex">
 <h2>Messages from people</h2>
     <br>
-    <a href="/showPrivate" class="createMessage">Private Messages</a>
+    <a href="/showPrivateMessagesStudent" class="createMessage">Private Messages</a>
     <br>
 {% for message in messages %}
     <hr>
@@ -38,5 +36,5 @@
     <p>(no messages found)</p>
     {% endif %}
 {% endfor %}
-
+    </div>
 {% endblock %}

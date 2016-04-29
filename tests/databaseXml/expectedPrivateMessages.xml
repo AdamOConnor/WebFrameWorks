@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <dataset name="itb_test">
+        <!-- Table private_messages -->
+    <table name="private">
+
+        <column name="id">id</column>
+        <column name="sender">sender</column>
+        <column name="receiver">receiver</column>
+        <column name="text">text</column>
+        <column name="about">about</column>
+        <column name="timestamp">timestamp</column>
+
+        <row name="private">
+            <value name="id">7</value>
+            <value name="sender">adam</value>
+            <value name="receiver">matt</value>
+            <value name="text">hello admin how are you</value>
+            <value name="about">Name Details</value>
+            <value name="timestamp">1460730379</value>
+        </row>
+        <row name="private">
+            <value name="id">9</value>
+            <value name="sender">admin</value>
+            <value name="receiver">erica</value>
+            <value name="text">hello erica</value>
+            <value name="about">Name Details</value>
+            <value name="timestamp">1460731054</value>
+        </row>
+        <row name="private">
+            <value name="id">13</value>
+            <value name="sender">matt</value>
+            <value name="receiver">adam</value>
+            <value name="text">hey adam nothing much yourself !!!</value>
+            <value name="about">Name Details</value>
+            <value name="timestamp">1460745077</value>
+        </row>
+        <row name="private">
+            <value name="id">14</value>
+            <value name="sender">matt</value>
+            <value name="receiver">adam</value>
+            <value name="text">Hello name details are good !!!</value>
+            <value name="about">Name Details</value>
+            <value name="timestamp">1460745011</value>
+        </row>
+    </table>
+    </dataset>

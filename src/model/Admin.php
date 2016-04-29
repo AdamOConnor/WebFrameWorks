@@ -1,12 +1,11 @@
 <?php
 
 /**
- * @Author Adam O'Connor
- * class that gets user's details
- * for logging into the website aswell as
- * registering, for an account.
+ *  used for the CRUD of the admin table,
+ * handles all the items in the database to
+ * do with the lecture's of the website.
  */
-namespace Adamoconnorframeworks\Model;
+namespace Adamoconnorframeworks\model;
 
 use Mattsmithdev\PdoCrud\DatabaseTable;
 use Mattsmithdev\PdoCrud\DatabaseManager;
@@ -49,14 +48,14 @@ class Admin extends DatabaseTable
     private $role;
 
     /**
-     * get the id of the administrator.
+     * get the id of admin
      * @return int
      */
     public function getId()
     {
         return $this->id;
     }
-
+    
     /**
      * set the id of the admin.
      * @param $id
@@ -164,43 +163,22 @@ class Admin extends DatabaseTable
     }
 
     /**
-     * check the registration table
-     * to see if any details are the same.
-     * @param $email
-     * @param $username
-     * @return bool
-     */
-    public static function checkRegistration($email, $username)
-    {
-        //use details that the user has enter'd.
-        $checkUsersDetails = User::getUsersEmailAndUsername($email, $username);
-        if ($checkUsersDetails == null) {
-            // no such user in database
-            return false;
-        } else {
-            // user in database
-            return true;
-        }
-    }
-
-    /**
-     * return the role of each user
+     * return the role of each Admin
      * @param $username
      * @return null
      */
     public static function canFindSpecificRoleOfUser($username)
     {
-        $user = User::getOneByUsername($username);
-        
+        $user = Admin::getOneByUsername($username);
+
         // if no record has no username return null.
         if ($user == null) {
             return null;
         }
-        
-        $storedRoleNumber = $user->getRole();
-        return $storedRoleNumber;
-    }
 
+        $storedRole = $user->getRole();
+        return $storedRole;
+    }
 
     /**
      * if record exists with $username, return User object for that record
@@ -320,10 +298,5 @@ class Admin extends DatabaseTable
         $statement->execute();
 
         $queryWasSuccessful = ($statement->rowCount() > 0);
-        if ($queryWasSuccessful) {
-            return $connection->lastInsertId();
-        } else {
-            return null;
-        }
     }
 }

@@ -1,15 +1,19 @@
 <?php
+
 /**
- * @Author Adam O'Connor
- * Employer controller for links etc.
+ * used for the employer to control the routing of pages,
+ * and processing of new job applications
  */
 namespace Adamoconnorframeworks\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Adamoconnorframeworks\Model\Pending;
+use Adamoconnorframeworks\Model\PrivateMessage;
+use Adamoconnorframeworks\Model\Admin;
 use Adamoconnorframeworks\Model\User;
-use Adamoconnorframeworks\Pdf;
+use Symfony\Component\Validator\Constraints\True;
+
 /**
  * simple authentication using silex and twig template's
  * Class EmployerController
@@ -123,7 +127,7 @@ class EmployerController
 
         $pendingJobs = Pending::insert($pending);
 
-        if ($pendingJobs != null) {
+        if ($pendingJobs == true) {
             $templateName = 'redirect';
             $argsArray = array(
                 'headingMessage' => 'Success the job has been sent !!',
@@ -131,7 +135,6 @@ class EmployerController
                 'username' => $username,
                 'roleName' => $currentUser->getRole()
             );
-
         } else {
             $templateName = 'redirect';
             $argsArray = array(
@@ -140,11 +143,47 @@ class EmployerController
                 'username' => $username,
                 'roleName' => $currentUser->getRole()
             );
-
         }
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 
+    /**
+     * show private messages to the admin.
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function showPrivateMessagesAction(Request $request, Application $app)
+    {
+        // test if 'username' stored in session ...
+        $username = getAuthenticatedUserName($app);
+        $currentUser = User::getOneByUsername($username);
+        $messages = PrivateMessage::getAll();
+        $student = User::getAll();
+        $admin = Admin::getOneByUsername($username);
 
+        if ($currentUser == null) {
+            $currentUser = User::getOneByUsername($username);
+        }
 
+        // check we are authenticated --------
+        $isAuthenticated = (null != $username);
+        if (!$isAuthenticated) {
+            // not authenticated, so redirect to LOGIN page
+            return $app->redirect('/login');
+        }
+
+        // store username into args array
+        $argsArray = array(
+            'username' => $username,
+            'roleName' => $currentUser->getRole(),
+            'messages' => $messages,
+            'students' => $student,
+            'admin' => $admin
+        );
+
+        // template used for student index
+        $templateName = 'employer/listPrivate';
+        return $app['twig']->render($templateName . '.html.twig', $argsArray);
+    }
 }

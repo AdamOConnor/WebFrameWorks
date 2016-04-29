@@ -1,0 +1,54 @@
+{% extends '_base.html.twig' %}
+
+{% block title %}Student home{% endblock %}
+
+{% block main %}
+
+    <h1>Private message </h1>
+
+    <fieldset>
+
+        <form method="post" action="/privateMessage">
+            <div class="adminIndex">
+            <p>
+                Your message:
+                <br>
+                <textarea name="text" cols="40" rows="5" required></textarea>
+            </p>
+            <p>
+                <select name="aboutCvMessage" required>
+                    <option value="" selected="selected">Please select subject</option>
+                    <option value="About Job">About Job</option>
+                    <option value="Student Got Job">Student Got Job</option>
+                    <option value="Information">Information</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Congratulations">Congratulations</option>
+                    <option value="Other">Other</option>
+                </select>
+            </p>
+            <p>
+                <select name="receivingId" required>
+                    <option value="" selected="selected">please select user</option>
+                    {% for receiver in receivers %}
+                    <option value="{{ receiver.username }}" >{{ receiver.username }}</option>
+                    {% endfor %}
+
+                    {% for user in users %}
+                        {% if user.username is sameas(username) %}
+                            <br>
+                            {% else %}
+                                <option value="{{ user.username }}" >{{ user.username }}</option>
+                        {% endif %}
+
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <input type="hidden" name="senderId" value="{{ sendingUser.username }}">
+                <input type="submit"value="Send Message">
+            </p>
+            </div>
+        </form>
+    </fieldset>
+
+{% endblock %}

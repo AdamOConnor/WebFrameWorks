@@ -1,7 +1,8 @@
 <?php
+
 /**
- * @Author Adam O'Connor
- * Class Student Controller
+ * the student controller controls all student
+ * interactivity throughout the login.
  */
 namespace Adamoconnorframeworks\Controller;
 
@@ -61,8 +62,8 @@ class StudentController
         // test if 'username' stored in session ...
         $username = getAuthenticatedUserName($app);
         $currentUser = User::getOneByUsername($username);
-        $user = $currentUser->getEmail();
-        $sampleData = Resume::getOneByUsername($user);
+        $email = $currentUser->getEmail();
+        $sampleData = Resume::getOneByEmail($email);
 
         // check we are authenticated --------
         $isAuthenticated = (null != $username);
@@ -103,46 +104,6 @@ class StudentController
             return $app->redirect('/login');
         }
 
-        $storage = new \Upload\Storage\FileSystem('/');
-        $file = new \Upload\File($request->get('image'), $storage);
-
-// Optionally you can rename the file on upload
-        $new_filename = uniqid();
-        $file->setName($new_filename);
-
-// Validate file upload
-// MimeType List => http://www.iana.org/assignments/media-types/media-types.xhtml
-        $file->addValidations(array(
-            // Ensure file is of type "image/png"
-            // new \Upload\Validation\Mimetype('image/png'),
-
-            //You can also add multi mimetype validation
-            new \Upload\Validation\Mimetype(array('image/png', 'image/gif', 'image/jpg')),
-
-            // Ensure file is no larger than 5M (use "B", "K", M", or "G")
-            new \Upload\Validation\Size('5M')
-        ));
-
-        // Access data about the file that has been uploaded
-        $data = array(
-            'name'       => $file->getNameWithExtension(),
-            'extension'  => $file->getExtension(),
-            'mime'       => $file->getMimetype(),
-            'size'       => $file->getSize(),
-            'md5'        => $file->getMd5(),
-            'dimensions' => $file->getDimensions()
-        );
-
-        // Try to upload file
-        try {
-            // Success!
-            $file->upload();
-        } catch (\Exception $e) {
-            // Fail!
-            $errors = $file->getErrors();
-            echo $errors;
-        }
-
         $email = $request->get('emailAddress');
         $firstName = $request->get('firstname');
         $surname = $request->get('surname');
@@ -179,7 +140,7 @@ class StudentController
 
         $success = Resume::update($updateCv);
      
-        if ($success != null) {
+        if ($success) {
             $templateName = 'redirect';
             $argsArray = array(
                 'headingMessage' => 'Your cv has now been updated !!! ',
@@ -290,7 +251,7 @@ class StudentController
             'roleName' => $currentUser->getRole(),
             'messages' => $messages,
             'student' => $currentUser,
-            'admins' => $admin
+            'admin' => $admin
         );
 
         // template used for student index
@@ -342,10 +303,8 @@ class StudentController
         $username = getAuthenticatedUserName($app);
         $currentUser = User::getOneByUsername($username);
 
-        if($currentUser == null) {
-
+        if ($currentUser == null) {
             $currentUser = Admin::getOneByUsername($username);
-
         }
 
         $pendingJobs = Pending::getAll();
@@ -381,16 +340,14 @@ class StudentController
      * @param Application $app
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function submitApplicationAction(Request $request, Application $app, $id)
+    public function submitApplicationAction(Request $request, Application $app)
     {
         // test if 'username' stored in session ...
         $username = getAuthenticatedUserName($app);
         $currentUser = User::getOneByUsername($username);
 
-        if($currentUser == null) {
-
+        if ($currentUser == null) {
             $currentUser = Admin::getOneByUsername($username);
-
         }
 
         $pendingJobs = Pending::getAll();
@@ -414,6 +371,4 @@ class StudentController
         $templateName = 'student/listJobs';
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
-
-
 }

@@ -1,6 +1,9 @@
 <?php
+/**
+ *  summary for messages action class
+ *  to preform all messages functions
+ */
 namespace Adamoconnorframeworks\Controller;
-
 
 use Adamoconnorframeworks\Model\Admin;
 use Silex\Application;
@@ -8,8 +11,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Adamoconnorframeworks\Model\User;
 use Adamoconnorframeworks\Model\Message;
 use Adamoconnorframeworks\Model\PrivateMessage;
+
+/**
+ * Class MessageController
+ * @package Adamoconnorframeworks\Controller
+ */
+
 class MessageController
 {
+    /**
+     * messages action to show normal public messages,
+     * to all users.
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function messagesAction(Request $request, Application $app)
     {
         $username = getAuthenticatedUserName($app);
@@ -25,41 +41,52 @@ class MessageController
         $messageRepository = new Message();
         $getAllMessages = $messageRepository->getAll();
 
-        //$messages = $messageRepository->getAll();
-        if($messageRepository != null) {
+        if ($messageRepository != null) {
             $templateName = 'messages';
-            if($currentUser) {
+            if ($currentUser) {
                 $argsArray = [
                     'messages' => $getAllMessages,
                     'username' => $username,
                     'roleName' => $currentUser->getRole(),
                     'emailId' => $currentUser->getEmail()
                 ];
-            }
-            elseif($adminUser) {
+            } elseif ($adminUser) {
                 $argsArray = array(
                     'messages' => $getAllMessages,
                     'username' => $username,
                     'roleName' => $adminUser->getRole(),
                     'emailId' => $adminUser->getEmail()
                 );
+                return $app['twig']->render($templateName . '.html.twig', $argsArray);
             }
-        }else {
+        } else {
             $templateName = 'messages';
             $argsArray = [
                 'otherMessage' => 'There are currently no messages.',
                 'username' => $username,
                 'roleName' => $currentUser->getRole()
             ];
+            return $app['twig']->render($templateName . '.html.twig', $argsArray);
         }
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 
+    /**
+     * show messages to the admin displayed,
+     * differently can delete all.
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function adminMessagesAction(Request $request, Application $app)
     {
         $username = getAuthenticatedUserName($app);
         $currentUser = User::getOneByUsername($username);
-        $adminUser = Admin::getOneByUsername($username);
+
+        if ($currentUser == null) {
+            $adminUser = Admin::getOneByUsername($username);
+        }
+
 
         $isAuthenticated = (null != $username);
         if (!$isAuthenticated) {
@@ -69,11 +96,9 @@ class MessageController
 
         $messageRepository = new Message();
         $getAllMessages = $messageRepository->getAll();
-
-        //$messages = $messageRepository->getAll();
-        if($messageRepository != null) {
-
-            if($currentUser) {
+        
+        if ($messageRepository != null) {
+            if ($currentUser) {
                 $templateName = 'admin\messages';
                 $argsArray = array(
                     'messages' => $getAllMessages,
@@ -81,8 +106,7 @@ class MessageController
                     'roleName' => $currentUser->getRole(),
                     'emailId' => $currentUser->getEmail()
                 );
-            }
-            elseif($adminUser) {
+            } elseif ($adminUser) {
                 $templateName = 'admin\messages';
                 $argsArray = array(
                     'messages' => $getAllMessages,
@@ -91,7 +115,8 @@ class MessageController
                     'emailId' => $adminUser->getEmail()
                 );
             }
-        }else {
+            return $app['twig']->render($templateName . '.html.twig', $argsArray);
+        } else {
             $templateName = 'admin\messages';
             $argsArray = array(
                 'otherMessage' => 'There are currently no messages.',
@@ -102,13 +127,18 @@ class MessageController
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 
+    /**
+     * submit a message that can be seen by everyone.
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function submitAction(Request $request, Application $app)
     {
         $username = getAuthenticatedUserName($app);
         $currentUser = User::getOneByUsername($username);
 
-        if($currentUser == null)
-        {
+        if ($currentUser == null) {
             $currentUser = Admin::getOneByUsername($username);
         }
 
@@ -135,10 +165,8 @@ class MessageController
 
         $messageRepository = Message::insert($message);
         
-        if($messageRepository)
-        {
+        if ($messageRepository) {
             return $app->redirect('/messages');
-
         } else {
             $templateName = 'messages';
             $argsArray = array(
@@ -148,9 +176,16 @@ class MessageController
             );
             return $app['twig']->render($templateName . '.html.twig', $argsArray);
         }
-       
     }
-    
+
+    /**
+     * delete a message action.
+     * deletes a message from the database using the id.
+     * @param Request $request
+     * @param Application $app
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function deleteAction(Request $request, Application $app, $id)
     {
         $username = getAuthenticatedUserName($app);
@@ -158,44 +193,45 @@ class MessageController
 
         $isAuthenticated = (null != $username);
         if (!$isAuthenticated) {
-            // not authenticated, so redirect to LOGIN page
             return $app->redirect('/login');
         }
 
         $messageRepository = Message::delete($id);
 
-        if($messageRepository)
-        {
-            if($currentUser == null) {
+        if ($messageRepository) {
+            if ($currentUser == null) {
                 return $app->redirect('/adminMessages');
-            }
-            else {
+            } else {
                 return $app->redirect('/messages');
             }
-
         } else {
-
-            if($currentUser == null) {
+            if ($currentUser == null) {
                 $templateName = 'admin/privateMessage';
                 $argsArray = array(
                     'username' => $username,
                     'roleName' => 'Lecturer',
                     'otherMessage' => 'there was a problem with deleting the message...'
                 );
-            }
-            else {
+            } else {
                 $templateName = 'messages';
                 $argsArray = array(
                     'username' => $username,
                     'roleName' => $currentUser->getRole(),
                     'otherMessage' => 'there was a problem with deleting the message...'
                 );
-
             }
         }
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 
+    /**
+     * deleting private message action,
+     * deletes private messages from the table.
+     * @param Request $request
+     * @param Application $app
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function privateDeleteAction(Request $request, Application $app, $id)
     {
         $username = getAuthenticatedUserName($app);
@@ -209,38 +245,39 @@ class MessageController
 
         $messageRepository = PrivateMessage::delete($id);
 
-        if($messageRepository == true)
-        {
-            if($currentUser == null) {
+        if ($messageRepository == true) {
+            if ($currentUser == null) {
                 return $app->redirect('/showPrivate');
-            }
-            else {
+            } else {
                 return $app->redirect('/messages');
             }
-
         } else {
-
-            if($currentUser == null) {
+            if ($currentUser == null) {
                 $templateName = 'admin/privateMessage';
                 $argsArray = array(
                     'username' => $username,
                     'roleName' => 'Lecturer',
                     'otherMessage' => 'there was a problem with deleting the message...'
                 );
-            }
-            else {
+            } else {
                 $templateName = 'messages';
                 $argsArray = array(
                     'username' => $username,
                     'roleName' => $currentUser->getRole(),
                     'otherMessage' => 'there was a problem with deleting the message...'
                 );
-
             }
         }
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 
+    /**
+     * edit any message on the table that user has privilege to.
+     * @param Request $request
+     * @param Application $app
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function messageEditAction(Request $request, Application $app, $id)
     {
         $username = getAuthenticatedUserName($app);
@@ -252,7 +289,7 @@ class MessageController
             return $app->redirect('/login');
         }
         
-        if($currentUser == null) {
+        if ($currentUser == null) {
             $currentUser = Admin::getOneByUsername($username);
         }
 
@@ -268,6 +305,13 @@ class MessageController
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 
+    /**
+     * edit a private message that the user has access to.
+     * @param Request $request
+     * @param Application $app
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function privateMessageEditAction(Request $request, Application $app, $id)
     {
         $username = getAuthenticatedUserName($app);
@@ -279,7 +323,7 @@ class MessageController
             return $app->redirect('/login');
         }
 
-        if($currentUser == null) {
+        if ($currentUser == null) {
             $currentUser = Admin::getOneByUsername($username);
         }
 
@@ -296,6 +340,12 @@ class MessageController
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 
+    /**
+     * update a message action.
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function updateAction(Request $request, Application $app)
     {
         $username = getAuthenticatedUserName($app);
@@ -307,7 +357,7 @@ class MessageController
             return $app->redirect('/login');
         }
 
-        if($currentUser == null) {
+        if ($currentUser == null) {
             $currentUser = Admin::getOneByUsername($username);
         }
         
@@ -329,15 +379,12 @@ class MessageController
         
         $messageRepository = Message::update($message);
         
-        if($messageRepository != null){
-
-            if($currentUser->getRole() == 'Student') {
+        if ($messageRepository != null) {
+            if ($currentUser->getRole() == 'Student') {
                 return $app->redirect('/messages');
-            }
-            else {
+            } else {
                 return $app->redirect('/adminMessages');
             }
-
         } else {
             $templateName = 'messages';
             $argsArray = array(
@@ -349,6 +396,12 @@ class MessageController
         }
     }
 
+    /**
+     * private update message action.
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function privateUpdateAction(Request $request, Application $app)
     {
         $username = getAuthenticatedUserName($app);
@@ -360,10 +413,8 @@ class MessageController
             return $app->redirect('/login');
         }
 
-        if($currentUser == null) {
-
+        if ($currentUser == null) {
             $currentUser = Admin::getOneByUsername($username);
-
         }
 
         // now sanitise with filter_var()
@@ -383,15 +434,12 @@ class MessageController
 
         $messageRepository = PrivateMessage::update($message, $id);
 
-        if($messageRepository != null){
-
-            if($currentUser->getRole() == 'Student') {
+        if ($messageRepository != null) {
+            if ($currentUser->getRole() == 'Student') {
                 return $app->redirect('/privateMessages');
-            }
-            else {
+            } else {
                 return $app->redirect('/showPrivate');
             }
-
         } else {
             $templateName = 'messages';
             $argsArray = array(
@@ -420,7 +468,7 @@ class MessageController
             return $app->redirect('/login');
         }
 
-        if($currentUser == null) {
+        if ($currentUser == null) {
             $currentUser = Admin::getOneByUsername($username);
         }
 
@@ -436,18 +484,16 @@ class MessageController
 
         // create message object
         $private = new PrivateMessage();
-        $private->setSendingUser($sender);
-        $private->setReceivingUser($receiver);
+        $private->setSender($sender);
+        $private->setReceiver($receiver);
         $private->setText($text);
         $private->setAbout($about);
         $private->setTimestamp($timestamp);
         
         $messageRepository = PrivateMessage::insert($private);
 
-        if($messageRepository != null)
-        {
+        if ($messageRepository == true) {
             return $app->redirect('/adminMessages');
-
         } else {
             $templateName = 'messages';
             $argsArray = array(
@@ -457,9 +503,14 @@ class MessageController
             );
             return $app['twig']->render($templateName . '.html.twig', $argsArray);
         }
-
     }
 
+    /**
+     * create a private message from admin side shows all user's.
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function createAdminPrivateMessageAction(Request $request, Application $app)
     {
         $username = getAuthenticatedUserName($app);
@@ -486,6 +537,12 @@ class MessageController
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 
+    /**
+     * create private message student side sends messages to lecture's.
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function createStudentPrivateMessageAction(Request $request, Application $app)
     {
         $username = getAuthenticatedUserName($app);
@@ -512,5 +569,37 @@ class MessageController
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 
+    /**
+     * create employer message side, can send messages to students, or lectures.
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function createEmployerPrivateMessageAction(Request $request, Application $app)
+    {
+        $username = getAuthenticatedUserName($app);
+        $sending = User::getOneByUsername($username);
+        $receiver = Admin::getAll();
+        $users = User::getAll();
 
+
+        // check we are authenticated --------
+        $isAuthenticated = (null != $username);
+        if (!$isAuthenticated) {
+            // not authenticated, so redirect to LOGIN page
+            return $app->redirect('/login');
+        }
+
+        $argsArray = array(
+            'username' => $username,
+            'roleName' => $sending->getRole(),
+            'receivers' => $receiver,
+            'users' => $users,
+            'sendingUser' => $sending
+        );
+
+        // template for student records
+        $templateName = 'employer/create';
+        return $app['twig']->render($templateName . '.html.twig', $argsArray);
+    }
 }

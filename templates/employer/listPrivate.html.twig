@@ -4,7 +4,7 @@
 
 {% extends '_base.html.twig' %}
 
-{% block title %}Admin Private Messages{% endblock %}
+{% block title %}Student Private Messages{% endblock %}
 
 {% block main %}
     <div class="adminIndex">
@@ -12,7 +12,7 @@
 
     <h2>Messages from people</h2>
     <br>
-        <a href="/createAdminMessage" class="createMessage">Create Message</a>
+        <a href="/createEmployerMessage" class="createMessage">Create Message</a>
     {% for message in messages %}
         {% if message.sender is sameas(username) or message.receiver is sameas(username)%}
             <hr>

@@ -1,8 +1,10 @@
 <?php
+
 /**
- * @Author Adam O'Connor 
- * Webframeworks project.
+ * used for general logging in and out of the mvc website.
+ * also processes the registration form for new users.
  */
+
 namespace Adamoconnorframeworks\Controller;
 
 use Silex\Application;
@@ -15,6 +17,7 @@ use Adamoconnorframeworks\Model\Admin;
  * Class UserController
  * @package Adamoconnorframeworks\Controller
  */
+
 class UserController
 {
     
@@ -47,13 +50,10 @@ class UserController
                 default:
                     return $app->redirect('/error404');
             }
-        }
-
-        else if($isAdminLoggedIn) {
+        } elseif ($isAdminLoggedIn) {
             $app['session']->set('user', array('username' => $username));
             return $app->redirect('/admin');
-        }
-        else {
+        } else {
             $templateName = 'index';
             $argsArray = array(
                 'errorMessage' => 'bad username or password - please re-enter'
@@ -79,8 +79,7 @@ class UserController
         $rePassword = $request->get('rePassword');
         $status = $request->get('status');
 
-        if($password != $rePassword || $rePassword != $password) {
-
+        if ($password != $rePassword || $rePassword != $password) {
             $templateName = 'register';
             $argsArray = array(
                 'errorMessage' => 'Sorry the passwords do not match !!'
@@ -101,13 +100,17 @@ class UserController
             $newUser->setPassword($password);
             $newUser->setStatus($status);
             $success = User::insert($newUser);
-
             // insert the data into the database.
 
+            $to = $emailId;
+            $subject = "Registration completed";
+            $txt = "Congratulations you have now been registered on the CDM Work Placement website ";
+            $headers = "From: B00066540@student.itb.ie" . "\r\n";
+            mail($to, $subject, $txt, $headers);
+            
             // if the insert is successful then message will be shown
-            if ($success != null) {
-                
-                if($accountType == 'Student') {
+            if ($success) {
+                if ($accountType == 'Student') {
                     $currentUser = User::getIdByEmail($emailId);
                     $insertResumeSampleData = new Resume();
                     $insertResumeSampleData->setId($currentUser->getId());
@@ -121,18 +124,16 @@ class UserController
                     'otherMessage' => 'you can now login and create your curriculum vitae to look',
                     'otherMessage02' => 'for jobs in your area.'
                 );
-                
-            }else {
+            } else {
                 $templateName = 'register';
                 $argsArray = array(
                    'errorMessage' => 'Sorry something went wrong !!'
                 );
             }
-            
         } else {
             $templateName = 'register';
             $argsArray = array(
-                'errorMessage' => 'Sorry something went wrong !!'
+                'errorMessage' => 'Sorry you need to change your username and email !!'
             );
         }
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
@@ -190,9 +191,6 @@ class UserController
     {
         // logout any existing user
         $app['session']->set('user', null);
-
-        // redirect to home page
-        //return $app->redirect('/');
 
         // render (draw) template
         // ------------

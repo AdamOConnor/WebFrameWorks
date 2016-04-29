@@ -31,7 +31,7 @@
             <td> {{ job.company }} </td>
             <td> {{ job.description }} </td>
             <td> {{ job.position }} </td>
-            <td> {{ job.date|date("l jS M h:i:s A", "Europe/Dublin")  }} </td>
+            <td> {{ job.timestamp|date("l jS M h:i:s A", "Europe/Dublin")  }} </td>
             <td>
                 <form action="/deleteJob/{{ job.id }}" method="post" class="messageForm">
                     <input type="submit" value="Delete Job" class="tableButtonAction">

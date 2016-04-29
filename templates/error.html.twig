@@ -1,0 +1,19 @@
+{% extends '_base.html.twig' %}
+
+{% block pageTitle %}Error WHOOPS{% endblock %}
+
+
+{% block main %}
+    <div class="adminIndex">
+        <h1>Whoops!</h1>
+
+        <p class="error">
+            {{ message }}
+
+            {% if message2 %}
+                <br>
+                {{ message2 }}
+            {% endif %}
+        </p>
+    </div>
+{% endblock %}
