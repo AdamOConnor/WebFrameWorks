@@ -1,3 +1,6 @@
 /vendor
 /composer.lock
 /.idea
+/src/documentation
+/tests/coverage
+/tests/log.txt
