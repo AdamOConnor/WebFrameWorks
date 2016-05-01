@@ -1,11 +1,9 @@
-{#----------------#}
-{# templates/admin.html.twig #}
-{#----------------#}
-
 {% extends '_base.html.twig' %}
+{# ---------------------- page title --------------------------- #}
+{% block title %}Pending Jobs{% endblock %}
 
-{% block title %}Employer home{% endblock %}
-
+{# ---------------------- show all jobs that are pending --------------------------- #}
+{# ---------------------- for the admin to make active --------------------------- #}
 {% block main %}
 <div class="adminIndex">
     <h1>Pending employment jobs from employers !</h1>

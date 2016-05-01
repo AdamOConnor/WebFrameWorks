@@ -1,5 +1,5 @@
 {% extends '_base.html.twig' %}
-
+{# --------------------- title of page ---------------------------- #}
 {% block title %}Student Private Messages{% endblock %}
 
 {% block main %}
@@ -9,6 +9,7 @@
         <h2>Messages from people</h2>
         <br>
         <a href="/createStudentMessage" class="createMessage">Create Message</a>
+        {# ------------------- show all messages that are with the same username or with the same recievin username ------------------------------ #}
         {% for message in messages %}
             {% if message.sender is sameas(username) or message.receiver is sameas(username)%}
                 <hr>

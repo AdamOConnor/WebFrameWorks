@@ -1,11 +1,8 @@
-{#----------------#}
-{# templates/admin.html.twig #}
-{#----------------#}
-
 {% extends '_base.html.twig' %}
+{# ---------------------- title of page --------------------------- #}
+{% block title %}Active Jobs{% endblock %}
 
-{% block title %}Employer home{% endblock %}
-
+{# ---------------------- main block of page --------------------------- #}
 {% block main %}
 <div class="adminIndex">
     <h1>Active jobs from employers !</h1>
@@ -16,7 +13,7 @@
     <p>
        these are the list of jobs employers have sent that are Active.
     </p>
-
+    {# ---------------------- displaying active jobs --------------------------- #}
     <table>
         <tr>
             <th> Company </th>

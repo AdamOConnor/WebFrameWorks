@@ -234,6 +234,36 @@ class AdminTest extends \PHPUnit_Extensions_Database_TestCase
     }
 
     /**
+     * test the checking of username in database for registration form.
+     */
+    public function testCheckRegistration()
+    {
+        //arrange
+        $username = 'admin';
+        $email = 'admin@itb.ie';
+        $expectedResult = true;
+        //act
+        $result = Admin::checkRegistration($email, $username);
+        //assert
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    /**
+     * testing the failure of the checking of the details.
+     */
+    public function testCheckRegistrationFailed()
+    {
+        //arrange
+        $username = 'connor';
+        $email = 'connor@hotmail.com';
+        $expectedResult = false;
+        //act
+        $result = Admin::checkRegistration($email, $username);
+        //assert
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    /**
      * test failure of that role.
      */
     public function testGetUserByStudentRoleFailed()

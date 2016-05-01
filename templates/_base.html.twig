@@ -1,8 +1,11 @@
+{# ------------------base for all other webpages ------------------------------- #}
 <!doctype html>
 <html lang="en">
 <head>
+    {# --------------------- title for all pages ---------------------------- #}
     <title>{% block pageTitle %}{% endblock %}</title>
     <meta charset="utf-8">
+    {# --------------------- styling for all pages ---------------------------- #}
     <style>
         @import "/css/testReg.css";
         @import "/css/basic.css";
@@ -10,15 +13,16 @@
         @import "/css/footer.css";
         @import "/css/view.css";
     </style>
-    <script type="text/javascript" src="view.js"></script>
 </head>
 <body>
 
 <header>
+    {# ------------------ logo on top left ------------------------------- #}
     <div class="icon">
         GraduateJobsDublin.itb
     </div>
     <section>
+        {# -------------------show user's login if logged in ------------------------------ #}
         {% if username %}
             <div class ="showUser">
                 you are logged in as <b><i>{{ roleName }}</i></b> : <i>{{ username }}</i>
@@ -26,6 +30,7 @@
             </div>
             {% else %}
         <div id="signin">
+            {# ----------------------signin if no users logged in --------------------------- #}
             <form class = "form-signin" role = "form"
                   action = "/login" method = "post">
                 <!--<h4 class = "form-signin-heading"><?php echo $msg; ?></h4>-->
@@ -42,13 +47,16 @@
 </header>
 
 <nav>
+    {# -------------------Different nav links for different user's ------------------------------ #}
+
     {% if roleName is sameas('Lecturer')%}
         {% include 'admin/_adminLinks.html.twig' %}
     {% elseif roleName is sameas('Student')%}
-        {% include 'student/_adminLinks.html.twig' %}
+        {% include 'student/_studentLinks.html.twig' %}
     {% elseif roleName is sameas('Employer') %}
-        {% include 'employer/_adminLinks.html.twig' %}
+        {% include 'employer/_employerLinks.html.twig' %}
     {% else %}
+        {# ----------------------- main nav links -------------------------- #}
     <ul>
         <li>
             <a href="/" class="{% block indexLinkStyle %}{% endblock %}">Home</a>
@@ -73,6 +81,7 @@
 
 {% endblock %}
 
+{# --------------------- footer for all pages ---------------------------- #}
 <div id="footer">
     <div id="lefttext">
         Adam O'Connor <a href="mailto:adam-o-connor@hotmail.com"><img src="/images/email.png" height="50" width="50"></a>

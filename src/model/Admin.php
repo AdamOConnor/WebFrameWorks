@@ -203,7 +203,28 @@ class Admin extends DatabaseTable
             return null;
         }
     }
-
+    
+    /**
+     * check the registration table
+     * to see if any details are the same.
+     * @param $email
+     * @param $username
+     * @return bool
+     */
+    public static function checkRegistration($email, $username)
+    {
+        //use details that the user has enter'd.
+        $checkUsersDetails = Admin::getUsersEmailAndUsername($email, $username);
+        if ($checkUsersDetails == null) {
+            // no such user in database
+            return false;
+        } else {
+            // user in database
+            return true;
+        }
+    }
+    
+    
     /**
      * find user specific username 
      * and id.

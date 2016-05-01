@@ -1,15 +1,11 @@
-{#----------------#}
-{# templates/admin.html.twig #}
-{#----------------#}
-
 {% extends '_base.html.twig' %}
-
+{# ---------------------- title of webpage --------------------------- #}
 {% block title %}Admin Private Messages{% endblock %}
 
 {% block main %}
     <div class="adminIndex">
     <h3> Private Messages </h3>
-
+        {# ---------------------- displaying messages --------------------------- #}
     <h2>Messages from people</h2>
     <br>
         <a href="/createAdminMessage" class="createMessage">Create Message</a>

@@ -83,7 +83,7 @@ class EmployerController
         );
 
         // template for the employer records
-        $templateName = 'employer/codes';
+        $templateName = 'employer/records';
         return $app['twig']->render($templateName . '.html.twig', $argsArray);
     }
 

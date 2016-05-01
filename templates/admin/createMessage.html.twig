@@ -1,5 +1,5 @@
 {% extends '_base.html.twig' %}
-
+{# ---------------------- title for webpage --------------------------- #}
 {% block title %}Admin Create Message{% endblock %}
 
 {% block main %}
@@ -8,7 +8,7 @@
 
     <fieldset>
         <legend>Send us a message to say hi!</legend>
-
+        {# ---------------------- send public message --------------------------- #}
         <form method="post" action="/processMessage">
 
             <p>

@@ -1,14 +1,9 @@
-{#----------------#}
-{# templates/admin.html.twig #}
-{#----------------#}
-
 {% extends '_base.html.twig' %}
-
+{# ---------------------- title of page  --------------------------- #}
 {% block title %}admin home{% endblock %}
 
+{# ---------------------- main block showing what user's are employed --------------------------- #}
 {% block main %}
-
-
         <h1>Welcome to the Admin home page !</h1>
     <div class="adminIndex">
         <h3> Employed Students </h3>
@@ -48,7 +43,7 @@
             {% endfor %}
         </table>
     </div>
-
+    {# ---------------------- displaying unemployed students --------------------------- #}
         <hr>
     <div class="adminIndex">
         <h3>UnEmployed Students</h3>

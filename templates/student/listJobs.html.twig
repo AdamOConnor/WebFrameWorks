@@ -1,10 +1,7 @@
-{#----------------#}
-{# templates/admin.html.twig #}
-{#----------------#}
-
 {% extends '_base.html.twig' %}
 
-{% block title %}Employer home{% endblock %}
+{# ------------------------------------------------- #}
+{% block title %}Student Jobs{% endblock %}
 
 {% block main %}
 <div class="adminIndex">
@@ -22,6 +19,7 @@
             <th> Closing date </th>
             <th> Submit Application </th>
         </tr>
+        {# ---------------------list all student jobs that are active and not expired ---------------------------- #}
     {% for job in jobs %}
         {% if job.status is sameas("Active") and time <= job.timestamp %}
         <tr>

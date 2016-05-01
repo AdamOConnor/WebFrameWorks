@@ -1,6 +1,8 @@
 {% extends '_base.html.twig' %}
-
+{# -----------------title for page -------------------------------- #}
 {% block title %}Student home{% endblock %}
+
+{# -------------------- main block ----------------------------- #}
 
 {% block main %}
 
@@ -8,6 +10,7 @@
 
     <fieldset>
         <legend>
+            {# ------------------ sending what Admin a private message ------------------------------- #}
             Send message to user {{ receivingUser.username }} !!!
             <br>
             Users Email Address is : {{ receivingUser.email }}
@@ -35,8 +38,9 @@
                 </select>
             </p>
             <p>
-                <input type="hidden" name="senderId" value="{{ sendingUser.id }}">
-                <input type="hidden" name="receivingId" value="{{ receivingUser.id }}">
+                {# ----------------------sending users username with receiving users --------------------------- #}
+                <input type="hidden" name="senderId" value="{{ sendingUser.username }}">
+                <input type="hidden" name="receivingId" value="{{ receivingUser.username }}">
                 <input type="submit"value="Send Message">
             </p>
 

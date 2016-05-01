@@ -628,11 +628,14 @@ class AdminController
             return $app['twig']->render($templateName . '.html.twig', $argsArray);
         }
 
-        $checkDetails = User::checkRegistration($emailId, $username);
+        $checkUserDetails = User::checkRegistration($emailId, $username);
+        $checkAdminDetails = Admin::checkRegistration($emailId, $username);
 
-        if ($checkDetails == null) {
+        if ($checkUserDetails == false && $checkAdminDetails == false) {
             // instantiate the class needed
+
             if ($accountType == 'Lecturer') {
+                //adding a new admin to database 
                 $newAdmin = new Admin();
                 $newAdmin->setEmail($emailId);
                 $newAdmin->setRole($accountType);
@@ -640,12 +643,27 @@ class AdminController
                 $newAdmin->setPassword($password);
                 $success = Admin::insert($newAdmin);
 
+                $templateName = 'redirect';
+                $argsArray = array(
+                    'username' => $AdminUser->getUsername(),
+                    'roleName' =>  $AdminUser->getRole(),
+                    'headingMessage' => 'Well done you now registered a Admin.',
+                    'otherMessage' => 'Admins can now CRUD data',
+                );
+
+                /**
+                 * used if hosted.
+                 */
+
+                /*
                 $to = $emailId;
                 $subject = "Registration completed";
                 $txt = "Congratulations you have now been registered on the CDM Work Placement website ";
                 $headers = "From: B00066540@student.itb.ie" . "\r\n";
                 mail($to, $subject, $txt, $headers);
+                */
             } else {
+                // adding a new user to database.
                 $newUser = new User();
                 $newUser->setEmail($emailId);
                 $newUser->setRole($accountType);
@@ -654,15 +672,20 @@ class AdminController
                 $newUser->setStatus($status);
                 $success = User::insert($newUser);
 
-                $to = $emailId;
+                /**
+                 * used if uploaded onto web.
+                 */
+                
+                /*$to = $emailId;
                 $subject = "Registration completed";
                 $txt = "Congratulations you have now been registered on the CDM Work Placement website ";
                 $headers = "From: B00066540@student.itb.ie" . "\r\n";
-                mail($to, $subject, $txt, $headers);
+                mail($to, $subject, $txt, $headers);*/
             }
 
             if ($success) {
                 if ($accountType == 'Student') {
+                    // adding students details to resume
                     $currentUser = User::getIdByEmail($emailId);
                     $insertResumeSampleData = new Resume();
                     $insertResumeSampleData->setId($currentUser->getId());
@@ -673,16 +696,9 @@ class AdminController
                 $templateName = 'redirect';
                 $argsArray = array(
                     'username' => $AdminUser->getUsername(),
-                    'roleName' =>  $AdminUser->getRole(),
+                    'roleName' => $AdminUser->getRole(),
                     'headingMessage' => 'Well done you now registered a user.',
                     'otherMessage' => 'users can now login and create your curriculum vitae to look',
-                );
-            } else {
-                $templateName = 'admin/registerUser';
-                $argsArray = array(
-                    'username' => $AdminUser->getUsername(),
-                    'roleName' =>  $AdminUser->getRole(),
-                    'errorMessage' => 'Sorry please choose a different email and username !!'
                 );
             }
         } else {
@@ -749,7 +765,6 @@ class AdminController
         $username = getAuthenticatedUserName($app);
         $currentUser = Admin::getOneByUsername($username);
         
-
         // check we are authenticated --------
         $isAuthenticated = (null != $username);
         if (!$isAuthenticated) {
@@ -758,7 +773,7 @@ class AdminController
         }
         
         $status = 'Active';
-        
+        // change the status of a job from pending to active.
         $pending = Pending::updateStatus($status, $id);
         
         if ($pending != null) {

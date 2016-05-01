@@ -102,11 +102,15 @@ class UserController
             $success = User::insert($newUser);
             // insert the data into the database.
 
-            $to = $emailId;
+            /**
+             * used if uploaded onto web.
+             */
+
+            /*$to = $emailId;
             $subject = "Registration completed";
             $txt = "Congratulations you have now been registered on the CDM Work Placement website ";
             $headers = "From: B00066540@student.itb.ie" . "\r\n";
-            mail($to, $subject, $txt, $headers);
+            mail($to, $subject, $txt, $headers);*/
             
             // if the insert is successful then message will be shown
             if ($success) {
