@@ -5,11 +5,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 //----- Twig setup --------------
 $templatesPath = __DIR__ . '/../templates';
 
-define('DB_HOST','localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'itb');
-
 $loader = new Twig_Loader_Filesystem($templatesPath);
 $twig = new Twig_Environment($loader);
 

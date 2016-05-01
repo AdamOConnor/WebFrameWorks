@@ -1,43 +1,8 @@
-/* ------- nav -------
-nav ul {
-    display: flex;
-
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-nav li {
-    flex: 1;
-}
-
-nav a {
-    display: block;
-
-    border: 0.5rem solid lime;
-    padding: 0.2rem;
-
-    background: aqua;
-    text-align: center;
-
-    color: black;
-    text-decoration:none;
-}
-
-nav a:hover {
-    text-decoration:underline;
-}
-
-nav a.current_page {
-    color: white;
-    background: green;
-    text-decoration:none;
-}
-*/
-
+/* using a google font to import for the nav bar */
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
 @charset "UTF-8";
 /* Base Styles */
+/* setting the nav components margin's to 0 */
 nav ul,
 nav li,
 nav a {
@@ -48,6 +13,8 @@ nav a {
     line-height: 1;
     font-family: 'Lato', sans-serif;
 }
+
+/* nav border radius */
 nav {
     border: 1px solid #133e40;
     -webkit-border-radius: 5px;
@@ -57,6 +24,11 @@ nav {
     border-radius: 5px;
     width: auto;
 }
+
+/**
+  *  navigation unordered list
+  *  setting the background on all
+  **/
 nav ul {
     zoom: 1;
     background: #36b0b6;

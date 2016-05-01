@@ -1,3 +1,4 @@
+/* the id of the form container */
 #form_container
 {
 	background:#FFFFFF;
@@ -7,6 +8,7 @@
 	width:640px;
 }
 
+/* the top of the update cv  */
 #top
 {
 	display:block;
@@ -15,6 +17,7 @@
 	width:650px;
 }
 
+/* the bottom of the update cv student */
 #bottom
 {
 	display:block;
@@ -23,6 +26,7 @@
 	width:650px;
 }
 
+/* the form of the cv */
 form.cv
 {
 	margin:20px 20px 0;
@@ -41,6 +45,7 @@ form.cv
 	
 }
 
+/* form link */
 .formH1 a
 {
 	
@@ -50,7 +55,7 @@ form.cv
 	overflow:hidden;
 }
 
-/**** Form Section ****/
+/**** Form Section css ****/
 .cv
 {
 	font-family:Lucida Grande, Tahoma, Arial, Verdana, sans-serif;

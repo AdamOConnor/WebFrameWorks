@@ -2,7 +2,7 @@
 
 //------- important -------
 // add this file to your .gitignore
-//
+// added to the project for demonstration purpose's
 // so we do NOT upload/publish our DB config to the cloud repository!
 //----------------------------
 

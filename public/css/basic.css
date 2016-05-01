@@ -1,3 +1,4 @@
+/* basic body for the background of all pages */
 body {
 	background: #F5F5F5;
 }
@@ -81,6 +82,7 @@ a.logoutButton:hover {
     box-shadow: none;
 }
 
+/* creating a message css for the link to make it look like a button */
 a.createMessage {
     font-size: 14px;
     font-weight: 600;
@@ -115,7 +117,7 @@ a.createMessage:hover {
     box-shadow: none;
 }
 
-
+/* the table button css's */
 .tableButtonAction {
     font-size: 14px;
     font-weight: 600;
@@ -143,6 +145,7 @@ a.createMessage:hover {
     position: relative;
 }
 
+/* the hover action of the table button */
 .tableButtonAction:hover {
     top: 3px;
     background-color: #36b0b6;
@@ -152,11 +155,7 @@ a.createMessage:hover {
 
 }
 
-
-
-
 /* used for tables */
-
 table {
     margin: 1em 0;
     background: #FFF;
@@ -164,13 +163,14 @@ table {
     border-radius: 10px;
     border: 1px solid #167F92;
     width: 96%;
-
 }
 
+/* table row css for tables */
 table tr {
     border: 1px solid #D9E4E6;
 }
 
+/* the table header css */
 table th {
     border: 1px solid #FFF;
     background-color: #36b0b6;
@@ -185,11 +185,13 @@ table th {
     padding: 0.5em;
 }
 
+/* table data css */
 table td {
     display: block;
     padding: 1em;
 }
 
+/* table data css */
 table td {
     display: table-cell;
     text-align: center;
@@ -197,17 +199,18 @@ table td {
     border-bottom: 1px solid #D9E4E6;
 }
 
+/* table head and data css */
 table th, table td {
     text-align: left;
     margin: .25em 0.5em;
 }
 
-/* admin Index */
-
+/* admin Index used for most pages */
 .adminIndex {
     margin-left: 1.5em;
 }
 
+/* input margin's */
 .adminIndex, input {
     margin-bottom: 15px;
 }
@@ -220,10 +223,12 @@ table th, table td {
     margin: 10px;
 }
 
+/* message form display */
 .messageForm {
     display: inline;
 }
 
+/* message text margin */
 .messageText {
     margin: 1em;
 }

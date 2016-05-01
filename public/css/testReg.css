@@ -1,14 +1,26 @@
+/* setting all the elements below to 0 padding & margin */
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6,
 pre, form, fieldset, input, textarea, p, blockquote, th, td {
     padding:0;
-    margin:0;}
+    margin:0;
+}
 
-fieldset, img {border:0}
+/* fieldset and image to 0 */
+fieldset, img {
+    border:0
+}
 
-ol, ul, li {list-style:none}
+/* ordered list, unordered, and line */
+ol, ul, li {
+    list-style:none
+}
 
-:focus {outline:none}
+/* focus outline none */
+:focus {
+    outline:none
+}
 
+/* all text on the following */
 body,
 input,
 textarea,
@@ -18,6 +30,7 @@ select {
     color: #4c4c4c;
 }
 
+/* class testbox paragraph */
 .testbox p {
     font-size: 12px;
     width: 150px;
@@ -26,6 +39,7 @@ select {
 
 }
 
+/* class test box h1  */
 .testbox h1 {
     font-size: 32px;
     font-weight: 300;
@@ -35,6 +49,7 @@ select {
     margin-bottom: 10px;
 }
 
+/* testbox css for all */
 .testbox {
     margin: 20px auto;
     margin-bottom: 4em;
@@ -50,14 +65,17 @@ select {
     border: solid 1px #cbc9c9;
 }
 
+/* show the input type of radio button */
 input[type=radio] {
     visibility: hidden;
 }
 
+/* the testbox class in the form */
 .testbox form{
     margin: 0 30px;
 }
 
+/* the label of the radio button. */
 label.radio {
     cursor: pointer;
     text-indent: 35px;
@@ -67,6 +85,7 @@ label.radio {
     margin-bottom: 15px;
 }
 
+/* show the label before what it should look like */
 label.radio:before {
     background-color: #36b0b6;
     background: -moz-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
@@ -85,6 +104,7 @@ label.radio:before {
     border-radius: 100%;
 }
 
+/* show what the label will look like after */
 label.radio:after {
     opacity: 0;
     content: '';
@@ -105,15 +125,18 @@ label.radio:after {
     transform: rotate(-45deg);
 }
 
+/* input of the radio css */
 input[type=radio]:checked + label:after {
     opacity: 1;
 }
 
+/* the horizontal line */
 hr{
     color: #a9a9a9;
     opacity: 0.3;
 }
 
+/* css for text input and password */
 .testbox input[type=text], input[type=password]{
     width: 200px;
     height: 39px;
@@ -131,6 +154,7 @@ hr{
     padding-left: 10px;
 }
 
+/* the input for text and password */
 input[type=text], input[type=password]{
     width: 200px;
     height: 39px;
@@ -148,6 +172,7 @@ input[type=text], input[type=password]{
     margin-right: 4em;
 }
 
+/* the password field */
 .passwordField {
     margin-bottom: 25px;
 }
@@ -176,6 +201,7 @@ input[type=text], input[type=password]{
     border: solid 0px #cbc9c9;
 }
 
+/* id of icon margin */
 #icon img {
     margin-right: 10px;
 }
@@ -192,18 +218,17 @@ input[type=text], input[type=password]{
     margin-top: 20px;
 }
 
+/* the icon image url */
 .icon-envelope {
-    content: url("../images/interface.png");
+    content: url("/../images/interface.png");
 }
 
+/* button class */
 .button {
     font-size: 14px;
     font-weight: 600;
     color: white;
-    /*
-    padding: 6px 25px 0px 20px;
-    margin: 10px 8px 20px 0px;
-    */display: inline-block;
+    display: inline-block;
     padding-right: 65px;
     margin: 10px;
     float: right;
@@ -230,6 +255,7 @@ input[type=text], input[type=password]{
     margin-left: 160px;
 }
 
+/* the button class hover css */
 .button:hover {
     top: 3px;
     background-color: #36b0b6;
