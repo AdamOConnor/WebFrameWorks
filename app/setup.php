@@ -1,6 +1,7 @@
 <?php
 //----- autoload any classes we are using ------
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/config_db.php';
 
 //----- Twig setup --------------
 $templatesPath = __DIR__ . '/../templates';
