@@ -76,7 +76,7 @@ class JobController
             'username' => $username,
             'roleName' => $currentUser->getRole(),
             'headingMessage' => 'Your cv has been submitted !!!',
-            'otherMessage' => 'Thank you for submitting youe cv'
+            'otherMessage' => 'Thank you for submitting your cv'
         );
 
         if (!$success) {
